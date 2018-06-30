@@ -1,14 +1,15 @@
 # Dart 语言简明教程
-##### 翻译自Dart官网，[查看原文](https://www.dartlang.org/guides/language/language-tour)。
-这篇文章展示如何使用Dart的各个主要特性，从变量和运算符到类和库，并且假定你已经会使用其他编程语言编写代码。
-要详细了解Dart核心库相关内容，请看官方 [A Tour of the Dart Libraries](https://www.dartlang.org/guides/libraries/library-tour)。当你想对一个语言特性了解更多，无论何时都可以查阅官方 [Dart Language Specification](https://www.dartlang.org/guides/language/spec)。
+**翻译自 Dart 官网，[查看原文](https://www.dartlang.org/guides/language/language-tour)。**
+
+这篇文章展示如何使用 Dart 的各个主要特性，从变量和运算符到类和库，并且假定你已经会使用其他编程语言编写代码。
+要详细了解 Dart 核心库相关内容，请看官方 [A Tour of the Dart Libraries](https://www.dartlang.org/guides/libraries/library-tour)。当你想对一个语言特性了解更多，无论何时都可以查阅官方 [Dart Language Specification](https://www.dartlang.org/guides/language/spec)。
 
 > 小提示：在 DartPad 上，你可以尝试大部分 Dart 的语言特性（[了解更多](https://www.dartlang.org/tools/dartpad)）。
 >
 > 转到 [DartPatd](https://dartpad.dartlang.org/)
 
 ## 目录
-* [一个基本的 Dart 程序](#一个基本的-Dart-程序)
+* [一个基本的 Dart 程序](#一个基本的 Dart 程序)
 * [重要概念](#重要概念)
 * [关键字](#关键字)
 * [变量](#变量)
