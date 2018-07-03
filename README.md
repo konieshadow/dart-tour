@@ -19,10 +19,10 @@
   * [数值](#数值)
   * [字符串](#字符串)
   * [布尔](#布尔)
-  * [Lists](#lists)
-  * [Maps](#maps)
-  * [Runes](#runes)
-  * [Symbols](#symbols)
+  * [列表](#列表)
+  * [映射](#映射)
+  * [符文](#符文)
+  * [符号](#符号)
 * [函数](#函数)
   * [可选参数](#可选参数)
   * [main() 函数](#main()-函数)
@@ -435,3 +435,180 @@ const validConstString = '$aConstNum $aConstBool $aConstString';
 
 要了解更多使用字符串的信息，请看 [字符串和正则表达式](#)。
 
+### 布尔
+
+为了表示布尔值，Dart 内置了一个名字为 **bool** 的类型。只有两个对象拥有布尔类型：布尔字面量 **true** 和 **false**，它们两个都是编译期常量。
+
+Dart 的类型安全意味着你不能使用像 **if (*nonbooleanValue*)** 这样的代码。取而代之，你需要明确地检查值，像是：
+
+```dart
+// 检查是否是空字符串
+var fullName = '';
+assert(fullName.isEmpty);
+
+// 检查是否为0
+var hitPoints = 0;
+assert(hitPoints <= 0);
+
+// 检查是否为空
+var unicorn;
+assert(unicorn == null);
+
+// 检查是否是NaN
+var iMeantToDoThis = 0 / 0;
+assert(iMeantToDoThis.isNaN);
+```
+
+### 列表
+
+“数组”或者有序的对象组，也许是大部分编程语言中最常用的集合类型了。在 Dart 中，数组是类型为 [List](https://api.dartlang.org/dev/dart-core/List-class.html) 的对象，所以人们通常称之为“列表”。
+
+Dart 的列表字面量看起来就像 JavaScript 的数组字面量。下面是一个简单的 Dart 列表：
+
+```dart
+var list = [1, 2, 3];
+```
+
+> 注意：分析器推断上面的 **list** 类型是 **List&lt;int&gt;**。如果你试图添加一个非整数值对象到这个列表中，分析器或者运行时会报告一个错误。要了解详细信息，请看 [类型推断](https://www.dartlang.org/guides/language/sound-dart#type-inference)。
+
+列表使用基于0的索引，也就是说 0 是列表中第一个元素的索引，而 **list.length - 1** 是最后一个元素的索引。你可以像 JavaScript 一样获取 list 的长度和它的元素：
+
+```dart
+var list = [1, 2, 3];
+assert(list.length == 3);
+assert(list[1] == 2);
+
+list[1] = 1;
+assert(list[1] == 1);
+```
+
+要创建一个作为编译期常量的列表，在列表字面量前加上 **const**：
+
+```dart
+var constantList = const [1, 2, 3];
+// constantList[1] = 1; // 这一行会引发一个错误
+```
+
+列表类型有许多方便的方法可以用来操作列表。要了解更多内容，请看 [泛型](#) 和 [集合](#)。
+
+### 映射
+
+通常来说，映射是一个关联了键和值的对象。键和值都可以是任意类型的对象。*键*是唯一的，但是你可以多次使用相同的*值*。Dart 通过映射字面量和 [Map](https://api.dartlang.org/dev/dart-core/Map-class.html) 类型来支持映射。
+
+下面是几个简单的 Dart 映射，使用字面量创建：
+
+```dart
+var gifts = {
+  // 键:    值
+  'first': 'partridge',
+  'second': 'turtledoves',
+  'fifth': 'golden rings'
+};
+
+var nobleGases = {
+  2: 'helium',
+  10: 'neon',
+  18: 'argon',
+};
+```
+
+> 注意：分析器推断出 **gifts** 拥有类型 **Map&lt;String, String&gt;**，而 **nobleGases** 拥有类型 **Map&lt;int, String&gt;**。如果你试图添加错误的类型到上面的映射中，分析器或者运行时会报告一个错误。要了解更多信息，请看 [类型推断](#)。
+
+你可以通过映射的构造函数创建同样的对象：
+
+```dart
+var gifts = Map();
+gifts['first'] = 'partridge';
+gifts['second'] = 'turtledoves';
+gifts['fifth'] = 'golden rings';
+
+var nobleGases = Map();
+nobleGases[2] = 'helium';
+nobleGases[10] = 'neon';
+nobleGases[18] = 'argon';
+```
+
+> 注意：你可能对 **new Map()** 这样的形式会更熟悉。在 Dart 2 中，关键字 **new** 是可选的。详情请看 [使用构造函数](#)。
+
+添加一个新的键值对到已存在的映射，方法和 JavaScript 一样：
+
+```dart
+var gifts = {'first': 'partridge'};
+gifts['fourth'] = 'calling birds'; // 添加一个键值对
+```
+
+从映射中取得一个值也和 JavaScript 的写法一样：
+
+```dart
+var gifts = {'first': 'partridge'};
+assert(gifts['first'] == 'partridge');
+```
+
+如果你查找一个不存在的键，会得到 null：
+
+```dart
+var gifts = {'first': 'partridge'};
+assert(gifts['fifth'] == null);
+```
+
+使用 **.length** 去获得映射中键值对的数量：
+
+```dart
+var gifts = {'first': 'partridge'};
+gifts['fourth'] = 'calling birds';
+assert(gifts.length == 2);
+```
+
+要创建一个作为编译期常量的映射，在映射字面量前加上 **const**：
+
+```dart
+final constantMap = const {
+  2: 'helium',
+  10: 'neon',
+  18: 'argon',
+};
+
+// constantMap[2] = 'Helium'; // 这一行会引发一个错误
+```
+
+要了解更多关于映射的内容，请看 [泛型](#) 和 [集合](#)。
+
+### 符文
+
+在 Dart 中，符文 (rune) 表示字符串中 UTF-32 编码的码位。
+
+Unicode 为世界上所有的书写系统中的每个字母、数字和符号都定义了一个唯一数值。因为 Dart 的字符串是 UTF-16 码位的序列，在字符串中表示32位 Unicode 值需要特殊的语法。
+
+表示一个 Unicode 码位的通常方式是 **\uXXXX**，其中 XXXX 是一个4位16进制数字。比如，心形符号  (♥)  表示为 **\u2665**。要指定多于或少于4位的16进制数字，将数字放到花括号里。比如，哈哈笑的 emoji  (😆)  表示为 **\u{1f600}**。
+
+[字符串](https://api.dartlang.org/dev/dart-core/String-class.html) 类中有几个属性可以用来提取符文信息。**codeUnitAt** 和 **codeUnit** 属性返回16位编码单元。使用 **runes** 属性来获取一个字符串的符文。
+
+下面的例子展示了符文、16位编码单元和32位编码单元的关系：
+
+```dart
+main() {
+  var clapping = '\u{1f44f}';
+  print(clapping);
+  print(clapping.codeUnits);
+  print(clapping.runes.toList());
+
+  Runes input = new Runes(
+      '\u2665  \u{1f605}  \u{1f60e}  \u{1f47b}  \u{1f596}  \u{1f44d}');
+  print(new String.fromCharCodes(input));
+}
+```
+
+> 注意：请谨慎使用列表操作来处理符文。这些方法可能很容易失效，而且依赖特定的语言、字符集和具体的操作。要了解更多信息，请看 Stack Overflow 上的 [How do I reverse a String in Dart?](http://stackoverflow.com/questions/21521729/how-do-i-reverse-a-string-in-dart) 
+
+### 符号
+
+一个符号 ([Symbols](https://api.dartlang.org/dev/dart-core/Symbol-class.html))  对象表示 Dart 程序中已声明的操作或标识。你可能永远都不需要用到符号，但是它们对于通过名称来标识引用的接口非常重要，因为缩写改变标识符的名字但不改变标识符的符号。
+
+要获取一个标识符的符号，使用符号字面量，语法是 **#** 后面跟上标识符：
+
+```dart
+#radix
+#bar
+```
+
+符号字面量是编译期常量。
