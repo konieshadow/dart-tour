@@ -28,9 +28,9 @@
   * [main() 函数](#main()-函数)
   * [函数作为一等对象](#函数作为一等对象)
   * [匿名函数](#匿名函数)
-  * [作用域](#作用域)
-  * [闭包](#闭包)
-  * [测试函数的相等性](#测试函数的相等性)
+  * [词法作用域](#词法作用域)
+  * [词法闭包](#词法闭包)
+  * [验证函数的相等性](#验证函数的相等性)
   * [返回值](#返回值)
 * [运算符](#运算符)
   * [算术运算符](#算术运算符)
@@ -111,12 +111,12 @@ main() {
 ```Dart
 // 这是一个单行注释
 ```
-一个单行注释。Dart 也支持多行和文档注释。详情请看[注释](#)。
+一个单行注释。Dart 也支持多行和文档注释。详情请看 [注释](#)。
 
 ```dart
 int
 ```
-一个类型。其他的一些[基本类型](#)包括**字符串**、**List** 和**布尔**。
+一个类型。其他的一些 [基本类型](#) 包括**字符串**、**List** 和**布尔**。
 
 ```Dart
 42
@@ -136,7 +136,7 @@ print()
 ```Dart
 $variableName (or ${expression})
 ```
-字符串插值：插入一个变量或者表达式的字符串值到一个字符串字面量里。详情请看[字符串](#)。
+字符串插值：插入一个变量或者表达式的字符串值到一个字符串字面量里。详情请看 [字符串](#)。
 
 ```Dart
 main()
@@ -148,7 +148,7 @@ var
 ```
 一种声明变量但是不指定类型的方法。
 
-> 注意：本篇文章的代码遵从 [Dart style guide](https://www.dartlang.org/guides/language/effective-dart/style) 中的公约。
+> 提示：本篇文章的代码遵从 [Dart style guide](https://www.dartlang.org/guides/language/effective-dart/style) 中的公约。
 
 ## 重要概念
 当你学习 Dart 语言的时候，请记住这些事实和概念：
@@ -159,7 +159,7 @@ var
 * 不像 Java，Dart 没有这些关键字：**pubilc**，**protected**，**private**。如果一个标识符以下划线 (\_) 开头，那么对于它的库来说是私有的。详情请看 [库和可见性](#)。
 * 标识符可以以下划线 (\_) 开头，后见跟上任意字母和数字的组合。
 * 有时候*表达式*和*语句*会有明显的区别，所以弄清楚它们的确切含义会很有帮助。
-* Dart 相关工具会报告两种类型的问题：警告和错误。警告只是表明你的代码可能无法正常工作，但是并不会禁止你执行程序。错误可以是编译期或者运行期的。一个编译期错误完全禁止程序的执行；而运行期错误会在代码执行到这里时抛出一个[异常](#)。
+* Dart 相关工具会报告两种类型的问题：警告和错误。警告只是表明你的代码可能无法正常工作，但是并不会禁止你执行程序。错误可以是编译期或者运行期的。一个编译期错误完全禁止程序的执行；而运行期错误会在代码执行到这里时抛出一个 [异常](#)。
 
 ## 关键字
 下面的表格列出了 Dart 语言特殊对待的关键字。
@@ -183,7 +183,7 @@ var
 
 <sup>1</sup> 带角标1的单词为**内置标识符**。不要使用内置标识符作为标识符。如果你使用内置标识符作为类名或者类型名，会引发一个编译期错误。
 
-<sup>2</sup> 带角标2的单词是新的，在 Dart 的1.0版本发布之后作为**异步**支持加入的有限保留词。在以 **async**、**async\*** 或 **yield** 标识的函数体中，你不能使用 **async**、**await** 或者 **yield** 作为标识符。详情请看[异步支持](#)。
+<sup>2</sup> 带角标2的单词是新的，在 Dart 的1.0版本发布之后作为**异步**支持加入的有限保留词。在以 **async**、**async\*** 或 **yield** 标识的函数体中，你不能使用 **async**、**await** 或者 **yield** 作为标识符。详情请看 [异步支持](#)。
 
 关键词表里的其他所有单词都是**保留词**。你不能使用它们作为标识符。
 
@@ -211,7 +211,7 @@ dynamic name = 'Bob';
 String name = 'Bob';
 ```
 
-> 注意：对于局部变量，本篇文章遵守[代码风格推荐](https://www.dartlang.org/guides/language/effective-dart/design#types)使用 var，而不是类型声明。
+> 提示：对于局部变量，本篇文章遵守 [代码风格推荐](https://www.dartlang.org/guides/language/effective-dart/design#types) 使用 var，而不是类型声明。
 
 ### 默认值
 
@@ -222,13 +222,13 @@ int lineCount;
 assert(lineCount == null);
 ```
 
-> 注意：代码中的**assert()**调用。在开发时，**assert(*condition*)** 会抛出一个异常，除非 *condition* 的结果是 true。详情请看 [Assert](#)。
+> 提示：代码中的**assert()**调用。在开发时，**assert(*condition*)** 会抛出一个异常，除非 *condition* 的结果是 true。详情请看 [Assert](#)。
 
 ### Final 和 const
 
 如果你从不打算改变一个变量，使用 **final** 和 **const**，而不是 **var** 或者一个类型名。一个 final 变量只可以被设置一次；一个 const 变量是编译期常量。（Const 变量是显式 final 的。）一个 final 的顶级变量或者类变量在首次被使用时初始化。
 
-> 注意：实例变量只可以是 final 的，不可以是 const 的。
+> 提示：实例变量只可以是 final 的，不可以是 const 的。
 
 这里是创建并设置一个 final 变量的例子：
 
@@ -258,7 +258,7 @@ final bar = const [];
 const baz = []; // 等同于 `const []`
 ```
 
-你可以忽略常量声明中初始化表达式中的 **const**，像上面的 **baz** 一样。详情请看[不要重复使用 const](https://www.dartlang.org/guides/language/effective-dart/usage#dont-use-const-redundantly)。
+你可以忽略常量声明中初始化表达式中的 **const**，像上面的 **baz** 一样。详情请看 [不要重复使用 const](https://www.dartlang.org/guides/language/effective-dart/usage#dont-use-const-redundantly)。
 
 你可以改变一个非 final 且非 const 变量的值，即使它有一个常量值。
 
@@ -296,7 +296,7 @@ Dart 中的数值有两种类型：
 
 #### int
 
-小于等于64位的整数值，实际长度依赖运行平台。在 Dart 虚拟机上，可以是 -2<sup>63</sup> 到 2<sup>63<sup> 次方 -1。编译到 JavaScript 的 Dart 使用[JavaScript的数值](https://stackoverflow.com/questions/2802957/number-of-bits-in-javascript-numbers/2803010#2803010)，允许从 -2<sup>53</sup> 到 2<sup>53</sup> - 1的值。
+小于等于64位的整数值，实际长度依赖运行平台。在 Dart 虚拟机上，可以是 -2<sup>63</sup> 到 2<sup>63</sup> 次方 -1。编译到 JavaScript 的 Dart 使用[JavaScript的数值](https://stackoverflow.com/questions/2802957/number-of-bits-in-javascript-numbers/2803010#2803010)，允许从 -2<sup>53</sup> 到 2<sup>53</sup> - 1的值。
 
 #### double
 
@@ -379,7 +379,7 @@ assert('That deserves all caps. ' +
         'STRING INTERPOLATION is very handy!');
 ```
 
-> 注意：== 运算符测试两个对象是否相等。两个字符串相等的条件是它们包含同样的编码单位序列
+> 提示：== 运算符测试两个对象是否相等。两个字符串相等的条件是它们包含同样的编码单位序列
 
 你可以通过并排字符串字面量或者使用 **+** 运算符来串联字符串：
 
@@ -413,7 +413,7 @@ multi-line string.""";
 var s = r"In a raw string, even \n isn't special.";
 ```
 
-要详细了解 Unicode 字符在字符串中是怎样表示的，请看 [Runes](#)。
+要详细了解 Unicode 字符在字符串中是怎样表示的，请看 [符文](#)。
 
 只要所有插值表达式是编译期常量，可以计算出 null 或者 数值、字符串、布尔值，那么这个字面量的字符串就是编译期常量。
 
@@ -469,7 +469,7 @@ Dart 的列表字面量看起来就像 JavaScript 的数组字面量。下面是
 var list = [1, 2, 3];
 ```
 
-> 注意：分析器推断上面的 **list** 类型是 **List&lt;int&gt;**。如果你试图添加一个非整数值对象到这个列表中，分析器或者运行时会报告一个错误。要了解详细信息，请看 [类型推断](https://www.dartlang.org/guides/language/sound-dart#type-inference)。
+> 提示：分析器推断上面的 **list** 类型是 **List&lt;int&gt;**。如果你试图添加一个非整数值对象到这个列表中，分析器或者运行时会报告一个错误。要了解详细信息，请看 [类型推断](https://www.dartlang.org/guides/language/sound-dart#type-inference)。
 
 列表使用基于0的索引，也就是说 0 是列表中第一个元素的索引，而 **list.length - 1** 是最后一个元素的索引。你可以像 JavaScript 一样获取 list 的长度和它的元素：
 
@@ -512,7 +512,7 @@ var nobleGases = {
 };
 ```
 
-> 注意：分析器推断出 **gifts** 拥有类型 **Map&lt;String, String&gt;**，而 **nobleGases** 拥有类型 **Map&lt;int, String&gt;**。如果你试图添加错误的类型到上面的映射中，分析器或者运行时会报告一个错误。要了解更多信息，请看 [类型推断](#)。
+> 提示：分析器推断出 **gifts** 拥有类型 **Map&lt;String, String&gt;**，而 **nobleGases** 拥有类型 **Map&lt;int, String&gt;**。如果你试图添加错误的类型到上面的映射中，分析器或者运行时会报告一个错误。要了解更多信息，请看 [类型推断](#)。
 
 你可以通过映射的构造函数创建同样的对象：
 
@@ -528,7 +528,7 @@ nobleGases[10] = 'neon';
 nobleGases[18] = 'argon';
 ```
 
-> 注意：你可能对 **new Map()** 这样的形式会更熟悉。在 Dart 2 中，关键字 **new** 是可选的。详情请看 [使用构造函数](#)。
+> 提示：你可能对 **new Map()** 这样的形式会更熟悉。在 Dart 2 中，关键字 **new** 是可选的。详情请看 [使用构造函数](#)。
 
 添加一个新的键值对到已存在的映射，方法和 JavaScript 一样：
 
@@ -598,7 +598,7 @@ main() {
 }
 ```
 
-> 注意：请谨慎使用列表操作来处理符文。这些方法可能很容易失效，而且依赖特定的语言、字符集和具体的操作。要了解更多信息，请看 Stack Overflow 上的 [How do I reverse a String in Dart?](http://stackoverflow.com/questions/21521729/how-do-i-reverse-a-string-in-dart) 
+> 提示：请谨慎使用列表操作来处理符文。这些方法可能很容易失效，而且依赖特定的语言、字符集和具体的操作。要了解更多信息，请看 Stack Overflow 上的 [How do I reverse a String in Dart?](http://stackoverflow.com/questions/21521729/how-do-i-reverse-a-string-in-dart) 
 
 ### 符号
 
@@ -612,3 +612,324 @@ main() {
 ```
 
 符号字面量是编译期常量。
+
+## 函数
+
+Dart 是一个完全的面向对象语言，所以甚至连函数也是对象，而且拥有一个类型 [Function](https://api.dartlang.org/dev/dart-core/Function-class.html)。这意味着函数可以被赋值给一个变量，或者作为参数传递给其他函数。你可以可以把一个 Dart  类实例作为函数来调用，只要它是一个函数。详情请看 [可调用的类](#)。
+
+下面的例子展示如何实现一个函数：
+
+```dart
+bool isNoble(int atomicNumber) {
+  return _nobleGases[atomicNumber] != null;
+}
+```
+
+尽管 Effective Dart 推荐 [为公共API添加类型注释](https://www.dartlang.org/guides/language/effective-dart/design#prefer-type-annotating-public-fields-and-top-level-variables-if-the-type-isnt-obvious)，但是如果你忽略了类型，函数依然是可用的：
+
+```dart
+isNoble(atomicNumber) {
+  return _nobleGases[atomicNumber] != null;
+}
+```
+
+对那些只包含一个表达式的函数，你可以使用简写的语法：
+
+```dart
+bool isNoble(int atomicNumber) => _nobleGases[atomicNumber] != null;
+```
+
+这里的 **=> *expre*** 语法是 **{ return *expr*; }** 的简写。符号 **=>** 有时被称为胖箭头语法。
+
+> 提示：只有单个表达式——而不是语句——可以出现在箭头 (=>) 和 分号 (;) 的中间。比如，你不可以放 [if 语句](#)，但是可以使用 [条件表达式](#)。
+
+函数有两种类型的参数：必须参数和可选参数。必须参数在参数列表的前面，可选参数跟在后面。
+
+### 可选参数
+
+可选参数可以是位置参数或者命名参数，但不可以两者兼是。
+
+#### 可选命名参数
+
+当调用一个函数时，你可以通过 *参数名: 参数值* 的格式指定命名参数。比如：
+
+```dart
+enableFlags(bold: true, hidden: false);
+```
+
+当定义一个函数时，使用 *{参数1, 参数2, ...}* 的格式来指定命名参数：
+
+```dart
+/// 设置可选的"加粗”和“隐藏”标志
+void enableFlags({bool bold, bool hidden}) {
+  // ...
+}
+```
+
+#### 可选位置参数
+
+包裹函数的参数集到 **[]** 中来表明它们是可选参数：
+
+```dart
+String say(String from, String msg, [String device]) {
+  var result = '$from says $msg';
+  if (device != null) {
+    result = '$result with a $device';
+  }
+  return result;
+}
+```
+
+下面的例子展示调用该函数时不带可选参数：
+
+```dart
+assert(say('Bob', 'Howdy') == 'Bob says Howdy');
+```
+
+下面的例子展示调用该函数时带上第三个参数：
+
+```dart
+assert(say('Bob', 'Howdy', 'smoke signal') ==
+    'Bob says Howdy with a smoke signal');
+```
+
+#### 参数默认值
+
+你可以使用 **=** 来为函数参数定义默认值，可适用于命名参数和位置参数。默认值必须是编译期常量。如果没有提供默认值，默认值便是 **null**。
+
+下面的例子展示为命名参数设置默认值：
+
+```dart
+/// 设置可选的“加粗”和“隐藏”标志
+void enableFlags({bool bold = false, bool hidden = false}) {
+  // ...
+}
+
+// “加粗”将会是true，隐藏将会是false
+enableFlags(bold: true);
+```
+
+> 弃用提示：以前的代码可能会使用冒号 (:) 而不是 = 来设置命名参数的默认值。原因是之前只有 : 可以用来给命名参数设置默认值。而现在对 = 的支持可能会被废弃，所以我们推荐你 [使用 = 来指定默认值](https://www.dartlang.org/tools/pub/pubspec#sdk-constraints)。
+
+下一个例子展示如果为位置参数设置默认值：
+
+```dart
+String say(String from, String msg,
+    [String device = 'carrier pigeon', String mood]) {
+  var result = '$from says $msg';
+  if (device != null) {
+    result = '$result with a $device';
+  }
+  if (mood != null) {
+    result = '$result (in a $mood mood)';
+  }
+  return result;
+}
+
+assert(say('Bob', 'Howdy') ==
+    'Bob says Howdy with a carrier pigeon');
+```
+
+你有可以使用列表或者映射作为默认值。下面的例子定义了一个函数 **doStuff()**，它为参数 **list** 指定了一个默认的列表，为参数 **gifts** 指定了一个默认的映射。
+
+```dart
+void doStuff(
+    {List<int> list = const [1, 2, 3],
+    Map<String, String> gifts = const {
+      'first': 'paper',
+      'second': 'cotton',
+      'third': 'leather'
+    }}) {
+  print('list:  $list');
+  print('gifts: $gifts');
+}
+```
+
+### main() 函数
+
+每一个应用都有一个顶级的 **main()** 函数作为这个应用的入口。**main()** 函数返回 **void** 而且有一个可选的参数，类型为 **List&lt;String&gt;**。
+
+下面的例子是 web app 里面的 **main()** 函数：
+
+```dart
+void main() {
+  querySelector('#sample_text_id')
+    ..text = 'Click me!'
+    ..onClick.listen(reverseText);
+}
+```
+
+> 提示：上面代码中的 .. 语法被称作 [级联](#)。使用级联，你可以在一个单个对象的成员上进行多次的操作。
+
+下面的例子是命令行程序中的 **main()** 函数，它接受命令行参数：
+
+```dart
+// 像这样运行该程序：dart args.dart 1 test
+void main(List<String> arguments) {
+  print(arguments);
+
+  assert(arguments.length == 2);
+  assert(int.parse(arguments[0]) == 1);
+  assert(arguments[1] == 'test');
+}
+```
+
+你可以使用 [args 库](https://pub.dartlang.org/packages/args) 来定义和解析命令行参数。
+
+### 函数作为一等对象
+
+你可以把函数作为参数传递给其他函数。比如：
+
+```dart
+void printElement(int element) {
+  print(element);
+}
+
+var list = [1, 2, 3];
+
+// 把 printElement 作为参数
+list.forEach(printElement);
+```
+
+你可以可以把函数赋值为一个变量，比如；
+
+```dart
+var loudify = (msg) => '!!! ${msg.toUpperCase()} !!!';
+assert(loudify('hello') == '!!! HELLO !!!');
+```
+
+这个例子使用了匿名函数。下一节会详细讲解匿名函数。
+
+### 匿名函数
+
+大部分函数都有一个名字，比如 **main()** 或者 **printElement()**。你也可以创建无名函数，它们叫做“匿名函数”，有时也被称为 "lambda" 或者 "闭包"。你可能会将匿名函数赋值给一个变量，以便后续使用，比如，你可以将它添加到一个集合，或者从集合移除。
+
+匿名函数看起来就像一个命名函数——括号中0个或多个参数、逗号隔开、可选的类型注释。
+
+之后的代码块包含了函数的主体：
+
+```
+([[Type] param1[, …]]) { 
+  codeBlock; 
+}; 
+```
+
+下面的例子定义了一个匿名函数，包含一个无类型的参数 **item**。这个函数会从列表中的每一个元素调用，打印一个包含了在指定索引处的值的字符串。
+
+```dart
+var list = ['apples', 'bananas', 'oranges'];
+list.forEach((item) {
+  print('${list.indexOf(item)}: $item');
+});
+```
+
+如果这个函数只包含一个语句，你可以使用箭头符号简化它，它们的效果是相同的：
+
+```dart
+list.forEach(
+    (item) => print('${list.indexOf(item)}: $item'));
+```
+
+### 词法作用域 
+
+Dart 是词法作用域语言，意味着变量的作用域是静态确定的，简单地通过代码的布局来确定。你可以”沿着花括号向外走“来看是否一个变量在作用域中。
+
+下面是一个嵌套函数的例子，它包含了各个层级的作用域中的变量：
+
+```dart
+bool topLevel = true;
+
+void main() {
+  var insideMain = true;
+
+  void myFunction() {
+    var insideFunction = true;
+
+    void nestedFunction() {
+      var insideNestedFunction = true;
+
+      assert(topLevel);
+      assert(insideMain);
+      assert(insideFunction);
+      assert(insideNestedFunction);
+    }
+  }
+}
+```
+
+注意 **nestedFunction()** 可以使用各个层级的变量，一直到最外层。
+
+### 词法闭包
+
+”闭包“指可以访问词法作用域中变量的一个函数对象，即使这个函数是在它原本作用域的外部被使用的。
+
+函数可以关闭定义在它周围作用域中的变量。在下面的例子中，**makeAdder()** 捕获了变量 **addBy**。无论返回的函数到哪儿，它都记得 **addBy**。
+
+```dart
+/// 返回一个函数，该函数会添加 "addBy" 到
+/// 这个函数的参数上并返回
+Function makeAdder(num addBy) {
+  return (num i) => addBy + i;
+}
+
+void main() {
+  // 创建一个加2的函数
+  var add2 = makeAdder(2);
+
+  // 创建一个加4的函数
+  var add4 = makeAdder(4);
+
+  assert(add2(3) == 5);
+  assert(add4(3) == 7);
+}
+```
+
+### 验证函数的相等性
+
+下面的例子验证了顶级函数、静态函数和实例方法的相等性：
+
+```dart
+void foo() {} // 一个顶级函数
+
+class A {
+  static void bar() {} // 一个静态函数
+  void baz() {} // 一个实例方法
+}
+
+void main() {
+  var x;
+
+  // 比较顶级函数
+  x = foo;
+  assert(foo == x);
+
+  // 比较静态函数
+  x = A.bar;
+  assert(A.bar == x);
+
+  // 比较实例方法
+  var v = A(); // Instance #1 of A
+  var w = A(); // Instance #2 of A
+  var y = w;
+  x = w.baz;
+
+  // 闭包指向同一个实例，
+  // 因此它们是相等的
+  assert(y.baz == x);
+
+  // 闭包指向不同的实例，
+  // 因此它们是不相等的
+  assert(v.baz != w.baz);
+}
+```
+
+### 返回值
+
+所有函数都有返回值。如果没有指定返回值，那么语句 **return null;** 会被隐式地加到函数体上：
+
+```dart
+foo() {}
+
+assert(foo() == null);
+```
+
