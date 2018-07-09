@@ -42,13 +42,13 @@
   * [条件运算符](#条件运算符)
   * [级联符号](#级联符号)
   * [其他运算符](#其他运算符)
-* [控制流程语句](#控制流程语句)
+* [控制流语句](#控制流语句)
   * [If 和 else](#if-和-else)
   * [For 循环](#for-循环)
-  * [While 和 do-while](#while-和-do-while)
+  * [While 和 do-while 循环](#while-和-do-while-循环)
   * [Break 和 continue](#break-和-continue)
   * [Switch 和 case](#switch-和-case)
-  * [Assert](#assert)
+  * [断言](#断言)
 * [异常](#异常)
   * [Throw](#throw)
   * [Catch](#catch)
@@ -1053,7 +1053,7 @@ assert(a != b); // -1 != 0
 要判断两个对象 x 和 y 是否代表相同的事物，使用 **==** 运算符。（在少数情况下，当你想知道两个对象是否就是同一个对象，使用 [identical()](https://api.dartlang.org/dev/dart-core/identical.html)。）下面是 **==** 运算符的工作原理：
 
 1. 如果 *x* 或者 *y* 是空，仅当两者都是空时返回 true，否则返回 false。
-2. 返回方法 *x.==(y)* 的调用结果。（是的，像 **==** 这样的运算符就是在它第一个操作数上调用的方法。你甚至可以重写许多运算符，包括 **==**，详情请看 [运算符重载](#)。
+2. 返回方法 *x.==(y)* 的调用结果。（是的，像 **==** 这样的运算符就是在它第一个操作数上调用的方法。你甚至可以重载许多运算符，包括 **==**，详情请看 [运算符重载](#)。
 
 这里是一些使用相等和关系运算符的例子：
 
@@ -1273,4 +1273,227 @@ sb.write('foo')
 | ?.     | 有条件的成员访问 | 类似 **.**，但是左操作数可以为空；比如：**foo.bar** 选取了表达式 **foo** 的 **bar** 属性除非 **foo** 是空（在这种情况下 **foo?.bar** 的值是空） |
 
 要了解更多关于 **.**、**?.** 和 **..** 的内容，请看 [类](#)。
+
+## 控制流语句
+
+你可以在 Dart 中使用下面任意方式控制代码的执行流程：
+
+* **if** 和 **else**
+* **for** 循环
+* **while** 和 **do-while** 循环
+* **break** 和 **continue**
+* **switch** 和 **case**
+* **断言**
+
+你也可以使用 **try-catch** 和 **throw** 控制流程， 如 [异常](#) 中所述。
+
+### If 和 else
+
+Dart 支持带 **else** 语句的 **if** 语句，如下面例子所展示的。另见 [条件表达式](#)。
+
+```dart
+if (isRaining()) {
+  you.bringRainCoat();
+} else if (isSnowing()) {
+  you.wearJacket();
+} else {
+  car.putTopDown();
+}
+```
+
+不像 JavaScript，条件必须使用布尔值，而不是其他的。要了解更多内容，请看 [布尔](#)。
+
+### For 循环
+
+你可以使用标准的 **for** 循环进行迭代。比如：
+
+```dart
+var message = StringBuffer('Dart is fun');
+for (var i = 0; i < 5; i++) {
+  message.write('!');
+}
+```
+
+Dart for 循环中的闭包会捕获 index 的”值*，避免 JavaScript 中常见的一个坑。比如，考虑：
+
+```dart
+var callbacks = [];
+for (var i = 0; i < 2; i++) {
+  callbacks.add(() => print(i));
+}
+callbacks.forEach((c) => c());
+```
+
+输出是 **0** 然后是 **1**，如期望一样。对比下来，在 JavaScript 中上面的例子会输出 **2** 和 **2**。
+
+如果你要迭代的对象是一个 Iterable，你可以使用 [forEach()](https://api.dartlang.org/dev/dart-core/Iterable/forEach.html) 方法。如果你不需要知道当前迭代的计数，使用 **forEach()** 是一个不错的选择。
+
+```dart
+candidates.forEach((candidate) => candidate.interview());
+```
+
+像列表和集合这样的 Iterable 也支持 **for-in** 形式的 [迭代](#)。
+
+```dart
+var collection = [0, 1, 2];
+for (var x in collection) {
+  print(x); // 0 1 2
+}
+```
+
+### While 和 do-while 循环
+
+**While** 循环在循环之前计算条件：
+
+```dart
+while (!isDone()) {
+  doSomething();
+}
+```
+
+而 **do-while** 循环在循环后计算条件：
+
+```dart
+do {
+  printLine();
+} while (!atEndOfPage());
+```
+
+### Break 和 continue
+
+使用 **break** 中止循环：
+
+```dart
+while (true) {
+  if (shutDownRequested()) break;
+  processIncomingRequests();
+}
+```
+
+使用 **continue** 跳到下一个循环：
+
+```dart
+for (int i = 0; i < candidates.length; i++) {
+  var candidate = candidates[i];
+  if (candidate.yearsExperience < 5) {
+    continue;
+  }
+  candidate.interview();
+}
+```
+
+如果你在用 [Iterable](https://api.dartlang.org/dev/dart-core/Iterable-class.html)，比如列表或这集合，你可能会以不同的方式编写上面的例子:
+
+```DART
+candidates
+    .where((c) => c.yearsExperience >= 5)
+    .forEach((c) => c.interview());
+```
+
+### Switch 和 case
+
+Dart 中的 switch 语句使用 **==** 比较整数、字符串或其他编译期常量。被比较的对象必须全部是相同的类的实例（而不是它的任何子类），而且该类必须不能重载 **==**。**枚举类** 在 **switch** 语句中可以良好地运行。
+
+> 说明：Dart 中的 switch 语句只适用于有限的情况，就像解释器和扫描仪。
+
+作为规定，每一个非空的 case 子句都以 **break** 结束。结束一个非空 **case** 字句的其他方式是 **continue**、**throw** 或者 **return** 语句。
+
+在没有条件匹配的情况下，使用 **default** 字句执行代码：
+
+```dart
+var command = 'OPEN';
+switch (command) {
+  case 'CLOSED':
+    executeClosed();
+    break;
+  case 'PENDING':
+    executePending();
+    break;
+  case 'APPROVED':
+    executeApproved();
+    break;
+  case 'DENIED':
+    executeDenied();
+    break;
+  case 'OPEN':
+    executeOpen();
+    break;
+  default:
+    executeUnknown();
+}
+```
+
+下面的例子遗漏了 **case** 字句中的 **break**，这会产生一个错误：
+
+```dart
+var command = 'OPEN';
+switch (command) {
+  case 'OPEN':
+    executeOpen();
+    // 错误：缺少 break
+
+  case 'CLOSED':
+    executeClosed();
+    break;
+}
+```
+
+然而，Dart 确实支持空的 **case** 子句，来允许 fall-through 形式：
+
+```dart
+var command = 'CLOSED';
+switch (command) {
+  case 'CLOSED': // 空子句 fall-through
+  case 'NOW_CLOSED':
+    // CLOSED 和 NOW_CLOSED 都会执行
+    executeNowClosed();
+    break;
+}
+```
+
+如果你真的想 fall-through，你可以使用 **continue** 语句并加上一个标签：
+
+```dart
+var command = 'CLOSED';
+switch (command) {
+  case 'CLOSED':
+    executeClosed();
+    continue nowClosed;
+  // 在 nowClosed 标签处继续执行
+
+  nowClosed:
+  case 'NOW_CLOSED':
+    // CLOSED 和 NOW_CLOSED 都会执行
+    executeNowClosed();
+    break;
+}
+```
+
+一个 **case** 字句可以有局部变量，这些变量仅在该子句中可见。
+
+### 断言
+
+如果一个布尔值为 false，使用 **断言** 语句来中止正常的执行。你可以在本教程中找到断言语句的例子。下面就是一些：
+
+```dart
+// 确保变量是非空的值
+assert(text != null);
+
+// 确保变量小于100
+assert(number < 100);
+
+// 确保变量是一个 https 的 URL
+assert(urlString.startsWith('https'));
+```
+
+> 说明：断言语句在生产环境下没有任何作用；它们仅为了开发。Flutter 在 [debug 模式](https://flutter.io/debugging/#debug-mode-assertions) 下开启了断言。开发专用工具像是 [dartdevc](https://webdev.dartlang.org/tools/dartdevc) 通常默认支持断言。还有一些工具，像是 [dart](https://www.dartlang.org/dart-vm/tools/dart-vm) 和 https://webdev.dartlang.org/tools/dart2js，通过命令行标志来支持断言：**--enable-asserts**。
+
+要添加信息到一个断言，使用一个字符串作为第二个参数。
+
+```dart
+assert(urlString.startsWith('https'),
+    'URL ($urlString) should start with "https".');
+```
+
+传递给 **assert** 的第一个参数只能是可解析为布尔值的表达式。如果这个表达式的值是 true，断言成功并且继续执行。如果它是 false，断言失败并且抛出一个异常（一个 [AssertionError](https://api.dartlang.org/dev/dart-core/AssertionError-class.html)）。
 
