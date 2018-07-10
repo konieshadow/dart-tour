@@ -1,4 +1,4 @@
-# Dart 语言简明教程
+# Dart 语言中文教程
 **翻译自 Dart 官网，[查看原文](https://www.dartlang.org/guides/language/language-tour)。**
 
 这篇文章展示如何使用 Dart 的各个主要特性，从变量和运算符到类和库，并且假定你已经会使用其他编程语言编写代码。
