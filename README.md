@@ -11,7 +11,7 @@
 ## 目录
 * [一个基本的 Dart 程序](#一个基本的-dart-程序)
 * [重要概念](#重要概念)
-* [关键字](#关键字)
+* [关键词](#关键词)
 * [变量](#变量)
   * [默认值](#默认值)
   * [Final 和 const](#final-和-const)
@@ -62,10 +62,10 @@
   * [方法](#方法)
   * [抽象类](#抽象类)
   * [隐式接口](#隐式接口)
-  * [扩展一个类](#扩展一个类)
+  * [继承类](#继承类)
   * [重写类成员](#重写类成员)
-  * [可枚举类型](#可枚举类型)
-  * [为一个类添加特新：混入](#为一个类添加特新：混入)
+  * [枚举类型](#枚举类型)
+  * [为类添加特性：混入](#为类添加特性：混入)
   * [类变量和方法](#类变量和方法)
 * [泛型](#泛型)
   * [为什么用泛型？](#为什么用泛型？)
@@ -156,13 +156,13 @@ var
 * 尽管 Dart 是强类型的，但 Dart 可以推断类型所以类型声明是可选的。在上面的代码中，**number**被推断为类型  **int**。当你想要显式声明没有预期类型时，**使用特殊的 dynamic 类型**。
 * Dart 支持泛型，像是 **List&lt;int&gt;**（包含整数的列表）或者 **List&lt;dynamic&gt;**（一个包含任意类型对象的列表）。
 * 除了绑定在类和对象上的函数（分别为静态方法和实例方法）以外，Dart 还支持顶级函数（像是 **main()**)。你还可以在函数中创建函数（嵌套函数或局部函数）。
-* 不像 Java，Dart 没有这些关键字：**pubilc**，**protected**，**private**。如果一个标识符以下划线 (\_) 开头，那么对于它的库来说是私有的。详情请看 [库和可见性](#)。
+* 不像 Java，Dart 没有这些关键词：**pubilc**，**protected**，**private**。如果一个标识符以下划线 (\_) 开头，那么对于它的库来说是私有的。详情请看 [库和可见性](#)。
 * 标识符可以以下划线 (\_) 开头，后见跟上任意字母和数字的组合。
 * 有时候*表达式*和*语句*会有明显的区别，所以弄清楚它们的确切含义会很有帮助。
 * Dart 相关工具会报告两种类型的问题：警告和错误。警告只是表明你的代码可能无法正常工作，但是并不会禁止你执行程序。错误可以是编译期或者运行期的。一个编译期错误完全禁止程序的执行；而运行期错误会在代码执行到这里时抛出一个 [异常](#)。
 
-## 关键字
-下面的表格列出了 Dart 语言特殊对待的关键字。
+## 关键词
+下面的表格列出了 Dart 语言特殊对待的关键词。
 
 | abstract <sup>1</sup> | do | import <sup>1</sup> | super |
 | ------------ | ---- | ---- | ---- |
@@ -250,7 +250,7 @@ const bar = 1000000; // 压力单位（达因/cm2）
 const double atm = 1.01325 * bar; // 标准大气压
 ```
 
-**Const** 关键字不仅可以声明常量。你还可以使用它创建常量值，也可以声明创建常量值的构造函数。任何变量都可以拥有一个常量值。
+**Const** 关键词不仅可以声明常量。你还可以使用它创建常量值，也可以声明创建常量值的构造函数。任何变量都可以拥有一个常量值。
 
 ```dart
 var foo = const [];
@@ -528,7 +528,7 @@ nobleGases[10] = 'neon';
 nobleGases[18] = 'argon';
 ```
 
-> 提示：你可能对 **new Map()** 这样的形式会更熟悉。在 Dart 2 中，关键字 **new** 是可选的。详情请看 [使用构造函数](#)。
+> 提示：你可能对 **new Map()** 这样的形式会更熟悉。在 Dart 2 中，关键词 **new** 是可选的。详情请看 [使用构造函数](#)。
 
 添加一个新的键值对到已存在的映射，方法和 JavaScript 一样：
 
@@ -935,7 +935,7 @@ assert(foo() == null);
 
 ## 运算符
 
-Dart 定义了下面表格里的这些运算符。你可以重写其中大部分的运算符，在 [运算符重载](#) 部分有更详细的描述。
+Dart 定义了下面表格里的这些运算符。你可以重写其中大部分的运算符，在 [重载运算符](#) 部分有更详细的描述。
 
 | 描述           | 运算符                                                       |
 | -------------- | ------------------------------------------------------------ |
@@ -1053,7 +1053,7 @@ assert(a != b); // -1 != 0
 要判断两个对象 x 和 y 是否代表相同的事物，使用 **==** 运算符。（在少数情况下，当你想知道两个对象是否就是同一个对象，使用 [identical()](https://api.dartlang.org/dev/dart-core/identical.html)。）下面是 **==** 运算符的工作原理：
 
 1. 如果 *x* 或者 *y* 是空，仅当两者都是空时返回 true，否则返回 false。
-2. 返回方法 *x.==(y)* 的调用结果。（是的，像 **==** 这样的运算符就是在它第一个操作数上调用的方法。你甚至可以重载许多运算符，包括 **==**，详情请看 [运算符重载](#)。
+2. 返回方法 *x.==(y)* 的调用结果。（是的，像 **==** 这样的运算符就是在它第一个操作数上调用的方法。你甚至可以重载许多运算符，包括 **==**，详情请看 [重载运算符](#)。
 
 这里是一些使用相等和关系运算符的例子：
 
@@ -1571,7 +1571,7 @@ try {
 }
 ```
 
-要部分处理一个异常，而允许它继续传播，使用 **rethrow** 关键字。
+要部分处理一个异常，而允许它继续传播，使用 **rethrow** 关键词。
 
 ```dart
 void misbehave() {
@@ -1620,3 +1620,739 @@ try {
 
 阅读 [Exceptions](#) 章节来了解更多内容。
 
+## 类
+
+Dart 是一门面向对象的编程语言，具备类和基于混入的继承。
+
+每一个对象都是一个类的实例，而所有的类都派生自 [Object](https://api.dartlang.org/dev/dart-core/Object-class.html)。“基于混入的继承”意味着虽然每个类（除了 Object）都只有一个父类，但类的主体可以在多个类层级中被复用。
+
+### 使用类成员
+
+对象包含由函数和数据（分别是“方法”和“实例变量）组成的“成员”。当你调用一个方法时，你在一个对象上”调用“：这个方法可访问该对象的函数和数据：
+
+使用一个点 (**.**) 来引用实例变量或方法：
+
+```dart
+var p = Point(2, 2);
+
+// 设置实例变量 y 的值
+p.y = 3;
+
+// 获取 y 的值
+assert(p.y == 3);
+
+// 调用 p 的 distanceTo() 方法
+num distance = p.distanceTo(Point(4, 4));
+```
+
+使用 **?.** 代替 **.** 来避免当左操作数为空时会引发的异常：
+
+```dart
+// 如果 p 是非空值，设置它的 y 值为 4
+p?.y = 4;
+```
+
+### 使用构造函数
+
+你可以使用”构造函数“创建一个对象。构造函数的名字可以是 ***ClassName*** 或 ***ClassName.identifier***。比如，下面的代码创建使用 **Point()** 和 **Point.fromJson()** 构造函数创建了 **Point** 对象：
+
+```dart
+var p1 = Point(2, 2);
+var p2 = Point.fromJson({'x': 1, 'y': 2});
+```
+
+下面的代码具有相同的效果，但是在构造函数前使用了可选的 **new** 关键词：
+
+```dart
+var p1 = new Point(2, 2);
+var p2 = new Point.fromJson({'x': 1, 'y': 2});
+```
+
+> 版本说明：关键词 **new** 在 Dart 2 中变成了可选的。
+
+一些类提供常量构造函数。要使用构造函数创建一个编译期常量，在构造函数名前面加上 **const** 关键词：
+
+```dart
+var p = const ImmutablePoint(2, 2);
+```
+
+构造两个相同的编译期常量结果会是同一个、标准的实例：
+
+```dart
+var a = const ImmutablePoint(1, 1);
+var b = const ImmutablePoint(1, 1);
+
+assert(identical(a, b)); // 它们是同一个实例
+```
+
+在一个”常量上下文“中，你可以省略构造函数或字面量前的 **const**。比如，下面代码中，创建常量映射：
+
+```dart
+// 这里有很多 const 关键词
+const pointAndLine = const {
+  'point': const [const ImmutablePoint(0, 0)],
+  'line': const [const ImmutablePoint(1, 10), const ImmutablePoint(-2, 11)],
+};
+```
+
+除了第一个以外，你可以省略其他所有的 **const** 关键词：
+
+```
+// 只有一个 const，它创建了常量上下文
+const pointAndLine = {
+  'point': [ImmutablePoint(0, 0)],
+  'line': [ImmutablePoint(1, 10), ImmutablePoint(-2, 11)],
+};
+```
+
+> 版本说明：常量上下文的 **const** 关键词在 Dart 2 中变成了可选的。
+
+### 获取对象类型
+
+要获取一个对象的类型，你可以使用对象的 **runtimeType** 属性，会返回一个 [Type](https://api.dartlang.org/dev/dart-core/Type-class.html) 对象。
+
+```dart
+print('The type of a is ${a.runtimeType}');
+```
+
+到此为止，你已经看到了如何”使用“类。本章余下的内容会展示如何”实现“类。
+
+### 实例变量
+
+你可以使用如下方式声明实例变量：
+
+```dart
+class Point {
+  num x; // 声明一个实例变量，初始值为 null
+  num y; // 声明 y，初始值为 null
+  num z = 0; // 声明 z，初始值为 0
+}
+```
+
+所有未初始化的实例变量值都为 **null**。
+
+所有的实例变量都生成隐式的 *getter* 方法。非 final 的实例变量同时生产一个隐式的 *setter* 方法。详情请看 [Getter 和 setter](#)。
+
+```dart
+class Point {
+  num x;
+  num y;
+}
+
+void main() {
+  var point = Point();
+  point.x = 4; // 使用 x 的 setter 方法
+  assert(point.x == 4); // 使用 x 的 getter 方法
+  assert(point.y == null); // 默认值为 null
+}
+```
+
+如果你在声明的时候初始化实例变量（而不是在构造函数或者方法里），值会在实例创建的时候被设置，在构造函数和它的初始化列表执行前执行。
+
+### 构造函数
+
+通过创建一个和类名一样（或者类名加上一个可选的、额外的标识符作为[命名构造函数](#)）的方法，来声明一个构造函数。最常见的构造函数形式，即生成构造函数，创建一个类的实例：
+
+```dart
+class Point {
+  num x, y;
+
+  Point(num x, num y) {
+    // 有更好的实现方式，请看下文分解
+    this.x = x;
+    this.y = y;
+  }
+}
+
+```
+
+关键词 **this** 引用当前实例。
+
+> 说明：仅当有命名冲突时使用 **this**。否则，Dart  的风格是省略 **this**。
+
+将构造函数的参数赋值给一个实例变量，这种模式是如此常见，因此，Dart 有语法糖来简化操作：
+
+```dart
+class Point {
+  num x, y;
+
+  // 设置 x 和 y 的语法糖
+  // 在构造函数体之前执行
+  Point(this.x, this.y);
+}
+```
+
+#### 默认构造函数
+
+如果你没有声明构造函数，一个默认构造函数会提供给你。默认构造函数没有参数，并且调用父类的无参构造函数。
+
+#### 构造函数不被继承
+
+子类不会继承父类的构造函数。一个没有声明构造函数的子类只拥有默认的（无参、无名字的）构造函数。
+
+#### 命名构造函数
+
+使用命名构造函数来实现多个构造函数或者让代码更清晰：
+
+```dart
+class Point {
+  num x, y;
+
+  Point(this.x, this.y);
+
+  // 命名构造函数
+  Point.origin() {
+    x = 0;
+    y = 0;
+  }
+}
+```
+
+记住构造函数不被继承，意味着父类的命名构造函数不会被子类继承。如果你希望用父类中的命名构造函数创建子类，你必须在子类中实现该构造函数。
+
+#### 调用父类的非默认构造函数
+
+默认地，子类的构造函数会调用父类的无名、无参构造函数。父类的构造函数会在构造函数体的一开始被调用。如果 [初始化列表](#) 也被使用了，它在父类被调用之前调用。总结下来，执行的顺序如下：
+
+1. 初始化列表
+2. 父类的无参构造函数
+3. 主类的无参构造函数
+
+如果父类没有无名、无参的构造函数，那么你必须手动调用父类的其中一个构造函数。在冒号 (:) 后面指定父类的构造函数，就在构造函数体之前（如果有的话）。
+
+下面的例子中，Employee 类的构造函数调用了它父类 Person 的命名构造函数。
+
+```dart
+class Person {
+  String firstName;
+
+  Person.fromJson(Map data) {
+    print('in Person');
+  }
+}
+
+class Employee extends Person {
+  // Person 没有默认构造函数
+  // 你必须调用 super.fromJson(data)
+  Employee.fromJson(Map data) : super.fromJson(data) {
+    print('in Employee');
+  }
+}
+
+main() {
+  var emp = new Employee.fromJson({});
+
+  // 打印：
+  // in Person
+  // in Employee
+  if (emp is Person) {
+    // Type check
+    emp.firstName = 'Bob';
+  }
+  (emp as Person).firstName = 'Bob';
+}
+```
+
+由于父类构造函数的参数在构造函数调用前被计算，参数可以是一个表达式比如一个函数调用：
+
+```dart
+class Employee extends Person {
+  Employee() : super.fromJson(getDefaultData());
+  // ···
+}
+```
+
+> 警告：父类的构造函数不能访问 **this**。比如，参数可以是静态方法但是不能是实例方法。
+
+#### 初始化列表
+
+调用父类构造函数的同时，你也可以在构造函数体执行之前初始化实例变量。使用逗号分隔初始化器。
+
+```dart
+// 初始化列表在构造函数体执行前设置实例变量的值
+Point.fromJson(Map<String, num> json)
+    : x = json['x'],
+      y = json['y'] {
+  print('In Point.fromJson(): ($x, $y)');
+}
+```
+
+> 警告：初始化器右边不能访问 **this**。
+
+在开发阶段，你可以在初始化列表中使用 **assets** 验证输入。
+
+```dart
+Point.withAssert(this.x, this.y) : assert(x >= 0) {
+  print('In Point.withAssert(): ($x, $y)');
+}
+```
+
+初始化列表是设置 final 属性的方便方法。下面的例子在初始化列表中初始了三个 final 属性。
+
+```dart
+import 'dart:math';
+
+class Point {
+  final num x;
+  final num y;
+  final num distanceFromOrigin;
+
+  Point(x, y)
+      : x = x,
+        y = y,
+        distanceFromOrigin = sqrt(x * x + y * y);
+}
+
+main() {
+  var p = new Point(2, 3);
+  print(p.distanceFromOrigin);
+}
+```
+
+#### 重定向构造函数
+
+有时候一个构造函数的唯一目的是重定向到同一个类的另一个构造函数。一个重定向构造函数的函数体是空的，构造函数的调用在冒号 (:) 后面。
+
+```dart
+class Point {
+  num x, y;
+
+  // 该类的主调用函数
+  Point(this.x, this.y);
+
+  // 代理到主构造函数
+  Point.alongXAxis(num x) : this(x, 0);
+}
+```
+
+#### 常量构造函数
+
+如果你的类生成的对象从不改变，你可以让这些对象变成编译期常量。要这样，定义一个**常量**构造函数并确保所有实例变量都是 **final** 的。
+
+```dart
+class ImmutablePoint {
+  static final ImmutablePoint origin =
+      const ImmutablePoint(0, 0);
+
+  final num x, y;
+
+  const ImmutablePoint(this.x, this.y);
+}
+```
+
+#### 工厂构造函数
+
+当要实现一个不总是创建这个类新实例的构造函数时，使用 **factory** 关键词。比如，一个工厂构造函数可能从缓存中返回一个实例，或者可能返回子类的一个实例。
+
+下面的代码展示了一个工厂构造函数从缓存中返回对象：
+
+```dart
+class Logger {
+  final String name;
+  bool mute = false;
+
+  // _cache 是库内私有的，多亏了它名字前的 _
+  static final Map<String, Logger> _cache =
+      <String, Logger>{};
+
+  factory Logger(String name) {
+    if (_cache.containsKey(name)) {
+      return _cache[name];
+    } else {
+      final logger = Logger._internal(name);
+      _cache[name] = logger;
+      return logger;
+    }
+  }
+
+  Logger._internal(this.name);
+
+  void log(String msg) {
+    if (!mute) print(msg);
+  }
+}
+```
+
+> 说明：工厂构造函数无法访问 **this**。
+
+调用工厂构造函数的方式和其他构造函数一样：
+
+```dart
+var logger = Logger('UI');
+logger.log('Button clicked');
+```
+
+### 方法
+
+方法指那些为一个对象提供行为的函数。
+
+#### 实例方法
+
+对象上的实例方法可以访问实例变量和 **this**。下面代码中的 **distanceTo()** 方法就是一个实例方法的例子：
+
+```dart
+import 'dart:math';
+
+class Point {
+  num x, y;
+
+  Point(this.x, this.y);
+
+  num distanceTo(Point other) {
+    var dx = x - other.x;
+    var dy = y - other.y;
+    return sqrt(dx * dx + dy * dy);
+  }
+}
+```
+
+#### Getters 和 setters
+
+Getters 和 setters 是为一个对象的属性提供读写权限的特殊方法。回想每一个实例变量都有一个隐式的 getter，符合条件的还有一个 setter。你可以通过实现 getters 和 setters 创建额外的属性，使用 **get** 和 **set** 关键词：
+
+```dart
+class Rectangle {
+  num left, top, width, height;
+
+  Rectangle(this.left, this.top, this.width, this.height);
+
+  // 定义两个计算属性：right 和 bottom
+  num get right => left + width;
+  set right(num value) => left = value - width;
+  num get bottom => top + height;
+  set bottom(num value) => top = value - height;
+}
+
+void main() {
+  var rect = Rectangle(3, 4, 20, 15);
+  assert(rect.left == 3);
+  rect.right = 12;
+  assert(rect.left == -8);
+}
+```
+
+通过 getters 和 setters，你可以从实例变量起步，之后使用方法封装它们，整个过程不需要修改代码。
+
+> 说明：无论是否明确定义 getter，像自增 (++) 这样的表达式都会以预期的方式执行。为避免任何非预期的副作用，运算符只会调用 getter 一次，然后保存它的值到一个临时变量中。
+
+#### 抽象方法
+
+实例方法、getter 和 setter 可以是抽象的，这样定义了一个接口但是把它的实现留给其他类。抽象方法只能存在于 [抽象类](#) 中。
+
+要使一个方法变得抽象，使用分号 (;) 代替方法体：
+
+```dart
+abstract class Doer {
+  // 定义实例变量和方法...
+
+  void doSomething(); // 定义一个抽象方法
+}
+
+class EffectiveDoer extends Doer {
+  void doSomething() {
+    // 提供一个实现，所以该方法在这里不是抽象的
+  }
+}
+```
+
+调用抽象方法会引发一个运行期错误。
+
+### 抽象类
+
+使用 **abstract** 修饰符定义一个“抽象”类——一个不能被实例化的类。抽象类在定义接口时是有用的，通常附带一些实现。如果你想让你的抽象类变成可实例化的，定义一个 [工厂构造函数](#)。
+
+抽象类经常包含 [抽象方法](#)。下面是一个定义抽象类的例子，它包含一个抽象方法：
+
+```dart
+// 该类定义为抽象的，因此无法被实例化
+abstract class AbstractContainer {
+  // 定义构造函数、属性、方法...
+
+  void updateChildren(); // 抽象方法
+}
+```
+
+### 隐式接口
+
+每一个类都隐式地定义了一个包括它所有实例成员和它实现的任意接口的接口。如果你希望创建一个类 A 来支持类 B 的 API 但是又不继承 B 的实现，类 A 应该实现 B 接口。
+
+一个类要实现一个或多个接口，在 **implements** 子句中定义它们然后提供这些接口需要的 API 的实现。比如：
+
+```dart
+// Person 类。隐式接口包含 greet()
+class Person {
+  // 在接口中，但是只在这个库中可见
+  final _name;
+
+  // 不在接口中，因为这是一个构造函数
+  Person(this._name);
+
+  // 在接口中
+  String greet(String who) => 'Hello, $who. I am $_name.';
+}
+
+// 一个 Person 接口的实现
+class Impostor implements Person {
+  get _name => '';
+
+  String greet(String who) => 'Hi $who. Do you know who I am?';
+}
+
+String greetBob(Person person) => person.greet('Bob');
+
+void main() {
+  print(greetBob(Person('Kathy')));
+  print(greetBob(Impostor()));
+}
+```
+
+下面是一个类实现多个接口的例子：
+
+```dart
+class Point implements Comparable, Location {...}
+```
+
+### 继承类
+
+使用 **extends** 来创建一个子类，使用 **super** 来引用父类：
+
+```dart
+class Television {
+  void turnOn() {
+    _illuminateDisplay();
+    _activateIrSensor();
+  }
+  // ···
+}
+
+class SmartTelevision extends Television {
+  void turnOn() {
+    super.turnOn();
+    _bootNetworkInterface();
+    _initializeMemory();
+    _upgradeApps();
+  }
+  // ···
+}
+```
+
+### 重写类成员
+
+子类可以重写实例方法、getter 和 setter。你可以使用 **@override** 注解来表明你想要重写一个成员：
+
+```dart
+class SmartTelevision extends Television {
+  @override
+  void turnOn() {...}
+  // ···
+}
+```
+
+要缩小一个方法参数或者实例变量的类型并写出 [类型安全](https://www.dartlang.org/guides/language/sound-dart) 的代码，你可以使用 **covariant** 关键词。
+
+#### 重载运算符
+
+你可以重载下表中展示的运算符。比如，如果你定义一个 Vector（矢量）类，你可能会定义一个 **+** 方法来加两个矢量。
+
+| &lt;  | +    | \|       | []   |
+| ----- | ---- | -------- | ---- |
+| &gt;  | /    | ^        | []=  |
+| &lt;= | ~/   | &        | ~    |
+| &gt;= | *    | &lt;&lt; | ==   |
+| -     | %    | &gt;&gt; |      |
+
+下面是一个重载 **+** 和 **-** 运算符的例子：
+
+```dart
+class Vector {
+  final int x, y;
+
+  Vector(this.x, this.y);
+
+  Vector operator +(Vector v) => Vector(x + v.x, y + v.y);
+  Vector operator -(Vector v) => Vector(x - v.x, y - v.y);
+
+  // 运算符 == 和 hasCode 没有展示。详情请看下面的说明
+  // ···
+}
+
+void main() {
+  final v = Vector(2, 3);
+  final w = Vector(2, 2);
+
+  assert(v + w == Vector(4, 5));
+  assert(v - w == Vector(0, 1));
+}
+```
+
+如果你重载 **==**，你也需要重载对象的 **hashCode** getter。有关重载 **==** 和 **hasCode** 的例子，请看 [实现映射的键](#)。
+
+要了解更多关于重载的内容，一般来说，可以看 [继承类](#)。
+
+#### noSuchMethod()
+
+要检测或响应代码试图使用不存在的方法或实例变量的情况，你可以重写 **noSuchMethod()**：
+
+```dart
+class A {
+  // 除非你重写 noSuchMethod，不然使用
+  // 不存在的成员会引发 NoSuchMethodError
+  @override
+  void noSuchMethod(Invocation invocation) {
+    print('You tried to use a non-existent member: ' +
+        '${invocation.memberName}');
+  }
+}
+```
+
+你**不可以调用**一个未实现的方法除非以下情况有**一个**成立：
+
+* 接收者有静态类型 **dynamic**。
+* 接收者有一个定义了该未实现方法的静态类型（抽象也可），而且接收者的动态类型有不同于 **Object** 类 **noSuchMethod()** 的实现。
+
+### 枚举类型
+
+枚举类型，通常被称作 *enumerations* 或 *enums*（枚举），是用来表示有固定数量的常量值的一种特殊类。
+
+#### 使用枚举
+
+使用 **enum** 关键词声明一个枚举类型：
+
+```dart
+enum Color { red, green, blue }
+```
+
+枚举中的每一个值都有一个 **index** getter，返回枚举声明中基于0的位置索引。比如，第一个值有索引 0，而第二个值有索引 1.
+
+```dart
+assert(Color.red.index == 0);
+assert(Color.green.index == 1);
+assert(Color.blue.index == 2);
+```
+
+要获取枚举中所有值的列表，使用枚举的 **values** 常量。
+
+```dart
+List<Color> colors = Color.values;
+assert(colors[2] == Color.blue);
+```
+
+你可以在 [switch 语句](#) 中使用枚举，而且如果你没有处理所有的枚举值，你会得到一个警告：
+
+```dart
+var aColor = Color.blue;
+
+switch (aColor) {
+  case Color.red:
+    print('Red as roses!');
+    break;
+  case Color.green:
+    print('Green as grass!');
+    break;
+  default: // 没有这个，你会看到一个警告
+    print(aColor); // 'Color.blue'
+}
+```
+
+枚举类型有以下限制：
+
+* 你不可以继承、混入或实现一个枚举。
+* 你不可以显式实例化一个枚举。
+
+要了解更多内容，请看 [Dart 语言规范](https://www.dartlang.org/guides/language/spec)。
+
+### 为类添加特性：混入
+
+混入是在类的多继承中复用一个类的代码的一种方式。
+
+要使用混入，使用 **with** 关键词跟着一个或多个混入的名字。下面的例子展示了两个使用混入的类：
+
+```dart
+class Musician extends Performer with Musical {
+  // ···
+}
+
+class Maestro extends Person
+    with Musical, Aggressive, Demented {
+  Maestro(String maestroName) {
+    name = maestroName;
+    canConduct = true;
+  }
+}
+```
+
+要实现一个混入，创建一个类继承 Object，不声明构造函数，并且不调用 **super**。比如：
+
+```dart
+abstract class Musical {
+  bool canPlayPiano = false;
+  bool canCompose = false;
+  bool canConduct = false;
+
+  void entertainMe() {
+    if (canPlayPiano) {
+      print('Playing piano');
+    } else if (canConduct) {
+      print('Waving hands');
+    } else {
+      print('Humming to self');
+    }
+  }
+}
+```
+
+> 说明：一些混入的限制将要被移除。详情请看 [提议的混入规范](https://github.com/dart-lang/sdk/blob/master/docs/language/informal/mixin-declaration.md)。
+
+### 类变量和方法
+
+使用 **static** 关键词来实现类级别的变量和方法。
+
+#### 静态变量
+
+静态变量（类变量）对类级别的状态和常量是有用的。
+
+```dart
+class Queue {
+  static const initialCapacity = 16;
+  // ···
+}
+
+void main() {
+  assert(Queue.initialCapacity == 16);
+}
+```
+
+静态变量直到它们被使用才会初始化。
+
+> 说明：该页面遵守 [代码规范推荐](https://www.dartlang.org/guides/language/effective-dart/style#identifiers) 倾向于使用 ”小驼峰“来作为常量名。
+
+#### 静态方法
+
+静态方法（类方法）不操作实例，因此不能访问 **this**。比如：
+
+```dart
+import 'dart:math';
+
+class Point {
+  num x, y;
+  Point(this.x, this.y);
+
+  static num distanceBetween(Point a, Point b) {
+    var dx = a.x - b.x;
+    var dy = a.y - b.y;
+    return sqrt(dx * dx + dy * dy);
+  }
+}
+
+void main() {
+  var a = Point(2, 2);
+  var b = Point(4, 4);
+  var distance = Point.distanceBetween(a, b);
+  assert(2.8 < distance && distance < 2.9);
+  print(distance);
+}
+```
+
+> 说明：对常见或者广泛使用的实用工具和功能，考虑使用顶级函数，而不是静态方法
+
+你可以使用静态方法作为编译期常量。比如，你可以把静态方法作为一个常量构造函数的参数。
