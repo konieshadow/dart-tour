@@ -70,7 +70,7 @@
 * [泛型](#泛型)
   * [为什么用泛型？](#为什么用泛型？)
   * [使用集合字面量](#使用集合字面量)
-  * [使用带构造函数的参数化类型](#使用带构造函数的参数化类型)
+  * [在构造函数中使用参数化类型](#在构造函数中使用参数化类型)
   * [泛型集合和它们包含的类型](#泛型集合和它们包含的类型)
   * [限制参数化类型](#限制参数化类型)
   * [使用泛型方法](#使用泛型方法)
@@ -2356,3 +2356,242 @@ void main() {
 > 说明：对常见或者广泛使用的实用工具和功能，考虑使用顶级函数，而不是静态方法
 
 你可以使用静态方法作为编译期常量。比如，你可以把静态方法作为一个常量构造函数的参数。
+
+## 泛型
+
+如果你查看基本数组类型 [List](https://api.dartlang.org/dev/dart-core/List-class.html) 的 API 文档，你会发现它的类型其实是 **List&lt;E&gt;**。&lt;...&gt; 标记表示 List 是一个*泛型*（或带参数的）类——具有形式上的类型参数的类型。按照惯例，类型变量有单字母的名字，比如 E，T，S，K，和 V。
+
+### 为什么用泛型？
+
+泛型通常是类型安全的要求，但它们除了让你的代码可以运行外还有更多益处：
+
+* 正确地指定泛型类型会产生更好的代码。
+* 你可以使用泛型来减少代码重复。
+
+如果你只想让一个列表包含字符串，你可以指定它为 **List&lt;String&gt;**（读作“字符串列表”）。这样一来，你、你的同事和你的工具可以检测到将一个非字符串对象指定到该列表是错误的。下面是一个例子：
+
+```dart
+var names = List<String>();
+names.addAll(['Seth', 'Kathy', 'Lars']);
+names.add(42); // 错误
+```
+
+使用泛型的另一给原因是减少代码重复。泛型使你在多个不同类型间共享同一个接口和实现，而依然享受静态分析的优势。比如说，你要创建一个缓存对象的接口：
+
+```dart
+abstract class ObjectCache {
+  Object getByKey(String key);
+  void setByKey(String key, Object value);
+}
+```
+
+你发现需要一个此接口的字符串版本，所以你创建了另一个接口：
+
+```dart
+abstract class StringCache {
+  String getByKey(String key);
+  void setByKey(String key, String value);
+}
+```
+
+之后，你觉得你需要一个该接口的数值版本……你应该可以理解了。
+
+泛型可以让你省去创建所有这些接口的麻烦。取而代之，你可以创建一个单一的接口并接受一个类型参数：
+
+```dart
+abstract class Cache<T> {
+  T getByKey(String key);
+  void setByKey(String key, T value);
+}
+```
+
+在这段代码中，T 是替身类型。它是一个占位符，你可以将其视为开发者稍后定义的类型。
+
+### 使用集合字面量
+
+列表和映射字面量可以是参数化的。参数化的字面量就像你之前见过的字面量，只是在左括号前加上了 **&lt;*type*&gt;**（对于列表）或 **&lt;*keyType*, *valueTYpe*&gt;**（对于映射）。下面是一个使用类型字面量的例子：
+
+```dart
+var names = <String>['Seth', 'Kathy', 'Lars'];
+var pages = <String, String>{
+  'index.html': 'Homepage',
+  'robots.txt': 'Hints for web robots',
+  'humans.txt': 'We are people, not machines'
+};
+```
+
+### 在构造函数中使用参数化类型
+
+使用构造函数时要指定一个或多个类型，可以将类型放在类名后面的尖括号 (**&lt;...&gt;**) 中。比如：
+
+```dart
+var names = List<String>();
+names.addAll(['Seth', 'Kathy', 'Lars']);
+var nameSet = Set<String>.from(names);
+```
+
+下面的代码创建了一个有整数键和 View 类型值的映射：
+
+```dart
+var views = Map<int, View>();
+```
+
+### 泛型集合和它们包含的类型
+
+Dart 的泛型类是“实体化”的，这意味着它们在运行期携带了它们的类型信息。比如，你可以检测一个集合的类型：
+
+```dart
+var names = List<String>();
+names.addAll(['Seth', 'Kathy', 'Lars']);
+print(names is List<String>); // true
+```
+
+> 说明：作为对照，Java 中的泛型使用“擦除”，意味着泛型信息在运行时被移除。在 Java 中，可以检测一个对象是否是一个 List，但是你不能检测它是否是一个 List&lt;String&gt;。
+
+### 限制参数化类型
+
+当实现一个泛型时，你可能想要限制它的参数类型。你可以使用 **extends** 做到这点。
+
+````dart
+class Foo<T extends SomeBaseClass> {
+  // 下面是实现
+  String toString() => "Instance of 'Foo<$T>'";
+}
+
+class Extender extends SomeBaseClass {...}
+````
+
+使用 **SomeBaseClass** 或者它的子类作为泛型参数是可以的：
+
+```dart
+var someBaseClassFoo = Foo<SomeBaseClass>();
+var extenderFoo = Foo<Extender>();
+```
+
+不使用泛型参数也是可以的：
+
+```dart
+var foo = Foo();
+print(foo); // 'Foo<SomeBaseClass>' 的实例
+```
+
+指定任意非 **SomeBaseClass** 类型会得到一个错误：
+
+```dart
+var foo = Foo<Object>();
+```
+
+### 使用泛型方法
+
+起初，Dart 的泛型支持仅限于类。一个新的语法，称为“泛型方法“，允许在方法上使用类型参数：
+
+```dart
+T first<T>(List<T> ts) {
+  // 做一些初始化工作或者错误检查
+  T tmp = ts[0];
+  // 做一些额外的检查或处理
+  return tmp;
+}
+```
+
+这里 **first** (**&lt;T&gt;**) 中的泛型参数允许你在几个地方使用类型参数 **T**：
+
+* 在函数的返回类型中 (**T**)。
+* 在参数的类型中 (**List&lt;T&gt;**)。
+* 在局部变量的类型中 (**T tmp**)。
+
+要了解关于泛型的更多信息，请看 [使用泛型方法](https://github.com/dart-lang/sdk/blob/master/pkg/dev_compiler/doc/GENERIC_METHODS.md)。
+
+## 库和可见性
+
+指令 **import** 和 **library** 可以帮你创建一个模块化和可共享的代码库。库不仅提供 API，也是一个隐私单位：以下划线 (_) 开头的标识符只在库中可见。”每个 Dart 应用都是一个库“，即使它没有使用 **library** 指令。
+
+库可以通过包来发布。要了解更多关于 pub —— SDK内置的包管理器的信息，请参阅[发布库和资源管理](https://www.dartlang.org/tools/pub)。
+
+### 使用库
+
+使用 **import** 指令来指定一个库在其他库的范围内如何被使用。
+
+比如，Dart 网页应用通常使用 [dart:html](https://api.dartlang.org/dev/dart-html) 库，它可以像这样被引入：
+
+```dart
+import 'dart:html';
+```
+
+指令 import 唯一需要的参数是指定了这个库的 URI。对于内置库，URI 有特殊的 **dart:** 格式。对于其他更多的库，你可以使用一个文件系统路径或者 **package:** 格式。**package:** 格式指定由包管理器比如 pub 工具提供的库。比如：
+
+```dart
+import 'package:test/test.dart';
+```
+
+> 说明：*URI* 代表统一资源标识符。**URL** （统一资源定位符）是一种常见的 URL。
+
+#### 指定库前缀
+
+如果你导入两个有标识符冲突的库，那么你可以为其中一个或两个指定前缀。比如，如果库1和库2都有一个 Element 类，那么你的代码可能是这样的：
+
+```dart
+import 'package:lib1/lib1.dart';
+import 'package:lib2/lib2.dart' as lib2;
+
+// 使用 lib1 的 Element
+Element element1 = Element();
+
+// 使用 lib2 的 Element
+lib2.Element element2 = lib2.Element();
+```
+
+#### 只导入一个库的部分
+
+如果你只想要使用一个库的部分，你可以选择性地导入库。比如：
+
+````dart
+// 只导入 foo
+import 'package:lib1/lib1.dart' show foo;
+
+// 导入除 foo 之外的所有名称
+import 'package:lib2/lib2.dart' hide foo;
+````
+
+#### 懒加载一个库
+
+”延迟加载“（也称为”懒加载“）允许一个应用按需加载一个库，如果它被需要时。下面是一些你可能会使用延迟加载地情况：
+
+* 为了减少应用地初始启动时间。
+* 为了执行 A/B 测试——尝试一个算法的替代实现。
+* 为了加载很少使用的功能，比如可选的页面和对话框。
+
+要懒加载一个库，你必须先使用 **deferred as** 导入它：
+
+```dart
+import 'package:greetings/hello.dart' deferred as hello;
+```
+
+当你需要这个库时，使用这个库的标识符调用 **loadLibrary()** 。
+
+```dart
+Future greet() async {
+  await hello.loadLibrary();
+  hello.printGreeting();
+}
+```
+
+在上面的代码中，**await** 关键字暂停执行直到这个库加载完成。要了解更多关于 **async** 和 **await** 的信息，请参阅 [异步支持](#)。
+
+你可以在一个库上多次调用 **loadLibrary()** 而不用担心会有问题。这个库只会被加载一次。
+
+当使用延迟加载时记住以下几点：
+
+* 一个延迟加载库中的常量在导入的文件中的不是常量。记住，这些常量直到库被加载前都是不存在的。
+* 你不能使用延迟加载库中的类型。取而代之地，考虑将接口类型移到另一个库中，而这个库被延迟加载的库和导入的文件导入。
+* Dart 隐式地将 **loadLibrary()** 插入到你使用 **deferred as *namespace*** 定义的命名空间中。函数 **loadLibrary()** 返回一个 [Future](#)。
+
+> Dart 虚拟机差异：由于 [issue #33118](https://github.com/dart-lang/sdk/issues/33118)，即使是在调用 **loadLibrary()** 之前，Dart 虚拟机允许访问懒加载库中的成员。我们预计这个 bug 会被很快修复，所以**不要依赖当前的虚拟机行为**。
+
+## 实现库
+
+要获取关于如何实现一个库包的建议，请参阅 [创建一个库包](https://www.dartlang.org/guides/libraries/create-library-packages)，包括：
+
+* 如果组织库中的源代码。
+* 如果使用 **export** 指令。
+* 何时使用 **part** 指令。
