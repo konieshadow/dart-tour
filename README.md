@@ -78,9 +78,9 @@
   * [使用库](#使用库)
   * [实现库](#实现库)
 * [异步支持](#异步支持)
-  * [处理 Futures](#处理-futures)
+  * [处理 Future](#处理-future)
   * [声明异步函数](#声明异步函数)
-  * [处理流](#处理流)
+  * [处理 Stream](#处理-stream)
 * [生成器](#生成器)
 * [可调用的类](#可调用的类)
 * [Isolates](#lsolates)
@@ -2595,3 +2595,121 @@ Future greet() async {
 * 如果组织库中的源代码。
 * 如果使用 **export** 指令。
 * 何时使用 **part** 指令。
+
+## 异步支持
+
+Dart 的库充满了返回 [Future](https://api.dartlang.org/stable/dart-async/Future-class.html) 或 [Stream](https://api.dartlang.org/stable/dart-async/Stream-class.html) 对象的函数。这些函数是“异步的”：它们在设置一个可能比较耗时的操作（比如 I/O）后返回，而不去等待操作完成。
+
+关键字 **async** 和 **await** 支持异步编程，可以使你用看起来像同步的方式编写异步代码。
+
+### 处理 Future
+
+当你需要一个已完成的 Future 的结果时，你有两个选择：
+
+* 使用 **async** 和 **await**。
+* 使用 Future API，如 [Dart 库教程](https://www.dartlang.org/guides/libraries/library-tour#future) 中所述。
+
+使用 **async** 和 **await** 的代码是异步的，但是看起来像同步代码。比如，下面的代码使用 **await** 来等待一个异步函数的返回：
+
+```dart
+await lookUpVersion();
+```
+
+要使用 **await**，代码必须在一个”异步函数“中——一个标记为 **async** 的函数：
+
+```dart
+Future checkVersion() async {
+  var version = await lookUpVersion();
+  // 使用 version 做一些操作
+}
+```
+
+> 说明：虽然异步函数可能会执行耗时的操作，但它不会等待这些操作。相反，异步函数只在遇到第一个 await 表达式时执行（[详情](https://github.com/dart-lang/sdk/blob/master/docs/newsletter/20170915.md#synchronous-async-start)）。然后它返回一个 Future 对象，仅在 await 表达式完成后才恢复执行。
+
+在使用 **await** 的代码中，使用 **try**、**catch** 和 **finally** 来处理错误和清理代码。
+
+```dart
+try {
+  version = await lookUpVersion();
+} catch (e) {
+  // 处理查找版本号失败的情况
+}
+```
+
+你可以在一个异步函数中多次使用 **await**。比如，下面的代码等待了三次函数的结果：
+
+```dart
+var entrypoint = await findEntrypoint();
+var exitCode = await runExecutable(entrypoint, args);
+await flushThenExit(exitCode);
+```
+
+在 **await *expression***  中，*expression* 的值通常是一个 Future；如果它不是，这个值会自动封装成一个 Future。这个 Future 对象表示返回一个对象的承诺。而 **await *expression***  的值就是这个返回的对象。Await 表达式会导致执行暂停直到这个对象可用。
+
+**如果你在使用 await 时遇到了编译期错误，请确保 await 在异步函数内。**比如，要在你的应用的 **main()** 函数中使用 **await**，**main()** 的函数体必须标记为 **async**：
+
+```dart
+Future main() async {
+  checkVersion();
+  print('In main: version is ${await lookUpVersion()}');
+}
+```
+
+### 声明异步函数
+
+“”异步函数“就是函数体被 **async** 修饰符标记的函数。
+
+添加 **async** 关键词到一个函数会使它返回一个 Future。比如，考虑使用同步函数，返回一个字符串：
+
+```dart
+String lookUpVersion() => '1.0.0';
+```
+
+如果你修改它为一个异步函数——比如，因为之后的一个实现会是耗时的——它的返回值是一个 Future：
+
+```dart
+Future<String> lookUpVersion() async => '1.0.0';
+```
+
+注意函数体并不一定要使用 Future API。Dart 会在必要的时候自动创建 Future。
+
+如果你的函数不返回有用的值，使它返回 **Future&lt;void&gt;**。
+
+### 处理 Stream
+
+当你需要从一个 Stream 中获取值是，你有两个选择：
+
+* 使用 **async** 和一个”异步 for 循环“ (**await for)**。
+* 使用 Stream API，如 [Dart 库教程](https://www.dartlang.org/guides/libraries/library-tour#stream) 中所述。
+
+> 说明：在使用 **await for** 前，请确保代码足够清晰并且你真的想要等待 stream 中所有的结果。比如，你通常**不**需要对 UI 事件监听器使用 **await for**，因为 UI 框架不停地发送事件的 stream。
+
+一个异步 for 循环拥有下面的格式：
+
+```dart
+await for (varOrType identifier in expression) {
+  // 每当 stream 发送一个值时执行一次
+}
+```
+
+*Expression* 的值必须是 Stream 类型。按照如下步骤执行：
+
+1. 等待 stream 发送一个值。
+2. 执行 for 循环的循环体，使用发送的值作为变量值。
+3. 重复 1 和 2 直到 stream 被关闭。
+
+要停止监听这个 stream，你可以使用 **break** 或者 **return** 语句，它们会打断 for 循环并且取消对 stream 的订阅。
+
+**如果你在使用异步 for 循环时遇到了编译期错误，请确保 await for 在一个异步函数内。**比如，要在你的应用的 **main()** 函数中使用异步 for 循环，**main()** 的函数体必须标记为 **async**：
+
+```dart
+Future main() async {
+  // ...
+  await for (var request in requestServer) {
+    handleRequest(request);
+  }
+  // ...
+}
+```
+
+要了解更多关于异步编程的信息，通常地，参阅 [dart:async](https://www.dartlang.org/guides/libraries/library-tour#dartasync---asynchronous-programming) 部分的库文档。另见 [Dart 语言异步支持：阶段一](https://www.dartlang.org/articles/language/await-async)、[Dart 语言异步支持：阶段二](https://www.dartlang.org/articles/language/beyond-async) 和 [Dart 语言规范](https://www.dartlang.org/guides/language/spec)。
