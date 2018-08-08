@@ -82,9 +82,9 @@
   * [声明异步函数](#声明异步函数)
   * [处理 Stream](#处理-stream)
 * [生成器](#生成器)
-* [可调用的类](#可调用的类)
-* [Isolates](#lsolates)
-* [类型定义](#类型定义)
+* [可被调用的类](#可被调用的类)
+* [Isolates](#isolates)
+* [Typedefs](#typedefs)
 * [元数据](#元数据)
 * [注释](#注释)
   * [单行注释](#单行注释)
@@ -2657,7 +2657,7 @@ Future main() async {
 
 ### 声明异步函数
 
-“”异步函数“就是函数体被 **async** 修饰符标记的函数。
+“异步函数“就是函数体被 **async** 修饰符标记的函数。
 
 添加 **async** 关键词到一个函数会使它返回一个 Future。比如，考虑使用同步函数，返回一个字符串：
 
@@ -2713,3 +2713,249 @@ Future main() async {
 ```
 
 要了解更多关于异步编程的信息，通常地，参阅 [dart:async](https://www.dartlang.org/guides/libraries/library-tour#dartasync---asynchronous-programming) 部分的库文档。另见 [Dart 语言异步支持：阶段一](https://www.dartlang.org/articles/language/await-async)、[Dart 语言异步支持：阶段二](https://www.dartlang.org/articles/language/beyond-async) 和 [Dart 语言规范](https://www.dartlang.org/guides/language/spec)。
+
+## 生成器
+
+当你需要懒惰地生成一系列的值时，考虑使用一个“生成器函数” (*generator function*)。Dart 对这类生成器函数有内置的支持：
+
+* **同步的**生成器：返回一个 [Iterable](https://api.dartlang.org/stable/dart-core/Iterable-class.html) 对象。
+* **异步的**生成器：返回一个 [Stream](https://api.dartlang.org/stable/dart-async/Stream-class.html) 对象。
+
+要实现一个**同步的**生成器函数，使用 **sync\*** 标记函数体，并使用 **yield** 语句传递值：
+
+```dart
+Iterable<int> naturalsTo(int n) sync* {
+  int k = 0;
+  while (k < n) yield k++;
+}
+```
+
+要实现一个**异步的**生成器函数，使用 **async\*** 标记函数体，并使用 **yield** 语句传递值：
+
+```dart
+Stream<int> asynchronousNaturalsTo(int n) async* {
+  int k = 0;
+  while (k < n) yield k++;
+}
+```
+
+如果你的生成器是递归的，可以使用 **yield\*** 增进它的性能：
+
+```dart
+Iterable<int> naturalsDownFrom(int n) sync* {
+  if (n > 0) {
+    yield n;
+    yield* naturalsDownFrom(n - 1);
+  }
+}
+```
+
+要了解更多关于生成器的信息，请参阅文章 [Dart 语言异步支持：阶段二](https://www.dartlang.org/articles/language/beyond-async)。
+
+## 可被调用的类
+
+要使你的 Dart 类像函数一样可以被调用，实现 **call()** 方法。
+
+在下面的例子中，**WannabeFunction** 类定义了一个 call()  函数，它接受三个字符串参数并且连接它们，使用一个空格分隔每个字符串，最后附件一个感叹号。
+
+```dart
+class WannabeFunction {
+  call(String a, String b, String c) => '$a $b $c!';
+}
+
+main() {
+  var wf = new WannabeFunction();
+  var out = wf("Hi","there,","gang");
+  print('$out');
+}
+```
+
+要了解更多关于将类当作函数的信息，请参阅 [Drat 中的模拟函数](https://www.dartlang.org/articles/language/emulating-functions)。
+
+## Isolates
+
+大部分计算设备，即使在移动平台上，都拥有多核 CPU。要发挥所有这些核心的优势，开发者通常使用共享内存的线程来实现并发执行。然而，共享状态的并发容易出错并且导致复杂的代码。
+
+Dart 的代码在 *isolates* 中执行，而不是线程。每个 isolate 都有它自己的内存栈，保证了没有其他的 isolate 可以访问。
+
+要了解更多信息，请参阅 [dart:isolate 库文档](https://api.dartlang.org/stable/dart-isolate)。
+
+## Typedefs
+
+在 Dart 中，函数是对象，就像字符串和数字是对象一样。一个 *typedef*，或者叫做”函数类型别名“，给函数类型起了一个名字，使你可以在定义字段和返回值类型时使用。在将一个函数类型赋值给一个变量时，一个 typedef 保留了类型信息。
+
+考虑一下代码，不使用 typedef 的情况：
+
+```dart
+class SortedCollection {
+  Function compare;
+
+  SortedCollection(int f(Object a, Object b)) {
+    compare = f;
+  }
+}
+
+// 初始化，部分实现
+int sort(Object a, Object b) => 0;
+
+void main() {
+  SortedCollection coll = SortedCollection(sort);
+
+  // 我们只知道 compare 是一个函数,
+  // 但它是什么类型的函数呢？
+  assert(coll.compare is Function);
+}
+```
+
+在将 **f** 赋值给 **compare** 时类型信息丢失了。**f** 的类型是 (Object, Object) → int（箭头的意思是返回），而 **compare** 的类型是 Function。如果我们修改一下代码，来使用明确的名字并且保留类型信息，开发者和工具都可以使用这个类型信息。
+
+```dart
+typedef Compare = int Function(Object a, Object b);
+
+class SortedCollection {
+  Compare compare;
+
+  SortedCollection(this.compare);
+}
+
+// 初始化，部分实现
+int sort(Object a, Object b) => 0;
+
+void main() {
+  SortedCollection coll = SortedCollection(sort);
+  assert(coll.compare is Function);
+  assert(coll.compare is Compare);
+}
+```
+
+> 说明：目前，typedefs 仅可用于函数类型。我们预计这会有所改变。
+
+因为 typedef 只是简单的别名，所以它们提供了一种方式来检查任意函数的类型。比如：
+
+```dart
+typedef Compare<T> = int Function(T a, T b);
+
+int sort(int a, int b) => a - b;
+
+void main() {
+  assert(sort is Compare<int>); // True!
+}
+```
+
+## 元数据
+
+使用元数据 (metadata) 来给你的代码提供额外的信息。一个元数据注解以字符 **@** 开头，后面跟着的要么是编译期常量（比如 **deprecated**），要么是常量构造函数的调用。
+
+有两个注解可应用于所有的 Dart 代码：**@deprecated** 和 **@override**。使用 **@override** 的例子，请看 [扩展一个类](#)。下面是一个使用 **@deprecated** 注解的例子：
+
+```dart
+class Television {
+  /// _已废弃: 使用 [turnOn] 代替_
+  @deprecated
+  void activate() {
+    turnOn();
+  }
+
+  /// 开启 TV 的电源
+  void turnOn() {...}
+}
+```
+
+你可以定义自己的元数据注解。下面是定义一个接受两个参数的 @todo 注解的例子：
+
+```dart
+library todo;
+
+class Todo {
+  final String who;
+  final String what;
+
+  const Todo(this.who, this.what);
+}
+```
+
+然后下面是一个使用 @todo 注解的例子：
+
+```dart
+import 'todo.dart';
+
+@Todo('seth', 'make this do something')
+void doSomething() {
+  print('do something');
+}
+```
+
+元数据可以出现在库、类、typedef、类型参数、构造函数、工厂构造函数、函数、字段、参数或变量声明前以及导入导出指令前。你可以在运行期通过反射取回元数据。
+
+## 注释
+
+Dart 支持单行注释、多行注释和文档注释。
+
+### 单行注释
+
+一个单行注释以 **//** 开头。所有在 **//** 和行尾的东西都被 Dart 编译器所忽略。
+
+```dart
+void main() {
+  // TODO: 重构成一个 AbstractLlamaGreetingFactory？
+  print('Welcome to my Llama farm!');
+}
+```
+
+### 多行注释
+
+一个多行注释开始于 **/\*** 结束于 **\*/**。所有在 **/\*** 与 **\*/ ** 之间的东西都被 Dart 编译器所忽略（除非这个注释是一个文档注释；请看下一节）。多行注释可以嵌套。
+
+```dart
+void main() {
+  /*
+   * This is a lot of work. Consider raising chickens.
+
+  Llama larry = Llama();
+  larry.feed();
+  larry.exercise();
+  larry.clean();
+   */
+}
+```
+
+### 文档注释
+
+多行注释是以 **///** 或 **/\*\*** 开头的单行或多行注释。在连续的行上使用 **///** 与多行文档注释有同意的效果。
+
+在文档注释里，Dart 编译器会忽略所有不在括号中的文本。使用括号，你可以引用到类、方法、字段、顶级变量、函数和参数。括号中的名字会在文档程序元素所在的词法作用域内被解析。
+
+下面是一个引用了其他类和参数的文档注释：
+
+```dart
+/// A domesticated South American camelid (Lama glama).
+///
+/// Andean cultures have used llamas as meat and pack
+/// animals since pre-Hispanic times.
+class Llama {
+  String name;
+
+  /// Feeds your llama [Food].
+  ///
+  /// The typical llama eats one bale of hay per week.
+  void feed(Food food) {
+    // ...
+  }
+
+  /// Exercises your llama with an [activity] for
+  /// [timeLimit] minutes.
+  void exercise(Activity activity, int timeLimit) {
+    // ...
+  }
+}
+```
+
+在生成的文档中，**[Food]** 会变成指向 Food 类文档的链接。
+
+要解析 Dart 代码并且生成 HTML 文档，你可以使用 SDK 中的 [文档生成工具](https://github.com/dart-lang/dartdoc#dartdoc)。要查找一个生成的文档的例子，请看 [Dart API 文档](https://api.dartlang.org/stable)。要获取关于如何组织注释的建议，请参阅 [Dart 文档注释指南](https://www.dartlang.org/guides/language/effective-dart/documentation)。
+
+## 总结
+
+该页面汇总了 Dart 语言常用的特性。更多的特性正在被实现，但我们希望它们不会破坏已有的代码。要了解更多信息，请看 [Dart 语言规范](https://www.dartlang.org/guides/language/spec) 和 [高效的 Dart](https://www.dartlang.org/guides/language/effective-dart)。
+
+要了解更多关于 Dart 核心库的信息，请参阅 [Dart 库教程](https://www.dartlang.org/guides/libraries/library-tour)。
