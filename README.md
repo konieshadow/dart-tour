@@ -1,16 +1,16 @@
 # Dart 语言中文教程
 翻译自 Dart 官网，[查看原文](https://www.dartlang.org/guides/language/language-tour)。欢迎提供修改意见。
 
-当前版本：2.0.0 (beta)
+当前版本：2.0.0 (stable)
 
-完成度：100%（精校中）
+完成度：100%
 
 这篇文章展示如何使用 Dart 的各个主要特性，从变量、运算符到类和库，并且假定你已经会使用其他编程语言编写代码。
-要详细了解 Dart 核心库相关内容，请查阅官方 [Dart 库教程](https://www.dartlang.org/guides/libraries/library-tour)。当你想对一个语言特性深入了解时，无论何时都可以查阅官方 [Dart 语言规范](https://www.dartlang.org/guides/language/spec)。
+要详细了解 Dart 核心库相关内容，请查阅官方 [Dart 库教程](https://www.dartlang.org/guides/libraries/library-tour)。当你想对一个语言特性深入了解时，无论何时都可以查阅 [Dart 语言规范](https://www.dartlang.org/guides/language/spec)。
 
-> 小提示：在 DartPad 上，你可以尝试大部分 Dart 的语言特性（[了解更多](https://www.dartlang.org/tools/dartpad)）。
+> 小提示：在 DartPad 上，你可以尝试 Dart 的大部分语言特性（[了解更多](https://www.dartlang.org/tools/dartpad)）。
 >
-> 转到 [DartPatd](https://dartpad.dartlang.org/)
+> 转到 [DartPatd](https://dartpad.dartlang.org/)。
 
 ## 目录
 * [一个基本的 Dart 程序](#一个基本的-dart-程序)
@@ -39,7 +39,7 @@
 * [运算符](#运算符)
   * [算术运算符](#算术运算符)
   * [相等和关系运算符](#相等和关系运算符)
-  * [类型检测运算符](#类型检测运算符)
+  * [类型检查运算符](#类型检查运算符)
   * [赋值运算符](#赋值运算符)
   * [逻辑运算符](#逻辑运算符)
   * [按位和移位运算符](#按位和移位运算符)
@@ -98,7 +98,7 @@
 * [译者总结](#译者总结)
 
 ## 一个基本的 Dart 程序
-下面的代码使用了许多 Dart 的基本特性：
+下面的代码使用了 Dart 的许多基本特性：
 ```Dart
 // 定义函数
 printInteger(int aNumber) {
@@ -158,13 +158,13 @@ var
 ## 重要概念
 当你学习 Dart 语言的时候，请记住以下事实和概念：
 * 所有可以放在一个变量里面的东西都是*对象*，而且所有对象都是*类*的实例。每一个数值、函数和 **null** 都是对象。所有的对象都继承自 [Object](https://api.dartlang.org/stable/dart-core/Object-class.html) 类。
-* 尽管 Dart 是强类型的，但是 Dart 支持类型推断所以类型声明是可选的。在上面的代码中，**number**被推断为类型  **int**。当你想要显式声明没有预期的类型时，**使用特殊的 dynamic 类型**。
+* 尽管 Dart 是强类型的，但是 Dart 支持类型推断所以类型声明是可选的。在上面的代码中，**number** 被推断为类型  **int**。当你想要显式声明没有预期的类型时，**使用特殊的 dynamic 类型**。
 * Dart 支持泛型，像是 **List&lt;int&gt;**（包含整数的列表）或者 **List&lt;dynamic&gt;**（一个包含任意类型对象的列表）。
 * 除了绑定在类和对象上的函数（分别为静态方法和实例方法）以外，Dart 还支持顶级函数（像 **main()**)。你还可以在函数中创建函数（嵌套函数或局部函数）。
 * 不像 Java，Dart 没有这些关键词：**pubilc**，**protected**，**private**。如果一个标识符以下划线 (\_) 开头，那么对于它的库来说是私有的。详情请参阅 [库和可见性](#库和可见性)。
 * 标识符可以以下划线 (\_) 开头，后面跟上任意字母和数字的组合。
 * 有时候"表达式"和"语句"会有明显的区别，所以弄清楚它们的确切含义会很有帮助。
-* Dart 相关工具会报告两种类型的问题：警告和错误。警告只是表明你的代码可能无法正常工作，但是并不会禁止你执行程序。错误可以是编译期或者运行期的。一个编译期错误完全禁止程序的执行；而运行期错误会在代码执行到这里时抛出一个 [异常](#异常)。
+* Dart 开发工具会报告两种类型的问题：警告和错误。警告只是表明你的代码可能无法正常工作，但是并不会禁止你执行程序。错误可能是编译期或者运行期的。一个编译期错误完全禁止程序的执行；而运行期错误会在代码执行到这里时抛出一个 [异常](#异常)。
 
 ## 关键词
 下面的表格列出了 Dart 语言特殊对待的关键词。
@@ -229,7 +229,7 @@ assert(lineCount == null);
 
 ### Final 和 const
 
-如果你从不打算改变一个变量，请使用 **final** 和 **const**，而不是 **var** 或者一个类型名。Final 变量只可以被设置一次；而 const 变量是编译期常量。（Const 变量是显式 final 的。）一个 final 的顶级变量或者类变量在首次被使用时初始化。
+如果你从不打算改变一个变量，请使用 **final** 和 **const**，而不是 **var** 或者一个类型名。Final 变量只可以被设置一次；而 const 变量是编译期常量。（Const 变量是隐式 final 的。）一个 final 的顶级变量或者类变量在首次被使用时初始化。
 
 > 提示：实例变量只可以是 final 的，不可以是 const 的。
 
@@ -246,7 +246,7 @@ final String nickname = 'Boddy';
 name = 'Alice'; // 错误：一个 final 变量只可以被设置一次
 ```
 
-对那些你想要作为**编译期常量**的变量使用 **const**。如果这个 const 变量是类级别的，使用 **static const** 标识它。在你声明的地方，设置变量的值为编译器常量比如数字或字符串字面量、另一个常量或者常量数值的算术运算结果。
+对那些你想要作为**编译期常量**的变量使用 **const**。如果这个 const 变量是类级别的，使用 **static const** 标识它。在你声明的时候，设置变量的值为编译期常量比如数字、字符串字面量、另一个常量或者常量数值的算术运算结果。
 
 ```dart
 const bar = 1000000; // 压力单位（达因/cm2）
@@ -305,7 +305,7 @@ Dart 中的数值有两种类型：
 
 64位（双精度）浮点数值，如 IEE 754 标准中所规定的。
 
-**Int** 和 **double** 都是 [num](https://api.dartlang.org/dev/dart-core/num-class.html) 的子类。Num 类型包含像 +，-，/ 和 * 这样的基本运算符，也是 **abs()**、**ceil()** 和 **floor()** 适用的类型。（像 &gt;&gt; 的位运算符定义在 int 类中。）如果你从 num 和它的子类中找不到你想要的，试着看看 [dart:math](https://api.dartlang.org/dev/dart-math) 库。
+**Int** 和 **double** 都是 [num](https://api.dartlang.org/dev/dart-core/num-class.html) 的子类。Num 类型包含像 +，-，/ 和 * 这样的基本运算符，也是 **abs()**、**ceil()** 和 **floor()** 适用的类型。（像 &gt;&gt; 这样的位运算符定义在 int 类中。）如果你从 num 和它的子类中找不到你想要的，试着看看 [dart:math](https://api.dartlang.org/dev/dart-math) 库。
 
 整数是没有小数点的数字。下面是一些定义整数字面量的例子：
 
@@ -418,7 +418,7 @@ var s = r"In a raw string, even \n isn't special.";
 
 要详细了解 Unicode 字符在字符串中是怎样表示的，请参阅 [Runes](#runes)。
 
-只要所有插值表达式是编译期常量，可以计算出 null 或者 数值、字符串、布尔值，那么这个字面量的字符串就是编译期常量。
+只要所有的插值表达式是编译期常量，计算结果为 null 或者 数值、字符串、布尔值，那么这个字符串字面量就是编译期常量。
 
 ```dart
 // 可作为常量字符串的组成部分
@@ -669,6 +669,18 @@ void enableFlags({bool bold, bool hidden}) {
 }
 ```
 
+[Flutter](https://flutter.io/) 实例创建表达式可以很复杂，所以控件构造函数只使用命名参数。这让实例创建表达式更易读。
+
+你可以在 Dart 代码（而不仅是 Flutter）中使用 [@required](https://pub.dartlang.org/documentation/meta/latest/meta/required-constant.html) 来声明一个命名参数是“必须”的。比如：
+
+```dart
+const Scrollbar({Key key, @required Widget child})
+```
+
+当一个 **Scrollbar** 被构建时，如果缺少 **child** 参数分析器会报告一个问题。
+
+[Required](https://pub.dartlang.org/documentation/meta/latest/meta/required-constant.html) 被定义在 [meta](https://pub.dartlang.org/packages/meta) 包中。可以直接导入 **package:meta/meta.dart**，也可以导入其他导出了 **meta** 的包，比如 Flutter 的 **package:flutter/material.dart**。
+
 #### 可选位置参数
 
 包裹函数的参数集到 **[]** 中来表明它们是可选参数：
@@ -714,7 +726,7 @@ enableFlags(bold: true);
 
 > 弃用提示：以前的代码可能会使用冒号 (:) 而不是 = 来设置命名参数的默认值。原因是之前只有 : 可以用来给命名参数设置默认值。而现在对 : 的支持可能会被废弃，所以我们推荐你 [使用 = 来指定默认值](https://www.dartlang.org/tools/pub/pubspec#sdk-constraints)。
 
-下一个例子展示如果为位置参数设置默认值：
+下一个例子展示如何为位置参数设置默认值：
 
 ```dart
 String say(String from, String msg,
@@ -794,7 +806,7 @@ var list = [1, 2, 3];
 list.forEach(printElement);
 ```
 
-你也可以把函数赋值为一个变量，比如；
+你也可以把函数赋值给一个变量，比如；
 
 ```dart
 var loudify = (msg) => '!!! ${msg.toUpperCase()} !!!';
@@ -938,7 +950,7 @@ assert(foo() == null);
 
 ## 运算符
 
-Dart 定义了下面表格里的这些运算符。你可以重写其中大部分的运算符，在 [重载运算符](#重载运算符) 部分有更详细的描述。
+Dart 定义了下面表格中的这些运算符。你可以重写其中大部分的运算符，在 [重载运算符](#重载运算符) 部分有更详细的描述。
 
 | 描述           | 运算符                                                       |
 | -------------- | ------------------------------------------------------------ |
@@ -970,7 +982,7 @@ c ? a : b
 a is T
 ```
 
-在 [运算符表](#) 中，每一个表达式都比它下面的表达式优先级高。比如，取余运算符 **%** 的优先级就比等于运算符高（因此先执行），而等于运算符的优先级又比逻辑与运算符 **==** 高。优先级意味着下面两行代码的执行方式相同：
+在 [运算符表](#) 中，每一个表达式都比它下面的表达式优先级高。比如，取余运算符 **%** 的优先级就比等于运算符高（因此先执行），而等于运算符的优先级又比逻辑与运算符 **&&** 高。优先级意味着下面两行代码的执行方式相同：
 
 ```dart
 // 括号可提高可读性
@@ -980,7 +992,7 @@ if ((n % i == 0) && (d % i == 0)) ...
 if (n % i == 0 && d % i == 0) ...
 ```
 
-> 警告：对于作用于两个操作数的操作符，最左边的操作数决定了哪个版本操作符会被使用。比如，如果你有一个 Vector 对象和 Point 对象，**aVector + aPoint** 使用 Vector 版本的 +。
+> 警告：对于作用于两个操作数的操作符，最左边的操作数决定了哪个版本的运算符会被使用。比如，如果你有一个 Vector 对象和 Point 对象，**aVector + aPoint** 使用 Vector 版本的 +。
 
 ### 算术运算符
 
@@ -1069,7 +1081,7 @@ assert(3 >= 3);
 assert(2 <= 3);
 ```
 
-### 类型检测运算符
+### 类型检查运算符
 
 运算符 **as**、**is** 和 **is!** 可以在运行期方便地进行类型检查。
 
@@ -1217,7 +1229,7 @@ String playerName(String name) {
 
 ### 级联符号
 
-级联 (**..**) 允许你在同一个对象上进行一系列操作。除了方法调用，你也可以访问同一个对象的属性。这样通常可以让你免于创建临时变量并且写出更加流畅的代码。
+级联 (**..**) 允许你在同一个对象上进行一系列操作。除了方法调用，你也可以访问同一个对象的属性。这样通常可以让你免于创建临时变量并且写出更加顺畅的代码。
 
 考虑以下代码：
 
@@ -1317,7 +1329,7 @@ for (var i = 0; i < 5; i++) {
 }
 ```
 
-Dart for 循环中的闭包会捕获 index 的”值*，避免 JavaScript 中常见的一个坑。比如，考虑：
+Dart for 循环中的闭包会捕获 index 的**值**，避免 JavaScript 中常见的一个坑。比如，考虑：
 
 ```dart
 var callbacks = [];
@@ -1385,7 +1397,7 @@ for (int i = 0; i < candidates.length; i++) {
 }
 ```
 
-如果你在用 [Iterable](https://api.dartlang.org/dev/dart-core/Iterable-class.html)，比如列表或这集合，你可能会以不同的方式编写上面的例子:
+如果你在用 [Iterable](https://api.dartlang.org/dev/dart-core/Iterable-class.html)，比如列表或者集合，你可能会以不同的方式编写上面的例子:
 
 ```DART
 candidates
@@ -1750,7 +1762,7 @@ void main() {
 }
 ```
 
-如果你在声明的时候初始化实例变量（而不是在构造函数或者方法里），值会在实例创建的时候被设置，在构造函数和它的初始化列表执行前执行。
+如果你在声明的时候初始化实例变量（而不是在构造函数或者方法里），值会在实例创建的时候被设置，在构造函数和它的初始化列表执行前。
 
 ### 构造函数
 
@@ -2213,6 +2225,8 @@ class A {
 * 接收者有静态类型 **dynamic**。
 * 接收者有一个定义了该未实现方法的静态类型（抽象也可），而且接收者的动态类型有不同于 **Object** 类 **noSuchMethod()** 的实现。
 
+要了解更多信息，请参阅 [noSuchMethod 跳转规范](https://github.com/dart-lang/sdk/blob/master/docs/language/informal/nosuchmethod-forwarding.md)。
+
 ### 枚举类型
 
 枚举类型，通常被称作 *enumerations* 或 *enums*（枚举），是用来表示有固定数量的常量值的一种特殊类。
@@ -2306,13 +2320,15 @@ abstract class Musical {
 
 > 说明：一些混入的限制将要被移除。详情请参阅 [提议的混入规范](https://github.com/dart-lang/sdk/blob/master/docs/language/informal/mixin-declaration.md)。
 
+有关混入在 Dart 中演变的理论演示，请参阅 [Dart 混入简史](https://www.dartlang.org/articles/language/mixins)。
+
 ### 类变量和方法
 
 使用 **static** 关键词来实现类级别的变量和方法。
 
 #### 静态变量
 
-静态变量（类变量）对类级别的状态和常量是有用的。
+静态变量（类变量）对类级别的状态和常数是很有用的。
 
 ```dart
 class Queue {
@@ -2362,16 +2378,16 @@ void main() {
 
 ## 泛型
 
-如果你查看基本数组类型 [List](https://api.dartlang.org/dev/dart-core/List-class.html) 的 API 文档，你会发现它的类型其实是 **List&lt;E&gt;**。&lt;...&gt; 标记表示 List 是一个”泛型“（或带参数的）类——具有形式上的类型参数的类型。按照惯例，类型变量有单字母的名字，比如 E，T，S，K，和 V。
+如果你查看基本数组类型 [List](https://api.dartlang.org/dev/dart-core/List-class.html) 的 API 文档，你会发现它的类型其实是 **List&lt;E&gt;**。&lt;...&gt; 标记表示 List 是一个”泛型“（或带参数的）类——具有形式上的类型参数的类型。按照惯例，类型变量的名字是单个字母，比如 E，T，S，K，和 V。
 
 ### 为什么用泛型？
 
-泛型通常是类型安全的要求，但它们除了让你的代码可以运行外还有更多益处：
+泛型通常是类型安全的要求，但它们除了让你的代码可以运行外还有诸多益处：
 
 * 正确地指定泛型类型会产生更好的代码。
 * 你可以使用泛型来减少代码重复。
 
-如果你只想让一个列表包含字符串，你可以指定它为 **List&lt;String&gt;**（读作“字符串列表”）。这样一来，你、你的同事和你的工具可以检测到将一个非字符串对象指定到该列表是错误的。下面是一个例子：
+如果你只想让一个列表包含字符串，你可以指定它为 **List&lt;String&gt;**（读作“字符串列表”）。这样一来，你、你的同事和你的工具可以检测到将一个非字符串对象添加到该列表是错误的。下面是一个例子：
 
 ```dart
 var names = List<String>();
@@ -2379,7 +2395,7 @@ names.addAll(['Seth', 'Kathy', 'Lars']);
 names.add(42); // 错误
 ```
 
-使用泛型的另一给原因是减少代码重复。泛型使你在多个不同类型间共享同一个接口和实现，而依然享受静态分析的优势。比如说，你要创建一个缓存对象的接口：
+使用泛型的另一个原因是为了减少代码重复。泛型使你在多个不同类型间共享同一个接口和实现，而依然享受静态分析的优势。比如说，你要创建一个缓存对象的接口：
 
 ```dart
 abstract class ObjectCache {
@@ -2509,11 +2525,11 @@ T first<T>(List<T> ts) {
 
 指令 **import** 和 **library** 可以帮你创建一个模块化和可共享的代码库。库不仅提供 API，也是一个隐私单位：以下划线 (_) 开头的标识符只在库中可见。”每个 Dart 应用都是一个库“，即使它没有使用 **library** 指令。
 
-库可以通过包来发布。要了解更多关于 pub —— SDK内置的包管理器的信息，请参阅[发布库和资源管理](https://www.dartlang.org/tools/pub)。
+库可以通过包来发布。要了解更多关于 pub —— SDK内置的包管理器的信息，请参阅 [发布库和资源管理](https://www.dartlang.org/tools/pub)。
 
 ### 使用库
 
-使用 **import** 指令来指定一个库在其他库的范围内如何被使用。
+使用 **import** 指令来指定一个库在其他库的作用域内如何被使用。
 
 比如，Dart 网页应用通常使用 [dart:html](https://api.dartlang.org/dev/dart-html) 库，它可以像这样被引入：
 
@@ -2527,7 +2543,7 @@ import 'dart:html';
 import 'package:test/test.dart';
 ```
 
-> 说明：*URI* 代表统一资源标识符。**URL** （统一资源定位符）是一种常见的 URI。
+> 说明：*URI* 指统一资源标识符。**URL** （统一资源定位符）是一种常见的 URI。
 
 #### 指定库前缀
 
@@ -2558,7 +2574,7 @@ import 'package:lib2/lib2.dart' hide foo;
 
 #### 懒加载一个库
 
-”延迟加载“（也称为”懒加载“）允许一个应用按需加载一个库，仅当它被需要时。下面是一些你可能会使用延迟加载地情况：
+”延迟加载“（也称为”懒加载“）允许一个应用按需加载一个库，仅当它被需要时。下面是一些你可能会使用延迟加载的情况：
 
 * 为了减少应用的初始启动时间。
 * 为了执行 A/B 测试——尝试一个算法的替代实现。
@@ -2759,7 +2775,7 @@ Iterable<int> naturalsDownFrom(int n) sync* {
 
 要使你的 Dart 类像函数一样可以被调用，实现 **call()** 方法。
 
-在下面的例子中，**WannabeFunction** 类定义了一个 call()  函数，它接受三个字符串参数并且连接它们，使用一个空格分隔每个字符串，最后附件一个感叹号。
+在下面的例子中，**WannabeFunction** 类定义了一个 call()  函数，它接受三个字符串参数并且连接它们，使用一个空格分隔每个字符串，最后附加一个感叹号。
 
 ```dart
 class WannabeFunction {
