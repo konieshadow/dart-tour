@@ -89,3 +89,157 @@ assert(double.parse('1.2e+2') == 120.0);
 ```
 
 要了解更多信息，请参阅 [int](#)、[double](#) 和 [num](#) 的 API 文档。也请参阅 [dart:math](#) 章节。
+
+### 字符串和正则表达式
+
+字符串在 Dart 中表示 UTF-16 编码单元组成的一个不可变序列。语言教程中有关于 [字符串](#) 的更详细信息。你可以使用正则表达式（RegExp 对象）在字符串中查找和替换部分字符串。
+
+字符串类定义了诸如 **split()**、**contains()**、**startsWith()**、**endsWith** 这样的以及其他更多的方法。
+
+#### 在字符串中查找
+
+你可以在字符串中查找一个指定模式的位置，或者检查字符串是否以其开头或结尾。比如：
+
+```dart
+// 检查一个字符串是否包含另一个字符串
+assert('Never odd or even'.contains('odd'));
+
+// 检查一个字符串是否开始于另一个字符串
+assert('Never odd or even'.startsWith('Never'));
+
+// 检查一个字符串是否结束于另一个字符串
+assert('Never odd or even'.endsWith('even'));
+
+// 查找一个字符串在另一个字符串中的位置
+assert('Never odd or even'.indexOf('odd') == 6);
+```
+
+#### 从字符串中提取数据
+
+你可以从一个字符串中获取独立的字符分别作为字符串或者整数。准确来说，你得到的其实是独立的 UTF-16 编码单元；像高音音符这样的高位字符 (‘\u{1D11E}’) 为在一块的两个编码单元。
+
+你也可以提取一个子字符串或者拆分一个字符串为一个子字符串列表：
+
+```dart
+// 抓取一个子字符串
+assert('Never odd or even'.substring(6, 9) == 'odd');
+
+// 使用一个字符串模式拆分字符串
+var parts = 'structured web apps'.split(' ');
+assert(parts.length == 3);
+assert(parts[0] == 'structured');
+
+// 使用索引获取 UTF-16 编码单元（作为字符串）
+assert('Never odd or even'[0] == 'N');
+
+// 使用空字符串作为 split() 的参数来获得
+// 所有字符（作为字符串）的列表；便于迭代
+for (var char in 'hello'.split('')) {
+  print(char);
+}
+
+// 获取字符串中所有的 UTF-16 编码单元
+var codeUnitList =
+    'Never odd or even'.codeUnits.toList();
+assert(codeUnitList[0] == 78);
+```
+
+#### 大小写转换
+
+你可以很容易地转换一个字符串为它的大写或小写形式：
+
+```dart
+// 转换为大写
+assert('structured web apps'.toUpperCase() ==
+    'STRUCTURED WEB APPS');
+
+// 转换为小写
+assert('STRUCTURED WEB APPS'.toLowerCase() ==dart
+    'structured web apps');
+```
+
+> 说明：这些方法并不适用于所有语言。比如，土耳其字母的 *I* 转换就是错误的。
+
+#### 修剪和空字符串
+
+使用 **trim()** 移除前面和后面的所有空白。要检查一个字符串是否是空的（长度为0），使用 **isEmpty**。
+
+```dart
+// 修剪字符串
+assert('  hello  '.trim() == 'hello');
+
+// 检查字符串是否是空的
+assert(''.isEmpty);
+
+// 只有空白符的字符串不是空的
+assert('  '.isNotEmpty);
+```
+
+#### 替换字符串的部分内容
+
+字符串是不可变的对象，意味着你可以创建它们但是不可以修改它们。如果你仔细观察 [String API 索引](#)，你会发现没有一个方法真正改变了一个字符串的状态。比如，方法 **replaceAll()** 不会修改原来的字符串：
+
+```dart
+var greetingTemplate = 'Hello, NAME!';
+var greeting =
+    greetingTemplate.replaceAll(RegExp('NAME'), 'Bob');
+
+// greetingTemplate 没有改变
+assert(greeting != greetingTemplate);
+```
+
+#### 构建一个字符
+
+要程序化的创建一个字符串，你可以使用 StringBuffer。一个 StringBuffer 不生成新的字符串除非 **toString()** 方法被调用。方法 **writeAll()** 有一个可选的第二个参数让你可以指定一个分隔符——在这里是一个空格。
+
+```dart
+var sb = StringBuffer();
+sb
+  ..write('Use a StringBuffer for ')
+  ..writeAll(['efficient', 'string', 'creation'], ' ')
+  ..write('.');
+
+var fullString = sb.toString();
+
+assert(fullString ==
+    'Use a StringBuffer for efficient string creation.');
+```
+
+#### 正则表达式
+
+RegExp 类提供了与 JavaScript 中正则表达式相同的功能。使用正则表达式来高效地查找和匹配字符串中的模式。
+
+```dart
+// 这是一个表示一个或多个数字的正则表达式
+var numbers = RegExp(r'\d+');
+
+var allCharacters = 'llamas live fifteen to twenty years';
+var someDigits = 'llamas live 15 to 20 years';
+
+// contains() 可以使用正则表达式
+assert(!allCharacters.contains(numbers));
+assert(someDigits.contains(numbers));
+
+// 替换所有匹配的部分为另一个字符串
+var exedOut = someDigits.replaceAll(numbers, 'XX');
+assert(exedOut == 'llamas live XX to XX years');
+```
+
+你也可以直接使用 RegExp 类。Match 类提供了对于正则表达式匹配结果的访问方法。
+
+```dart
+var numbers = RegExp(r'\d+');
+var someDigits = 'llamas live 15 to 20 years';
+
+// 检查正则表达式在字符串中是否有一个匹配
+assert(numbers.hasMatch(someDigits));
+
+// 循环遍历所有匹配结果
+for (var match in numbers.allMatches(someDigits)) {
+  print(match.group(0)); // 15，然后是 20
+}
+```
+
+#### 更多信息
+
+参考 [String API 索引](#) 来获取方法的完整列表。另请参阅 [StringBuffer](#)、[Pattern](#)、[RegExp](#) 和 [Match](#) 的 API 索引。
