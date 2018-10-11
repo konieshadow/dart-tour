@@ -4,7 +4,7 @@
 
 当前版本：2.0.0 (stable)
 
-完成度：1%
+完成度：20%
 
 该教程为你展示了下面这些库的主要特性，这些库被包含在所有的 Dart 平台中。
 
@@ -243,3 +243,284 @@ for (var match in numbers.allMatches(someDigits)) {
 #### 更多信息
 
 参考 [String API 索引](#) 来获取方法的完整列表。另请参阅 [StringBuffer](#)、[Pattern](#)、[RegExp](#) 和 [Match](#) 的 API 索引。
+
+### 集合
+
+Dart 附带了核心的集合 API，包含了与列表、Set 和 Map 相关的类。
+
+#### 列表
+
+就如语言教程所展示的，你可以使用字面量来创建和初始化 [列表](#)。除此以外，你还可以使用 List 的构造函数。List 类同时定义了一些往列表添加和从列表移除项目的方法。
+
+```dart
+// 使用一个集合的构造函数
+var vegetables = List();
+
+// 或者简单地使用字面量
+var fruits = ['apples', 'oranges'];
+
+// 往列表添加
+fruits.add('kiwis');
+
+// 往列表添加多个项目
+fruits.addAll(['grapes', 'bananas']);
+
+// 获取列表的长度
+assert(fruits.length == 5);
+
+// 移除单个项目
+var appleIndex = fruits.indexOf('apples');
+fruits.removeAt(appleIndex);
+assert(fruits.length == 4);
+
+// 从列表中移除所有项目
+fruits.clear();
+assert(fruits.length == 0);
+```
+
+使用 **indexOf()** 来获取一个对象在列表中的索引：
+
+```dart
+var fruits = ['apples', 'oranges'];
+
+// 使用索引访问项目
+assert(fruits[0] == 'apples');
+
+// 在列表中查找一个项目
+assert(fruits.indexOf('apples') == 0);
+```
+
+使用 **sort()** 方法对列表进行排序。你可以提供一个排序函数用于比较两个对象。该排序函数必须返回 < 0 的值来表示“更小”、0 表示相等、> 0 的值表示“更大”。下面的例子使用 **compareTo()**，该方法定义在 [Compareable](#) 类中并且被字符串所实现。
+
+```dart
+var fruits = ['bananas', 'apples', 'oranges'];
+
+// 对列表进行排序
+fruits.sort((a, b) => a.compareTo(b));
+assert(fruits[0] == 'apples');
+```
+
+列表是参数化类型的，所以你可以指定一个列表应该包含的类型：
+
+```dart
+// 这个列表应该只包含字符串
+var fruits = List<String>();
+
+fruits.add('apples');
+var fruit = fruits[0];
+assert(fruit is String);
+```
+
+```dart
+fruits.add(5); // 错误：'int' 不可以赋值给 'String'
+```
+
+参见 [List API 索引](#) 获取列表的完整方法列表。
+
+#### Set
+
+Dart 中的 set 是独特元素的无序集合。因为 set 是无序的，你不可以使用索引（为值）获取项目。
+
+```dart
+var ingredients = Set();
+ingredients.addAll(['gold', 'titanium', 'xenon']);
+assert(ingredients.length == 3);
+
+// 添加重复项目是无效的
+ingredients.add('gold');
+assert(ingredients.length == 3);
+
+// 从 set 中移除项目
+ingredients.remove('gold');
+assert(ingredients.length == 2);
+```
+
+使用 **contains()** 和 **containsAll()** 来检查一个或多个对象是否在一个 set 中：
+
+```dart
+var ingredients = Set();
+ingredients.addAll(['gold', 'titanium', 'xenon']);
+
+// 检查一个项目是否在 set 中
+assert(ingredients.contains('titanium'));
+
+// 检查所有项目是否都在 set 中
+assert(ingredients.containsAll(['titanium', 'xenon']));
+```
+
+交集是一个所有项目同时在两个其他 set 中的 set。
+
+```dart
+var ingredients = Set();
+ingredients.addAll(['gold', 'titanium', 'xenon']);
+
+// 创建两个 set 的交集
+var nobleGases = Set.from(['xenon', 'argon']);
+var intersection = ingredients.intersection(nobleGases);
+assert(intersection.length == 1);
+assert(intersection.contains('xenon'));
+```
+
+参见 [Set API 索引](#) 获取 set 的完整方法列表。
+
+#### Maps
+
+一个 map，通常被称作“字典”或者“映射”，是键值对的无序集合。Map 关联一个键到一些值为了便于取回。不像 JavaScript，Dart 对象不是 map。
+
+你可以使用字面量声明一个 map，或者使用一个传统的构造函数：
+
+```dart
+// Map 经常使用字符串作为键
+var hawaiianBeaches = {
+  'Oahu': ['Waikiki', 'Kailua', 'Waimanalo'],
+  'Big Island': ['Wailea Bay', 'Pololu Beach'],
+  'Kauai': ['Hanalei', 'Poipu']
+};
+
+// Map 可以由一个构造函数构造
+var searchTerms = Map();
+
+// Map 是参数类型的，你可以指定
+// 哪些类型可以作为键和值
+var nobleGases = Map<int, String>();
+```
+
+使用中括号语法来添加、获取和设置 map 的项目。使用 **remove()** 方法从 map 中移除一个键和它对应的值。
+
+```dart
+var nobleGases = {54: 'xenon'};
+
+// 使用一个键取回一个值
+assert(nobleGases[54] == 'xenon');
+
+// 检查 map 是否包含一个键
+assert(nobleGases.containsKey(54));
+
+// 移除一个键和它对应的值
+nobleGases.remove(54);
+assert(!nobleGases.containsKey(54));
+```
+
+你可以从一个 map 中取回所有的值或所有的键：
+
+```dart
+var hawaiianBeaches = {
+  'Oahu': ['Waikiki', 'Kailua', 'Waimanalo'],
+  'Big Island': ['Wailea Bay', 'Pololu Beach'],
+  'Kauai': ['Hanalei', 'Poipu']
+};
+
+// 获取所有的键作为一个无序集合
+// （一个 Iterable）
+var keys = hawaiianBeaches.keys;
+
+assert(keys.length == 3);
+assert(Set.from(keys).contains('Oahu'));
+
+// 获取所有的值作为一个无序集合
+// (一个列表组成的 Iterable)
+var values = hawaiianBeaches.values;
+assert(values.length == 3);
+assert(values.any((v) => v.contains('Waikiki')));
+```
+
+要检查一个 map 是否包含一个键，使用 **containsKey()**。因为 map 的值可以为空，你不能简单地依赖获取并判断值是否为空来决定一个键是否存在。
+
+```dart
+var hawaiianBeaches = {
+  'Oahu': ['Waikiki', 'Kailua', 'Waimanalo'],
+  'Big Island': ['Wailea Bay', 'Pololu Beach'],
+  'Kauai': ['Hanalei', 'Poipu']
+};
+
+assert(hawaiianBeaches.containsKey('Oahu'));
+assert(!hawaiianBeaches.containsKey('Florida'));
+```
+
+当你仅想当一个键不存在于一个 map 中时才指定一个值到该键，使用 **putIfAbsent()** 方法。你必须指定一个方法返回该值。
+
+```dart
+var teamAssignments = {};
+teamAssignments.putIfAbsent(
+    'Catcher', () => pickToughestKid());
+assert(teamAssignments['Catcher'] != null);
+```
+
+参见 [Map API 索引](#) 获取 map 的完整方法列表。
+
+#### 通用集合方法
+
+列表、Set 和 Map 共享了一些在许多集合类型中都可找到的通用方法。一些通用方法定义在 Iterable 类中，该类被列表和 Set 所实现。
+
+> 说明：尽管 Map 没有实现 Iterable，你仍可以使用 **keys** 和 **values** 属性从 map 中获取 Iterable。
+
+使用 **isEmpty** 或 **isNotEmpty** 来检查一个列表、set 或 map 是否拥有项目：
+
+```dart
+var coffees = [];
+var teas = ['green', 'black', 'chamomile', 'earl grey'];
+assert(coffees.isEmpty);
+assert(teas.isNotEmpty);
+```
+
+要应用一个函数到一个列表、set 或 map 的每一个元素上，你可以使用 **forEach()**：
+
+```dart
+var teas = ['green', 'black', 'chamomile', 'earl grey'];
+
+teas.forEach((tea) => print('I drink $tea'));
+```
+
+当你在一个 map 上调用 **forEach()**  时，你的函数必须接受两个参数（键和值）。
+
+```dart
+hawaiianBeaches.forEach((k, v) {
+  print('I want to visit $k and swim at $v');
+  // I want to visit Oahu and swim at
+  // [Waikiki, Kailua, Waimanalo], 等等
+});
+```
+
+Iterable 提供了 **map()** 方法，它以单个对象给你所有的结果：
+
+```dart
+var teas = ['green', 'black', 'chamomile', 'earl grey'];
+
+var loudTeas = teas.map((tea) => tea.toUpperCase());
+loudTeas.forEach(print);
+```
+
+> 说明：由 **map()** 返回的对象是一个“懒求值”的 Iterable：直到你请求返回的对象时你的函数才会被调用。
+
+要强制你的方法在每一个项目上被立即调用，使用 **map().toList()** 或 **map().toSet()**：
+
+```dart
+var loudTeas =
+    teas.map((tea) => tea.toUpperCase()).toList();
+```
+
+使用 Iterable 的 **where()** 方法来获取所有符合某个条件的元素。使用 Iterable 的 **any()** 方法和 **every()** 方法来检查是否有一些元素或所有元素符合某个条件。
+
+```dart
+var teas = ['green', 'black', 'chamomile', 'earl grey'];
+
+// Chamomile（黄春菊）是不含咖啡因的
+bool isDecaffeinated(String teaName) =>
+    teaName == 'chamomile';
+
+// 使用 where() 来查找只有
+// 从提供的函数返回 true 的项目
+var decaffeinatedTeas =
+    teas.where((tea) => isDecaffeinated(tea));
+// 或者 teas.where(isDecaffeinated)
+
+// 使用 any() 来检查是否至少有一个
+// 集合中的项目满足条件
+assert(teas.any(isDecaffeinated));
+
+// 使用 every() 来检查是否集合中
+// 所有的项目都满足条件
+assert(!teas.every(isDecaffeinated));
+```
+
+要获取完整的方法列表，请参见 [Iterable API 索引](#)，以及 [列表](#)、[Set](#) 和 [Map](#) 中的这些方法。
