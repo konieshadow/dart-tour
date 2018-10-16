@@ -524,3 +524,256 @@ assert(!teas.every(isDecaffeinated));
 ```
 
 要获取完整的方法列表，请参见 [Iterable API 索引](#)，以及 [列表](#)、[Set](#) 和 [Map](#) 中的这些方法。
+
+### URI
+
+[Uri 类](#) 提供编码和解码字符串用来作为 URI（就是你可能知道的 URL）的函数。这些函数处理 URI 中的特殊字符，比如 **&** 和 **=**。Uri 类也包含解析和获取 URI 的各个部件的方法——host、port、schema 等等。
+
+#### 编码和解码完全限定的 URI
+
+要编码和解码 URI 中除去那些有特殊意义（比如 **/**、**:**、**&**、**#**）之外的字符，使用 **encodeFull()** 和 **decodeFull()** 方法。这些方法对于编码和解码完全限定的 URI 是非常好的，它们会留下 URI 中完整的特殊字符。
+
+```dart
+var uri = 'http://example.org/api?foo=some message';
+
+var encoded = Uri.encodeFull(uri);
+assert(encoded ==
+    'http://example.org/api?foo=some%20message');
+
+var decoded = Uri.decodeFull(encoded);
+assert(uri == decoded);
+```
+
+注意只有 **some** 和 **message** 之间的空格被编码了。
+
+#### 编码和解码 URI 部件
+
+要编码和解码一个字符串在 URI 中有特殊意义的所有字符，包括（但不限于）**/**、**&** 和 **:**，使用 **encodeComponent()** 和 **decodeComponent** 方法。
+
+```dart
+var uri = 'http://example.org/api?foo=some message';
+
+var encoded = Uri.encodeComponent(uri);
+assert(encoded ==
+    'http%3A%2F%2Fexample.org%2Fapi%3Ffoo%3Dsome%20message');
+
+var decoded = Uri.decodeComponent(encoded);
+assert(uri == decoded);
+```
+
+#### 解析 URI
+
+如果你有一个 Uri 对象或者一个 URI 字符串，你可以使用 Uri 的属性获取它的部件比如 **path**。要从一个字符串创建一个 Uri，使用静态方法 **parse()**：
+
+```dart
+var uri =
+    Uri.parse('http://example.org:8080/foo/bar#frag');
+
+assert(uri.scheme == 'http');
+assert(uri.host == 'example.org');
+assert(uri.path == '/foo/bar');
+assert(uri.fragment == 'frag');
+assert(uri.origin == 'http://example.org:8080');
+```
+
+参见 [Uri API 索引](#) 了解所有你可以获取的部件。
+
+#### 构建 URI
+
+你可以使用 **Uri()** 构造函数从独立的部件构建 URL：
+
+```dart
+var uri = Uri(
+    scheme: 'http',
+    host: 'example.org',
+    path: '/foo/bar',
+    fragment: 'frag');
+assert(
+    uri.toString() == 'http://example.org/foo/bar#frag');
+```
+
+### 日期和时间
+
+一个 DateTime 对象代表一个时间点。时区可以是 UTC 或者本地时区。
+
+你可以使用多个构造函数创建 DateTime 对象：
+
+```dart
+// 获取现在的日期和时间
+var now = DateTime.now();
+
+// 使用本地时区创建一个新的 DateTime 对象
+var y2k = DateTime(2000); // 2000年1月1日
+
+// 指定月和日
+y2k = DateTime(2000, 1, 2); // 2000年1月2日
+
+// 指定日期为 UTC 时间
+y2k = DateTime.utc(2000); // 2000.01.01, UTC
+
+// 使用 Unix 时间戳指定一个日期和时间
+y2k = DateTime.fromMillisecondsSinceEpoch(946684800000,
+    isUtc: true);
+
+// 解析一个 ISO 8601 格式的日期
+y2k = DateTime.parse('2000-01-01T00:00:00Z');
+```
+
+一个日期的 **millisecondsSinceEpoch** 属性返回距“Unix 纪元”——UTC 时间1970年1月1日 ——的毫秒数：
+
+```dart
+// 2000.01.01, UTC
+var y2k = DateTime.utc(2000);
+assert(y2k.millisecondsSinceEpoch == 946684800000);
+
+// 1970.01.01, UTC
+var unixEpoch = DateTime.utc(1970);
+assert(unixEpoch.millisecondsSinceEpoch == 0);
+```
+
+使用 Duration 类来计算两个日期的差异，并向前或向后偏移日期：
+
+```dart
+var y2k = DateTime.utc(2000);
+
+// 增加一年
+var y2001 = y2k.add(Duration(days: 366));
+assert(y2001.year == 2001);
+
+// 减去30天
+var december2000 = y2001.subtract(Duration(days: 30));
+assert(december2000.year == 2000);
+assert(december2000.month == 12);
+
+// 计算两个日期之间的差异
+// 返回一个 Duration 对象
+var duration = y2001.difference(y2k);
+assert(duration.inDays == 366); // y2k 是一个闰年
+```
+
+> 警告：使用 Duration 来偏移一个 DateTime 的天数可能会出问题，因为时间转换（比如夏令时）。如果你一定要偏移天数，可以使用 UTC 日期。
+
+要获取完整的方法列表，请参见 [DateTime](#) 和 [Duration](#) 的 API 索引。
+
+### 实用工具类
+
+核心库包含各种各样的实用工具类，可以用来排序、映射值和迭代。
+
+#### 比较对象
+
+实现 [Comparable](#) 接口来表明一个对象可以与其他对象进行比较，通常用来排序。方法 **compareTo()** 返回 < 0 的值来表示“更小”、0 表示相等、> 0 的值表示“更大”。
+
+```dart
+class Line implements Comparable<Line> {
+  final int length;
+  const Line(this.length);
+
+  @override
+  int compareTo(Line other) => length - other.length;
+}
+
+void main() {
+  var short = const Line(1);
+  var long = const Line(100);
+  assert(short.compareTo(long) < 0);
+}
+```
+
+#### 实现 map 的键
+
+Dart 中的每一个对象都提供了一个整数类型的 hash 码，因此可以用来作为一个 map 的键。然而，你可以重载 **hashCode** 的 getter 来生成一个自定义的 hash 码。如果你这样做，你必须同时重载 **==** 操作符。相等的对象（使用 ==）必须拥有相同的 hash 码。一个 hash 码不一定要是唯一的，但是应该合理地分发。
+
+```dart
+class Person {
+  final String firstName, lastName;
+
+  Person(this.firstName, this.lastName);
+
+  // 使用 Effective Java 第11章中的策略重载 hash 码
+  @override
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + firstName.hashCode;
+    result = 37 * result + lastName.hashCode;
+    return result;
+  }
+
+  // 如果你重载 hash 码，你通常要重载 == 运算符
+  @override
+  bool operator ==(dynamic other) {
+    if (other is! Person) return false;
+    Person person = other;
+    return (person.firstName == firstName &&
+        person.lastName == lastName);
+  }
+}
+
+void main() {
+  var p1 = Person('Bob', 'Smith');
+  var p2 = Person('Bob', 'Smith');
+  var p3 = 'not a person';
+  assert(p1.hashCode == p2.hashCode);
+  assert(p1 == p2);
+  assert(p1 != p3);
+}
+```
+
+#### 迭代
+
+[Iterable 类](#) 和 [Iterator 类](#) 提供了 for-in 循环。当你想要创建一个提供 for-in 循环的迭代器类时，继承（如果可以）或者实现 Iterable。实现 Iterator 来定义真正的迭代能力。
+
+```dart
+class Process {
+  // 代表一个处理...
+}
+
+class ProcessIterator implements Iterator<Process> {
+  @override
+  Process get current => ...
+  @override
+  bool moveNext() => ...
+}
+
+// 一个虚拟的类，它继承了 Iterable 的子类，使你可以
+// 从所有的处理中迭代
+class Processes extends IterableBase<Process> {
+  @override
+  final Iterator<Process> iterator = ProcessIterator();
+}
+
+void main() {
+  // Iterable 对象可以使用 for-in
+  for (var process in Processes()) {
+    // 对 process 做一些处理
+  }
+}
+```
+
+### 异常
+
+Dart 核心库定义了许多通用的异常和错误。异常是指你计划要面对和处理的情况。错误是指你不期望或计划的情况。
+
+几个最常见的错误为：
+
+[NoSuchMethodError](#)
+
+当接收对象（可能是 null）未实现一个方法时抛出。
+
+[ArgumentError](#)
+
+当方法遇到一个不期望的参数时可以抛出。
+
+抛出一个应用级别的异常是表明错误发生了的一个常用的方法。你可以通过实现 Exception 接口自定义一个异常:
+
+```dart
+class FooException implements Exception {
+  final String msg;
+
+  const FooException([this.msg]);
+
+  @override
+  String toString() => msg ?? 'FooException';
+}
+```
+
+要了解更多信息，请参阅语言教程中的 [异常](#) 和 [Exception API 索引](#)。
