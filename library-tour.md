@@ -777,3 +777,129 @@ class FooException implements Exception {
 ```
 
 要了解更多信息，请参阅语言教程中的 [异常](#) 和 [Exception API 索引](#)。
+
+## dart:async - 异步编程
+异步编程经常使用回调函数，但是 Dart 提供了其他的选项：[Future](#) 和 [Stream](#) 对象。一个 Future 就像对将来某个时刻提供结果的承诺。Stream 是一种获取一系列值的方法，例如事件。Future、Stream 还有其他更多内容包含在 dart:async 库中 ([API 索引](#))。
+
+> 提示：你并不总是需要直接使用 Future 或 Stream API。Dart 语言支持使用诸如 **async** 和 **await** 这样的关键字进行异步编码。请参阅语言教程中的 [异步支持](#) 了解详情。
+
+库 dart:async 在 web 应用和命令行应用中均可试用。要使用它，引入 dart:async：
+
+```dart
+import 'dart:async'
+```
+
+### Future
+Future 对象经常以异步方法返回值的方式出现在 Dart 库中。当一个 future “完成”时，它的值随时可用。
+
+#### 使用 await
+在你直接使用 Future API 之前，请考虑使用 **await** 来代替。使用 **await** 的代码会比使用 Future API 的代码更容易理解。
+
+考虑下面的函数。它使用 Future 的 **then()** 方法连续执行三个异步函数，每个函数执行前等待前面的函数执行完成。
+
+```dart
+runUsingFuture() {
+  // ...
+  findEntryPoint().then((entryPoint) {
+    return runExecutable(entryPoint, args);
+  }).then(flushThenExit);
+}
+```
+
+而使用 await 表达式的等效代码看起来更像是同步代码：
+
+```dart
+runUsingAsyncAwait() async {
+  // ...
+  var entryPoint = await findEntryPoint();
+  var exitCode = await runExecutable(entryPoint, args);
+  await flushThenExit(exitCode);
+}
+```
+
+一个异步函数可以从 Future 中捕获异常，例如：
+
+```dart
+var entryPoint = await findEntryPoint();
+try {
+  var exitCode = await runExecutable(entryPoint, args);
+  await flushThenExit(exitCode);
+} catch (e) {
+  // 处理错误...
+}
+```
+
+> 重要：异步函数返回 Future。如果你不想你的函数返回一个 future，那么请使用其他方案。例如，你可以在你的函数中调用一个异步函数。
+
+要了解更多关于使用 **await** 和相关的 Dart 语言特性，请参阅 [异步支持](#)。
+
+#### 基本用法
+你可以使用 **when()** 来调度那些在 future 完成后执行的代码。例如，**HttpRequest.getString()** 返回一个 Future，因为 HTTP 请求可能花上一段时间。使用 **then()** 来让你在 Future 完成并且承诺的字符串返回值可用时运行代码：
+
+```dart
+HttpRequest.getString(url).then((String result) {
+  print(result);
+});
+```
+
+使用 **catchError()** 来处理一个 Future 对象可能会抛出的任意错误或异常。
+
+```dart
+HttpRequest.getString(url).then((String result) {
+  print(result);
+}).catchError((e) {
+  // 处理或忽略错误
+});
+```
+
+这个 **then().catchError()** 模式就是异步版的 **try-catch**。
+
+> 重要：确保在 **then()** 的返回结果上调用 **catchError()**——而不是原本 Future 的返回结果上。否则，**catchError()** 只能捕获从原本 Future 的计算过程中抛出的错误，而不是从通过 **then()** 注册的处理器中抛出的错误。
+
+#### 链接多个异步方法
+方法 **then()** 返回一个 Future，提供一个有用的方法来以指定顺序运行多个异步函数。如果通过 **then()** 注册的回调返回一个 Future，**then()** 返回一个相同的 Future。如果这个回调返回其他任意类型的值，**then()** 以该值作为完成结果创建一个新的 Future。
+
+```dart
+Future result = costlyQuery(url);
+result
+    .then((value) => expensiveWork(value))
+    .then((_) => lengthyComputation())
+    .then((_) => print('Done!'))
+    .catchError((exception) {
+  /* 处理异常... */
+});
+```
+
+在前面的例子中，这些方法以下面的顺序执行：
+1. costlyQuery()
+2. expensiveWork()
+3. lengthyComputation()
+
+下面是使用 await 的等效代码：
+
+```dart
+try {
+  final value = await costlyQuery(url);
+  await expensiveWork(value);
+  await lengthyComputation();
+  print('Done!');
+} catch (e) {
+  /* 处理异常... */
+}
+```
+
+#### 等待多个 future
+有时你的算法需要调用多个异步函数然后等待它们全部完成后才能继续。使用 [Future.wait()](#) 静态方法来管理多个 Future 并等待他们完成：
+
+```dart
+Future deleteLotsOfFiles() async =>  ...
+Future copyLotsOfFiles() async =>  ...
+Future checksumLotsOfOtherFiles() async =>  ...
+
+await Future.wait([
+  deleteLotsOfFiles(),
+  copyLotsOfFiles(),
+  checksumLotsOfOtherFiles(),
+]);
+print('Done with all the long steps!');
+```
