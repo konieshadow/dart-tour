@@ -903,3 +903,143 @@ await Future.wait([
 ]);
 print('Done with all the long steps!');
 ```
+
+### Stream
+
+Stream 对象出现在整个 Dart API 中，表示数据序列。例如，按钮点击等 HTML 事件通过 stream 来传递。你也可以读取一个文件作为 stream。
+
+#### 使用异步 for 循环
+
+有时你可以使用一个异步 for 循环 (**await for**) 来代替 Stream API。
+
+考虑下面的函数。它使用 Stream 的 **listen()** 方法来订阅一个列表中的文件，传递一个函数字面量来搜索每一个文件或目录。
+
+```dart
+void main(List<String> arguments) {
+  // ...
+  FileSystemEntity.isDirectory(searchPath).then((isDir) {
+    if (isDir) {
+      final startingDir = Directory(searchPath);
+      startingDir
+          .list(
+              recursive: argResults[recursive],
+              followLinks: argResults[followLinks])
+          .listen((entity) {
+        if (entity is File) {
+          searchFile(entity, searchTerms);
+        }
+      });
+    } else {
+      searchFile(File(searchPath), searchTerms);
+    }
+  });
+}
+```
+
+使用 await 表达式，并包含一个异步 for 循环 (**await for**) 的等效代码看起来更像同步代码：
+
+```dart
+Future main(List<String> arguments) async {
+  // ...
+  if (await FileSystemEntity.isDirectory(searchPath)) {
+    final startingDir = Directory(searchPath);
+    await for (var entity in startingDir.list(
+        recursive: argResults[recursive],
+        followLinks: argResults[followLinks])) {
+      if (entity is File) {
+        searchFile(entity, searchTerms);
+      }
+    }
+  } else {
+    searchFile(File(searchPath), searchTerms);
+  }
+}
+```
+
+> 重要：在使用 **await for** 之前，确保代码清晰并且你真的想要等待所有 stream 的结果。例如，你通常**不**应该在 DOM 事件监器听上使用 **await for**，因为 DOM 会不停的发送事件。如果你使用 **await for** 先后注册两个 DOM 事件监听器，第二种事件从不会被处理。
+
+要了解更多关于 **await** 和相关 Dart 语言特性的用法，请参阅 [异步支持](#)。
+
+#### 监听 stream 数据
+
+要在每个值到来时获取它，要么使用 **await for**，要么使用 **listen()** 方法监听 stream：
+
+```dart
+// 使用 ID 获取一个按钮并添加事件处理
+querySelector('#submitInfo').onClick.listen((e) {
+  // 当按钮被点击时，该代码被执行
+  submitData();
+});
+```
+
+在这个例子中，**onClick** 属性是 "submitInfo" 按钮提供的一个 Stream 对象。
+
+如果你只关心一个事件，可以使用类似 **first**、**last** 或者 **single** 这样的属性获得它。要在处理事件前测试它，使用类似 **firstWhere()**、**lastWhere()** 或者 **singleWhere()** 的方法。
+
+如果你在意一个事件的子集，你可以使用类似 **skip()**、**skipWhile()**、**take()** 、**takeWhile()** 以及 **where()** 这样的方法。
+
+#### 转换 stream 数据
+
+经常地，你需要在使用 stream 的数据前改变它的格式。使用 **transform()** 方法来生成一个不同类型的 stream 数据：
+
+```dart
+var lines = inputStream
+    .transform(utf8.decoder)
+    .transform(LineSplitter());
+```
+
+这个例子使用了两个转换器。第一个使用了 utf8.decoder 来转换整数的 stream 为字符串的 stream。然后它使用了一个 LineSplitter 来转换字符串的 stream 为按行分割的 stream。这个转换器来自 dart:convert 库（参见 [dart:convert 章节](#)）。
+
+#### 处理错误和完成
+
+你如何指定错误和完成处理代码取决于你使用的是异步 for 循环 (**await for**) 还是 Stream API。
+
+如果你使用了一个异步 for 循环，那么使用 try-catch 来处理错误。异步 for 循环之后的代码将在 stream 关闭后执行。
+
+```dart
+Future readFileAwaitFor() async {
+  var config = File('config.txt');
+  Stream<List<int>> inputStream = config.openRead();
+
+  var lines = inputStream
+      .transform(utf8.decoder)
+      .transform(LineSplitter());
+  try {
+    await for (var line in lines) {
+      print('Got ${line.length} characters from stream');
+    }
+    print('file is now closed');
+  } catch (e) {
+    print(e);
+  }
+}
+```
+
+如果你使用 Stream API，那么通过注册一个 **onError** 监听器来处理错误。使用 **onDone()** 监听器在 stream 关闭后执行代码。
+
+```dart
+var config = File('config.txt');
+Stream<List<int>> inputStream = config.openRead();
+
+inputStream
+    .transform(utf8.decoder)
+    .transform(LineSplitter())
+    .listen((String line) {
+  print('Got ${line.length} characters from stream');
+}, onDone: () {
+  print('file is now closed');
+}, onError: (e) {
+  print(e);
+});
+```
+
+### 更多信息
+
+要了解更多 Future 和 Stream 在命令行应用中的用法，请参阅 [dart:io 教程](#)。也请参阅以下文章和教程：
+
+* [Asynchronous Programming: Futures](#)
+* [Futures and Error Handling](#)
+* [The Event Loop and Dart](https://webdev.dartlang.org/articles/performance/event-loop)
+* [Asynchronous Programming: Streams](#)
+* [Creating Streams in Dart](https://www.dartlang.org/articles/libraries/creating-streams)
+
