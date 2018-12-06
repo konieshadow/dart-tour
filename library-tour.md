@@ -4,7 +4,7 @@
 
 当前版本：2.0.0 (stable)
 
-完成度：20%
+完成度：100%（精校中）
 
 该教程为你展示了下面这些库的主要特性，这些库被包含在所有的 Dart 平台中。
 
@@ -1043,3 +1043,182 @@ inputStream
 * [Asynchronous Programming: Streams](#)
 * [Creating Streams in Dart](https://www.dartlang.org/articles/libraries/creating-streams)
 
+### dart:math - 数学和随机
+
+库 dart:math（[API 参考](#)）提供类似正弦、余弦、最大值和最小值这些通用的功能，还有像 *Pi* 和 *e* 这样的常数。Math 库中的大部分功能都以顶级函数的方式被实现。
+
+要在你的应用中使用这个库，导入 dart:math.
+
+```dart
+import 'dart:math';
+```
+
+#### 三角
+
+Math 库提供了基本的三角函数：
+
+```dart
+// 余弦
+assert(cos(pi) == -1.0);
+
+// 正弦
+var degrees = 30;
+var radians = degrees * (pi / 180);
+// 弧度现在是 0.52359.
+var sinOf30degrees = sin(radians);
+// sin 30° = 0.5
+assert((sinOf30degrees - 0.5).abs() < 0.01);
+```
+
+> 说明：这些函数使用弧度，而不是度数！
+
+#### 最大和最小
+
+Math 库提供了 **max()** 和 **min()** 函数：
+
+```dart
+assert(max(1, 1000) == 1000);
+assert(min(1, -1000) == -1000);
+```
+
+#### 数学常数
+
+你可以在 Math 库中找到你最喜欢的——*pi*、*e* 和 其他更多的常数。
+
+```dart
+// 查看 Math 库来找到更多的常量
+print(e); // 2.718281828459045
+print(pi); // 3.141592653589793
+print(sqrt2); // 1.4142135623730951
+```
+
+#### 随机数
+
+使用 [Random](#) 类来生成随机数。你可以选用带 seed 的 Random 构造函数。
+
+```dart
+var random = Random();
+random.nextDouble(); // 介于 0.0 和 1.0: [0, 1)
+random.nextInt(10); // 介于 0 和 9.
+```
+
+你甚至可以生成随机的布尔值：
+
+```dart
+var random = Random();
+random.nextBool(); // true 或 false
+```
+
+#### 更多信息
+
+参见 [Math API 参考](#) 获取完整的方法列表。另请参阅 [num](#)、[int](#) 和 [double](#) 的API 参考。
+
+### dart:convert - 解码和编码 JSON、UTF-8 和 其他
+
+库 dart:convert（[API 参考](#)）包含 JSON 和 UTF-8 的转换器，当然也支持创建其他的转换器。[JSON](#) 是表示结构化对象和集合的一种简单的文本格式。[UTF-8](#) 是一种可表示 Unicode 字符集中所有字符的通用的可变宽度编码。
+
+库 dart:convert 在 web 应用和命令行应用中均可使用。要使用它，导入 dart:convert。
+
+```dart
+import 'dart:convert';
+```
+
+#### 解码和编码 JSON
+
+在 Dart 中，使用 **jsonEncode()** 来解码一个 JSON 编码的字符串：
+
+```dart
+// 说明: 在 JSON 字符串中，确保使用双引号 (")，
+// 而不是单引号 (')。
+// 这个字符串是 JSON, 而不是 Dart。
+var jsonString = '''
+  [
+    {"score": 40},
+    {"score": 80}
+  ]
+''';
+
+var scores = jsonDecode(jsonString);
+assert(scores is List);
+
+var firstScore = scores[0];
+assert(firstScore is Map);
+assert(firstScore['score'] == 40);
+```
+
+使用 **jsonEncode()** 编码一个受支持的对象为一个 JSON 字符串：
+
+```dart
+var scores = [
+  {'score': 40},
+  {'score': 80},
+  {'score': 100, 'overtime': true, 'special_guest': null}
+];
+
+var jsonText = jsonEncode(scores);
+assert(jsonText ==
+    '[{"score":40},{"score":80},'
+    '{"score":100,"overtime":true,'
+    '"special_guest":null}]');
+```
+
+只有类型为 int、double、String、bool、null、List 或 Map（只包含字符串的 key）是可以直接编码为 JSON 的。List 和 Map 对象被递归地编码。
+
+你有两个选项来编码那些不被直接支持的对象。第一个是调用包含第二个参数的 **encode()**：一个函数返回一个可被直接编码的对象。你的第二个选项是忽略第二个参数，这样编码器会调用对象的 **toJson()** 方法。
+
+#### 解码和编码 UTF-8 字符
+
+在 Dart 中，使用 **utf8.decode()** 来解码 UTF8 编码的字节为一个 Dart 字符串：
+
+```dart
+List<int> utf8Bytes = [
+  0xc3, 0x8e, 0xc3, 0xb1, 0xc5, 0xa3, 0xc3, 0xa9,
+  0x72, 0xc3, 0xb1, 0xc3, 0xa5, 0xc5, 0xa3, 0xc3,
+  0xae, 0xc3, 0xb6, 0xc3, 0xb1, 0xc3, 0xa5, 0xc4,
+  0xbc, 0xc3, 0xae, 0xc5, 0xbe, 0xc3, 0xa5, 0xc5,
+  0xa3, 0xc3, 0xae, 0xe1, 0xbb, 0x9d, 0xc3, 0xb1
+];
+
+var funnyWord = utf8.decode(utf8Bytes);
+
+assert(funnyWord == 'Îñţérñåţîöñåļîžåţîờñ');
+```
+
+要转换一个 UTF-8 字符流为一个 Dart 字符串，指定 **utf8.decoder** 到 Stream 的 **transform()** 方法：
+
+```dart
+var lines = inputStream
+    .transform(utf8.decoder)
+    .transform(LineSplitter());
+try {
+  await for (var line in lines) {
+    print('Got ${line.length} characters from stream');
+  }
+  print('file is now closed');
+} catch (e) {
+  print(e);
+}
+```
+
+使用 **utf8.encode()** 来编码一个 Dart 字符串为一个 UTF-8 编码的字节列表：
+
+```dart
+List<int> encoded = utf8.encode('Îñţérñåţîöñåļîžåţîờñ');
+
+assert(encoded.length == utf8Bytes.length);
+for (int i = 0; i < encoded.length; i++) {
+  assert(encoded[i] == utf8Bytes[i]);
+}
+```
+
+#### 其他功能
+
+库 dart:convert 也包含 ASCII 和 ISO-8859-1 (Latin1) 的转换器。要了解详情，请参阅 [dart:convert 库的 API 参考](#)。
+
+### 总结
+
+该页为你介绍了最常用的 Dart 内置库。然而，它没有覆盖所有的内置库。其他你可能想了解的包括 [dart:collection](#) 和 [dart:typed_data](#)，还有像 [Dart web 开发库](#) 和 [Flutter 库](#) 这样的平台特定库。
+
+你仍然可以使用 pub 工具获取更多库。库 [collection](#)、[crypto](#)、[http](#)、[intl](#) 和 [test](#) 仅仅是你可以使用 pub 安装的库的一个样本。
+
+要了解更多关于 Dart 语言的内容，请参阅 [语言教程](#)。
