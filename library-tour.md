@@ -8,31 +8,31 @@
 
 该教程为你展示了下面这些库的主要特性，这些库被包含在所有的 Dart 平台中。
 
-[dart:core](#)
+[dart:core](#dart:core---数值、集合、字符串和其他)
 
 内置类型、集合和其他核心功能。该库在每一个 Dart 程序中被自动引入。
 
-[dart:async](#)
+[dart:async](#dart:async---异步编程)
 
 支持异步编程，包括 Future 和 Stream 等类。
 
-[dart:math](#)
+[dart:math](#dart:math---数学和随机)
 
-数学常数和函数，外加随机生成器。
+数学常数和函数，外加随机数生成器。
 
-[dart:convert](#)
+[dart:convert](#dart:convert---解码和编码-JSON、UTF-8-和其他)
 
 用于在不同的数据表示之间进行转换的编码器和解码器，包括 JSON 和 UTF-8。
 
-该篇文章只是一个概览；它只覆盖 dart:* 中的一小部分库而且不包含第三方库。平台相关的 dart:io 和 dart:html 库分别包含在 [dart:io 教程](#) 和 [dart:html 教程](#) 中。
+该篇文章只是一个概览；它只覆盖 dart:* 中的一小部分库而且不包含第三方库。平台相关的 dart:io 和 dart:html 库分别包含在 [dart:io 教程](https://www.dartlang.org/dart-vm/io-library-tour) 和 [dart:html 教程](https://webdev.dartlang.org/guides/html-library-tour) 中。
 
-其他查找库信息的地方是 [pub.dartlang.org](#) 和 [Dart web 开发者库指引](#)。 你可以在 [Dart API 参考](#) 中找到所有的 dart:* 库；而如果你在使用 Flutter，则是 [Flutter API 参考](#)。
+其他查找库信息的地方是 [pub.dartlang.org](https://pub.dartlang.org/) 和 [Dart web 开发者库指引](https://webdev.dartlang.org/guides/web-programming)。 你可以在 [Dart API 参考](https://api.dartlang.org/stable) 中找到所有的 dart:* 库；而如果你在使用 Flutter，则是 [Flutter API 参考](https://docs.flutter.io/)。
 
-> DartPad 小提示：你可以通过将其拷贝到 [DartPad](#) 来尝试本页的代码。
+> DartPad 小提示：你可以通过将其拷贝到 [DartPad](https://dartpad.dartlang.org/) 来尝试本页的代码。
 
-## dart:core —— 数值、集合、字符串和其他
+## dart:core - 数值、集合、字符串和其他
 
-库 dart:core（[API 参考](#)）提供了一组小而重要的内置功能。这个库在所有的 Dart 程序中被自动引入。
+库 dart:core（[API 参考](https://api.dartlang.org/stable/dart-core/dart-core-library.html)）提供了一组小而重要的内置功能。这个库在所有的 Dart 程序中被自动引入。
 
 ### 打印到控制台
 
@@ -43,7 +43,7 @@ print(anObject);
 print('I drink $tea.');
 ```
 
-要了解更多关于基本的字符串和 **toString()** 的信息，请参阅语言教程中的 [String](#) 章节。
+要了解更多关于基本的字符串和 **toString()** 的信息，请参阅语言教程中的 [String](README.md#字符串) 章节。
 
 ### 数值
 
@@ -71,7 +71,7 @@ assert(num.parse('0.50') is double);
 assert(int.parse('42', radix: 16) == 66);
 ```
 
-使用 **toString()** 方法将一个 int 或者 double 装换成字符串。要指定小数点右边的位数，请使用 [toStringAsFixed()](#)。要指定字符串中的有效位数，请使用 [toStringAsPrecision()](#) ：
+使用 **toString()** 方法将一个 int 或者 double 装换成字符串。要指定小数点右边的位数，请使用 [toStringAsFixed()](https://api.dartlang.org/stable/dart-core/num/toStringAsFixed.html)。要指定字符串中的有效位数，请使用 [toStringAsPrecision()](https://api.dartlang.org/stable/dart-core/num/toStringAsPrecision.html) ：
 
 ```dart
 // 转换 int 为字符串
@@ -88,11 +88,11 @@ assert(123.456.toStringAsPrecision(2) == '1.2e+2');
 assert(double.parse('1.2e+2') == 120.0);
 ```
 
-要了解更多信息，请参阅 [int](#)、[double](#) 和 [num](#) 的 API 文档。也请参阅 [dart:math](#) 章节。
+要了解更多信息，请参阅 [int](https://api.dartlang.org/stable/dart-core/int-class.html)、[double](https://api.dartlang.org/stable/dart-core/double-class.html) 和 [num](https://api.dartlang.org/stable/dart-core/num-class.html) 的 API 文档。也请参阅 [dart:math](#dart:math---数学和随机) 章节。
 
 ### 字符串和正则表达式
 
-字符串在 Dart 中表示 UTF-16 编码单元组成的一个不可变序列。语言教程中有关于 [字符串](#) 的更详细信息。你可以使用正则表达式（RegExp 对象）在字符串中查找和替换部分字符串。
+字符串在 Dart 中表示 UTF-16 编码单元组成的一个不可变序列。语言教程中有关于 [字符串](README.md#字符串) 的更详细信息。你可以使用正则表达式（RegExp 对象）在字符串中查找和替换部分字符串。
 
 字符串类定义了诸如 **split()**、**contains()**、**startsWith()**、**endsWith** 这样的以及其他更多的方法。
 
@@ -116,7 +116,7 @@ assert('Never odd or even'.indexOf('odd') == 6);
 
 #### 从字符串中提取数据
 
-你可以从一个字符串中获取独立的字符分别作为字符串或者整数。准确来说，你得到的其实是独立的 UTF-16 编码单元；像高音音符这样的高位字符 (‘\u{1D11E}’) 为在一块的两个编码单元。
+你可以从一个字符串中获取独立的字符分别作为字符串或者整数。准确来说，你得到的其实是独立的 UTF-16 编码单元；像高音音符这样的高位字符 (‘\u{1D11E}’) 则为在一块的两个编码单元。
 
 你也可以提取一个子字符串或者拆分一个字符串为一个子字符串列表：
 
@@ -177,7 +177,7 @@ assert('  '.isNotEmpty);
 
 #### 替换字符串的部分内容
 
-字符串是不可变的对象，意味着你可以创建它们但是不可以修改它们。如果你仔细观察 [String API 索引](#)，你会发现没有一个方法真正改变了一个字符串的状态。比如，方法 **replaceAll()** 不会修改原来的字符串：
+字符串是不可变的对象，意味着你可以创建它们但是不可以修改它们。如果你仔细观察 [String API 索引](https://api.dartlang.org/stable/dart-core/String-class.html)，你会发现没有一个方法真正改变了一个字符串的状态。比如，方法 **replaceAll()** 不会修改原来的字符串：
 
 ```dart
 var greetingTemplate = 'Hello, NAME!';
@@ -242,7 +242,7 @@ for (var match in numbers.allMatches(someDigits)) {
 
 #### 更多信息
 
-参考 [String API 索引](#) 来获取方法的完整列表。另请参阅 [StringBuffer](#)、[Pattern](#)、[RegExp](#) 和 [Match](#) 的 API 索引。
+参考 [String API 索引](https://api.dartlang.org/stable/dart-core/String-class.html) 来获取方法的完整列表。另请参阅 [StringBuffer](#)、[Pattern](https://api.dartlang.org/stable/dart-core/StringBuffer-class.html)、[RegExp](https://api.dartlang.org/stable/dart-core/RegExp-class.html) 和 [Match](https://api.dartlang.org/stable/dart-core/Match-class.html) 的 API 索引。
 
 ### 集合
 
@@ -250,7 +250,7 @@ Dart 附带了核心的集合 API，包含了与列表、Set 和 Map 相关的�
 
 #### 列表
 
-就如语言教程所展示的，你可以使用字面量来创建和初始化 [列表](#)。除此以外，你还可以使用 List 的构造函数。List 类同时定义了一些往列表添加和从列表移除项目的方法。
+就如语言教程所展示的，你可以使用字面量来创建和初始化 [列表](README.md#lists)。除此以外，你还可以使用 List 的构造函数。List 类同时定义了一些往列表添加和从列表移除项目的方法。
 
 ```dart
 // 使用一个集合的构造函数
@@ -290,7 +290,7 @@ assert(fruits[0] == 'apples');
 assert(fruits.indexOf('apples') == 0);
 ```
 
-使用 **sort()** 方法对列表进行排序。你可以提供一个排序函数用于比较两个对象。该排序函数必须返回 < 0 的值来表示“更小”、0 表示相等、> 0 的值表示“更大”。下面的例子使用 **compareTo()**，该方法定义在 [Compareable](#) 类中并且被字符串所实现。
+使用 **sort()** 方法对列表进行排序。你可以提供一个排序函数用于比较两个对象。该排序函数必须返回 < 0 的值来表示“更小”、0 表示相等、> 0 的值表示“更大”。下面的例子使用 **compareTo()**，该方法定义在 [Compareable](https://api.dartlang.org/stable/dart-core/Comparable-class.html) 类中并且被字符串所实现。
 
 ```dart
 var fruits = ['bananas', 'apples', 'oranges'];
@@ -315,7 +315,7 @@ assert(fruit is String);
 fruits.add(5); // 错误：'int' 不可以赋值给 'String'
 ```
 
-参见 [List API 索引](#) 获取列表的完整方法列表。
+参见 [List API 索引](https://api.dartlang.org/stable/dart-core/List-class.html) 获取列表的完整方法列表。
 
 #### Set
 
@@ -361,7 +361,7 @@ assert(intersection.length == 1);
 assert(intersection.contains('xenon'));
 ```
 
-参见 [Set API 索引](#) 获取 set 的完整方法列表。
+参见 [Set API 索引](https://api.dartlang.org/stable/dart-core/Set-class.html) 获取 set 的完整方法列表。
 
 #### Maps
 
@@ -446,7 +446,7 @@ teamAssignments.putIfAbsent(
 assert(teamAssignments['Catcher'] != null);
 ```
 
-参见 [Map API 索引](#) 获取 map 的完整方法列表。
+参见 [Map API 索引](https://api.dartlang.org/stable/dart-core/Map-class.html) 获取 map 的完整方法列表。
 
 #### 通用集合方法
 
@@ -523,11 +523,11 @@ assert(teas.any(isDecaffeinated));
 assert(!teas.every(isDecaffeinated));
 ```
 
-要获取完整的方法列表，请参见 [Iterable API 索引](#)，以及 [列表](#)、[Set](#) 和 [Map](#) 中的这些方法。
+要获取完整的方法列表，请参见 [Iterable API 索引](https://api.dartlang.org/stable/dart-core/Iterable-class.html)，以及 [列表](https://api.dartlang.org/stable/dart-core/List-class.html)、[Set](https://api.dartlang.org/stable/dart-core/Set-class.html) 和 [Map](https://api.dartlang.org/stable/dart-core/Map-class.html) 中的这些方法。
 
 ### URI
 
-[Uri 类](#) 提供编码和解码字符串用来作为 URI（就是你可能知道的 URL）的函数。这些函数处理 URI 中的特殊字符，比如 **&** 和 **=**。Uri 类也包含解析和获取 URI 的各个部件的方法——host、port、schema 等等。
+[Uri 类](https://api.dartlang.org/stable/dart-core/Uri-class.html) 提供编码和解码字符串用来作为 URI（就是你可能知道的 URL）的函数。这些函数处理 URI 中的特殊字符，比如 **&** 和 **=**。Uri 类也包含解析和获取 URI 的各个部件的方法——host、port、schema 等等。
 
 #### 编码和解码完全限定的 URI
 
@@ -576,7 +576,7 @@ assert(uri.fragment == 'frag');
 assert(uri.origin == 'http://example.org:8080');
 ```
 
-参见 [Uri API 索引](#) 了解所有你可以获取的部件。
+参见 [Uri API 索引](https://api.dartlang.org/stable/dart-core/Uri-class.html) 了解所有你可以获取的部件。
 
 #### 构建 URI
 
@@ -653,7 +653,7 @@ assert(duration.inDays == 366); // y2k 是一个闰年
 
 > 警告：使用 Duration 来偏移一个 DateTime 的天数可能会出问题，因为时间转换（比如夏令时）。如果你一定要偏移天数，可以使用 UTC 日期。
 
-要获取完整的方法列表，请参见 [DateTime](#) 和 [Duration](#) 的 API 索引。
+要获取完整的方法列表，请参见 [DateTime](https://api.dartlang.org/stable/dart-core/DateTime-class.html) 和 [Duration](https://api.dartlang.org/stable/dart-core/Duration-class.html) 的 API 索引。
 
 ### 实用工具类
 
@@ -661,7 +661,7 @@ assert(duration.inDays == 366); // y2k 是一个闰年
 
 #### 比较对象
 
-实现 [Comparable](#) 接口来表明一个对象可以与其他对象进行比较，通常用来排序。方法 **compareTo()** 返回 < 0 的值来表示“更小”、0 表示相等、> 0 的值表示“更大”。
+实现 [Comparable](https://api.dartlang.org/stable/dart-core/Comparable-class.html) 接口来表明一个对象可以与其他对象进行比较，通常用来排序。方法 **compareTo()** 返回 < 0 的值来表示“更小”、0 表示相等、> 0 的值表示“更大”。
 
 ```dart
 class Line implements Comparable<Line> {
@@ -720,7 +720,7 @@ void main() {
 
 #### 迭代
 
-[Iterable 类](#) 和 [Iterator 类](#) 提供了 for-in 循环。当你想要创建一个提供 for-in 循环的迭代器类时，继承（如果可以）或者实现 Iterable。实现 Iterator 来定义真正的迭代能力。
+[Iterable 类](https://api.dartlang.org/stable/dart-core/Iterable-class.html) 和 [Iterator 类](https://api.dartlang.org/stable/dart-core/Iterator-class.html) 提供了 for-in 循环。当你想要创建一个提供 for-in 循环的迭代器类时，继承（如果可以）或者实现 Iterable。实现 Iterator 来定义真正的迭代能力。
 
 ```dart
 class Process {
@@ -755,11 +755,11 @@ Dart 核心库定义了许多通用的异常和错误。异常是指你计划要
 
 几个最常见的错误为：
 
-[NoSuchMethodError](#)
+[NoSuchMethodError](https://api.dartlang.org/stable/dart-core/NoSuchMethodError-class.html)
 
 当接收对象（可能是 null）未实现一个方法时抛出。
 
-[ArgumentError](#)
+[ArgumentError](https://api.dartlang.org/stable/dart-core/ArgumentError-class.html)
 
 当方法遇到一个不期望的参数时可以抛出。
 
@@ -776,12 +776,12 @@ class FooException implements Exception {
 }
 ```
 
-要了解更多信息，请参阅语言教程中的 [异常](#) 和 [Exception API 索引](#)。
+要了解更多信息，请参阅语言教程中的 [异常](README.md#异常) 和 [Exception API 索引](https://api.dartlang.org/stable/dart-core/Exception-class.html)。
 
 ## dart:async - 异步编程
-异步编程经常使用回调函数，但是 Dart 提供了其他的选项：[Future](#) 和 [Stream](#) 对象。一个 Future 就像对将来某个时刻提供结果的承诺。Stream 是一种获取一系列值的方法，例如事件。Future、Stream 还有其他更多内容包含在 dart:async 库中 ([API 索引](#))。
+异步编程经常使用回调函数，但是 Dart 提供了其他的选项：[Future](https://api.dartlang.org/stable/dart-async/Future-class.html) 和 [Stream](https://api.dartlang.org/stable/dart-async/Stream-class.html) 对象。一个 Future 就像对将来某个时刻提供结果的承诺。Stream 是一种获取一系列值的方法，例如事件。Future、Stream 还有其他更多内容包含在 dart:async 库中 ([API 索引](https://api.dartlang.org/stable/dart-async/dart-async-library.html))。
 
-> 提示：你并不总是需要直接使用 Future 或 Stream API。Dart 语言支持使用诸如 **async** 和 **await** 这样的关键字进行异步编码。请参阅语言教程中的 [异步支持](#) 了解详情。
+> 提示：你并不总是需要直接使用 Future 或 Stream API。Dart 语言支持使用诸如 **async** 和 **await** 这样的关键字进行异步编码。请参阅语言教程中的 [异步支持](README.md#异步支持) 了解详情。
 
 库 dart:async 在 web 应用和命令行应用中均可试用。要使用它，引入 dart:async：
 
@@ -831,7 +831,7 @@ try {
 
 > 重要：异步函数返回 Future。如果你不想你的函数返回一个 future，那么请使用其他方案。例如，你可以在你的函数中调用一个异步函数。
 
-要了解更多关于使用 **await** 和相关的 Dart 语言特性，请参阅 [异步支持](#)。
+要了解更多关于使用 **await** 和相关的 Dart 语言特性，请参阅 [异步支持](README.md#异步支持)。
 
 #### 基本用法
 你可以使用 **when()** 来调度那些在 future 完成后执行的代码。例如，**HttpRequest.getString()** 返回一个 Future，因为 HTTP 请求可能花上一段时间。使用 **then()** 来让你在 Future 完成并且承诺的字符串返回值可用时运行代码：
@@ -889,7 +889,7 @@ try {
 ```
 
 #### 等待多个 future
-有时你的算法需要调用多个异步函数然后等待它们全部完成后才能继续。使用 [Future.wait()](#) 静态方法来管理多个 Future 并等待他们完成：
+有时你的算法需要调用多个异步函数然后等待它们全部完成后才能继续。使用 [Future.wait()](https://api.dartlang.org/stable/dart-async/Future/wait.html) 静态方法来管理多个 Future 并等待他们完成：
 
 ```dart
 Future deleteLotsOfFiles() async =>  ...
@@ -958,7 +958,7 @@ Future main(List<String> arguments) async {
 
 > 重要：在使用 **await for** 之前，确保代码清晰并且你真的想要等待所有 stream 的结果。例如，你通常**不**应该在 DOM 事件监器听上使用 **await for**，因为 DOM 会不停的发送事件。如果你使用 **await for** 先后注册两个 DOM 事件监听器，第二种事件从不会被处理。
 
-要了解更多关于 **await** 和相关 Dart 语言特性的用法，请参阅 [异步支持](#)。
+要了解更多关于 **await** 和相关 Dart 语言特性的用法，请参阅 [异步支持](README.md#异步支持)。
 
 #### 监听 stream 数据
 
@@ -988,7 +988,7 @@ var lines = inputStream
     .transform(LineSplitter());
 ```
 
-这个例子使用了两个转换器。第一个使用了 utf8.decoder 来转换整数的 stream 为字符串的 stream。然后它使用了一个 LineSplitter 来转换字符串的 stream 为按行分割的 stream。这个转换器来自 dart:convert 库（参见 [dart:convert 章节](#)）。
+这个例子使用了两个转换器。第一个使用了 utf8.decoder 来转换整数的 stream 为字符串的 stream。然后它使用了一个 LineSplitter 来转换字符串的 stream 为按行分割的 stream。这个转换器来自 dart:convert 库（参见 [dart:convert 章节](#dart:convert---解码和编码 JSON、UTF-8 和其他)）。
 
 #### 处理错误和完成
 
@@ -1035,17 +1035,17 @@ inputStream
 
 ### 更多信息
 
-要了解更多 Future 和 Stream 在命令行应用中的用法，请参阅 [dart:io 教程](#)。也请参阅以下文章和教程：
+要了解更多 Future 和 Stream 在命令行应用中的用法，请参阅 [dart:io 教程](https://www.dartlang.org/dart-vm/io-library-tour)。也请参阅以下文章和教程：
 
-* [Asynchronous Programming: Futures](#)
-* [Futures and Error Handling](#)
+* [Asynchronous Programming: Futures](https://www.dartlang.org/tutorials/language/futures)
+* [Futures and Error Handling](https://www.dartlang.org/guides/libraries/futures-error-handling)
 * [The Event Loop and Dart](https://webdev.dartlang.org/articles/performance/event-loop)
-* [Asynchronous Programming: Streams](#)
+* [Asynchronous Programming: Streams](https://www.dartlang.org/tutorials/language/streams)
 * [Creating Streams in Dart](https://www.dartlang.org/articles/libraries/creating-streams)
 
 ### dart:math - 数学和随机
 
-库 dart:math（[API 参考](#)）提供类似正弦、余弦、最大值和最小值这些通用的功能，还有像 *Pi* 和 *e* 这样的常数。Math 库中的大部分功能都以顶级函数的方式被实现。
+库 dart:math（[API 参考](https://api.dartlang.org/stable/dart-math/dart-math-library.html)）提供类似正弦、余弦、最大值和最小值这些通用的功能，还有像 *Pi* 和 *e* 这样的常数。Math 库中的大部分功能都以顶级函数的方式被实现。
 
 要在你的应用中使用这个库，导入 dart:math.
 
@@ -1094,7 +1094,7 @@ print(sqrt2); // 1.4142135623730951
 
 #### 随机数
 
-使用 [Random](#) 类来生成随机数。你可以选用带 seed 的 Random 构造函数。
+使用 [Random](https://api.dartlang.org/stable/dart-math/Random-class.html) 类来生成随机数。你可以选用带 seed 的 Random 构造函数。
 
 ```dart
 var random = Random();
@@ -1111,11 +1111,11 @@ random.nextBool(); // true 或 false
 
 #### 更多信息
 
-参见 [Math API 参考](#) 获取完整的方法列表。另请参阅 [num](#)、[int](#) 和 [double](#) 的API 参考。
+参见 [Math API 参考](https://api.dartlang.org/stable/dart-math/dart-math-library.html) 获取完整的方法列表。另请参阅 [num](https://api.dartlang.org/stable/dart-core/num-class.html)、[int](https://api.dartlang.org/stable/dart-core/int-class.html) 和 [double](https://api.dartlang.org/stable/dart-core/double-class.html) 的API 参考。
 
-### dart:convert - 解码和编码 JSON、UTF-8 和 其他
+### dart:convert - 解码和编码 JSON、UTF-8 和其他
 
-库 dart:convert（[API 参考](#)）包含 JSON 和 UTF-8 的转换器，当然也支持创建其他的转换器。[JSON](#) 是表示结构化对象和集合的一种简单的文本格式。[UTF-8](#) 是一种可表示 Unicode 字符集中所有字符的通用的可变宽度编码。
+库 dart:convert（[API 参考](https://api.dartlang.org/stable/dart-convert/dart-convert-library.html)）包含 JSON 和 UTF-8 的转换器，当然也支持创建其他的转换器。[JSON](https://www.json.org/) 是表示结构化对象和集合的一种简单的文本格式。[UTF-8](https://en.wikipedia.org/wiki/UTF-8) 是一种可表示 Unicode 字符集中所有字符的通用的可变宽度编码。
 
 库 dart:convert 在 web 应用和命令行应用中均可使用。要使用它，导入 dart:convert。
 
@@ -1213,12 +1213,12 @@ for (int i = 0; i < encoded.length; i++) {
 
 #### 其他功能
 
-库 dart:convert 也包含 ASCII 和 ISO-8859-1 (Latin1) 的转换器。要了解详情，请参阅 [dart:convert 库的 API 参考](#)。
+库 dart:convert 也包含 ASCII 和 ISO-8859-1 (Latin1) 的转换器。要了解详情，请参阅 [dart:convert 库的 API 参考](https://api.dartlang.org/stable/dart-convert/dart-convert-library.html)。
 
 ### 总结
 
-该页为你介绍了最常用的 Dart 内置库。然而，它没有覆盖所有的内置库。其他你可能想了解的包括 [dart:collection](#) 和 [dart:typed_data](#)，还有像 [Dart web 开发库](#) 和 [Flutter 库](#) 这样的平台特定库。
+该页为你介绍了最常用的 Dart 内置库。然而，它没有覆盖所有的内置库。其他你可能想了解的包括 [dart:collection](https://api.dartlang.org/stable/dart-collection/dart-collection-library.html) 和 [dart:typed_data](https://api.dartlang.org/stable/dart-typed_data/dart-typed_data-library.html)，还有像 [Dart web 开发库](https://webdev.dartlang.org/guides/web-programming) 和 [Flutter 库](https://docs.flutter.io/) 这样的平台特定库。
 
-你仍然可以使用 pub 工具获取更多库。库 [collection](#)、[crypto](#)、[http](#)、[intl](#) 和 [test](#) 仅仅是你可以使用 pub 安装的库的一个样本。
+你仍然可以使用 [pub 工具](https://www.dartlang.org/tools/pub)获取更多库。库 [collection](https://pub.dartlang.org/packages/collection)、[crypto](https://pub.dartlang.org/packages/crypto)、[http](https://pub.dartlang.org/packages/http)、[intl](https://pub.dartlang.org/packages/intl) 和 [test](https://pub.dartlang.org/packages/test) 仅仅是你可以使用 pub 安装的库的一个样本。
 
-要了解更多关于 Dart 语言的内容，请参阅 [语言教程](#)。
+要了解更多关于 Dart 语言的内容，请参阅 [语言教程](README.md)。
