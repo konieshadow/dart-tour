@@ -1,6 +1,8 @@
 # Dart 语言中文教程
 翻译自 Dart 官网，[查看原文](https://www.dartlang.org/guides/language/language-tour)。欢迎提供修改意见。
 
+另见：[Dart 库教程](library-tour.md)。
+
 当前版本：2.0.0 (stable)
 
 完成度：100%
@@ -163,32 +165,34 @@ var
 * 除了绑定在类和对象上的函数（分别为静态方法和实例方法）以外，Dart 还支持顶级函数（像 **main()**)。你还可以在函数中创建函数（嵌套函数或局部函数）。
 * 不像 Java，Dart 没有这些关键词：**pubilc**，**protected**，**private**。如果一个标识符以下划线 (\_) 开头，那么对于它的库来说是私有的。详情请参阅 [库和可见性](#库和可见性)。
 * 标识符可以以下划线 (\_) 开头，后面跟上任意字母和数字的组合。
-* 有时候"表达式"和"语句"会有明显的区别，所以弄清楚它们的确切含义会很有帮助。
-* Dart 开发工具会报告两种类型的问题：警告和错误。警告只是表明你的代码可能无法正常工作，但是并不会禁止你执行程序。错误可能是编译期或者运行期的。一个编译期错误完全禁止程序的执行；而运行期错误会在代码执行到这里时抛出一个 [异常](#异常)。
+* Dart 既有“表达式”（具有运行时的值）也有“语句”（没有运行时的值）。例如，[条件表达式](#条件表达式) **condition ? expr1 : expr2** 有 **expr1** 或 **expr2** 的值。相对的一个 [if-else 语句](#if-和-else)，是没有值的。一个语句经常包含一个或多个表达式，但是一个表达式不能直接包含一个语句。
+* Dart 开发工具会报告两种类型的问题："警告"和"错误"。警告只是表明你的代码可能无法正常工作，但是并不会禁止你执行程序。错误可能是编译期或者运行期的。一个编译期错误完全禁止程序的执行；而运行期错误会在代码执行到这里时抛出一个 [异常](#异常)。
 
 ## 关键词
 下面的表格列出了 Dart 语言特殊对待的关键词。
 
-| abstract <sup>1</sup> | do | import <sup>1</sup> | super |
-| ------------ | ---- | ---- | ---- |
-| as <sup>1</sup> | dynamic <sup>1</sup> | in | switch |
-| assert | else | interface <sup>1</sup> | sync* <sup>2</sup> |
-| async <sup>2</sup> | enum | is | this |
-| async* <sup>2</sup> | export <sup>1</sup> | library <sup>1</sup> | throw |
-| await <sup>2</sup> | external <sup>1</sup> | mixin <sup>1</sup> | true |
-| break | extends | new | try |
-| case | factory <sup>1</sup> | null | typedef <sup>1</sup> |
-| catch | false | operator <sup>1</sup> | var |
-| class | final | part <sup>1</sup> | void |
-| const | finally | rethrow | while |
-| continue | for | return | with |
-| covariant <sup>1</sup> | get <sup>1</sup> | set <sup>1</sup> | yield <sup>2</sup> |
-| default | if | static <sup>1</sup> | yield <sup>2</sup> |
-| deferred <sup>1</sup> | implements <sup>1</sup> |      |      |
+| [abstract](https://www.dartlang.org/guides/language/language-tour#abstract-classes) <sup>2</sup> | [dynamic](https://www.dartlang.org/guides/language/language-tour#important-concepts) <sup>2</sup> | [implements](https://www.dartlang.org/guides/language/language-tour#implicit-interfaces) <sup>2</sup> | [show](https://www.dartlang.org/guides/language/language-tour#importing-only-part-of-a-library) <sup>1</sup> |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [as](https://www.dartlang.org/guides/language/language-tour#type-test-operators) <sup>2</sup> | [else](https://www.dartlang.org/guides/language/language-tour#if-and-else) | [import](https://www.dartlang.org/guides/language/language-tour#using-libraries) <sup>2</sup> | [static](https://www.dartlang.org/guides/language/language-tour#class-variables-and-methods) 2 |
+| [assert](https://www.dartlang.org/guides/language/language-tour#assert) | [enum](https://www.dartlang.org/guides/language/language-tour#enumerated-types) | [in](https://www.dartlang.org/guides/language/language-tour#for-loops) | [super](https://www.dartlang.org/guides/language/language-tour#extending-a-class) |
+| [async](https://www.dartlang.org/guides/language/language-tour#asynchrony-support) <sup>1</sup> | [export](https://www.dartlang.org/guides/libraries/create-library-packages) <sup>2</sup> | [interface](https://stackoverflow.com/questions/28595501/was-the-interface-keyword-removed-from-dart) <sup>2</sup> | [switch](https://www.dartlang.org/guides/language/language-tour#switch-and-case) |
+| [await](https://www.dartlang.org/guides/language/language-tour#asynchrony-support) <sup>3</sup> | [extends](https://www.dartlang.org/guides/language/language-tour#extending-a-class) | [is](https://www.dartlang.org/guides/language/language-tour#type-test-operators) | [sync](https://www.dartlang.org/guides/language/language-tour#generators) <sup>1</sup> |
+| [break](https://www.dartlang.org/guides/language/language-tour#break-and-continue) | [external](https://stackoverflow.com/questions/24929659/what-does-external-mean-in-dart) <sup>2</sup> | [library](https://www.dartlang.org/guides/language/language-tour#libraries-and-visibility) <sup>2</sup> | [this](https://www.dartlang.org/guides/language/language-tour#constructors) |
+| [case](https://www.dartlang.org/guides/language/language-tour#switch-and-case) | [factory](https://www.dartlang.org/guides/language/language-tour#factory-constructors) <sup>2</sup> | [mixin](https://www.dartlang.org/guides/language/language-tour#adding-features-to-a-class-mixins) <sup>2</sup> | [throw](https://www.dartlang.org/guides/language/language-tour#throw) |
+| [catch](https://www.dartlang.org/guides/language/language-tour#catch) | [false](https://www.dartlang.org/guides/language/language-tour#booleans) | [new](https://www.dartlang.org/guides/language/language-tour#using-constructors) | [true](https://www.dartlang.org/guides/language/language-tour#booleans) |
+| [class](https://www.dartlang.org/guides/language/language-tour#instance-variables) | [final](https://www.dartlang.org/guides/language/language-tour#final-and-const) | [null](https://www.dartlang.org/guides/language/language-tour#default-value) | [try](https://www.dartlang.org/guides/language/language-tour#catch) |
+| [const](https://www.dartlang.org/guides/language/language-tour#final-and-const) | [finally](https://www.dartlang.org/guides/language/language-tour#finally) | [on](https://www.dartlang.org/guides/language/language-tour#catch) <sup>1</sup> | [typedef](https://www.dartlang.org/guides/language/language-tour#typedefs) <sup>2</sup> |
+| [continue](https://www.dartlang.org/guides/language/language-tour#break-and-continue) | [for](https://www.dartlang.org/guides/language/language-tour#for-loops) | [operator](https://www.dartlang.org/guides/language/language-tour#overridable-operators) <sup>2</sup> | [var](https://www.dartlang.org/guides/language/language-tour#variables) |
+| [covariant](https://www.dartlang.org/guides/language/sound-problems#the-covariant-keyword) <sup>2</sup> | [Function](https://www.dartlang.org/guides/language/language-tour#functions) <sup>2</sup> | [part](https://www.dartlang.org/guides/libraries/create-library-packages#organizing-a-library-package) <sup>2</sup> | [void](https://medium.com/dartlang/dart-2-legacy-of-the-void-e7afb5f44df0) |
+| [default](https://www.dartlang.org/guides/language/language-tour#switch-and-case) | [get](https://www.dartlang.org/guides/language/language-tour#getters-and-setters) <sup>2</sup> | [rethrow](https://www.dartlang.org/guides/language/language-tour#catch) | [while](https://www.dartlang.org/guides/language/language-tour#while-and-do-while) |
+| [deferred](https://www.dartlang.org/guides/language/language-tour#lazily-loading-a-library) <sup>2</sup> | [hide](https://www.dartlang.org/guides/language/language-tour#importing-only-part-of-a-library) <sup>1</sup> | [return](https://www.dartlang.org/guides/language/language-tour#functions) | [with](https://www.dartlang.org/guides/language/language-tour#adding-features-to-a-class-mixins) |
+| [do](https://www.dartlang.org/guides/language/language-tour#while-and-do-while) | [if](https://www.dartlang.org/guides/language/language-tour#if-and-else) | [set](https://www.dartlang.org/guides/language/language-tour#getters-and-setters) <sup>2</sup> | [yield](https://www.dartlang.org/guides/language/language-tour#generators) <sup>3</sup> |
 
-<sup>1</sup> 带角标1的单词为**内置标识**。不要使用内置标识作为标识符。如果你使用内置标识作为类名或者类型名，会引发一个编译期错误。
+避免使用这些单词作为标识符。然而，如果必要，带角标的关键词可以作为标识符：
 
-<sup>2</sup> 带角标2的单词是新的，在 Dart 的1.0版本发布之后作为**异步**支持加入的有限保留词。在以 **async**、**async\*** 或 **yield** 标识的函数体中，你不能使用 **async**、**await** 或者 **yield** 作为标识符。详情请参阅 [异步支持](#异步支持)。
+* 带角标 *1* 的是 **上下文关键词**，它们只在特定的地方有有意义。除此之外他们在所有地方都是合法的关键词。
+* 带角标 *2* 的是 **内置标识符**。为了简化将JavaScript代码移植到Dart的任务，这些关键字在大多数地方都是有效的标识符，但它们不能用作类或类型名称，也不能用作导入前缀。
+* 带角标 *3* 的是新的，与 [异步支持](# 异步支持) 相关的限制性关键词，在 Dart 1.0 发布后才被加入。在以 **async**、**async\*** 或 **yield** 标识的函数体中，你不能使用 **async**、**await** 或者 **yield** 作为标识符。
 
 关键词表里的其他所有单词都是**保留词**。你不能使用它们作为标识符。
 
@@ -231,7 +235,7 @@ assert(lineCount == null);
 
 如果你从不打算改变一个变量，请使用 **final** 和 **const**，而不是 **var** 或者一个类型名。Final 变量只可以被设置一次；而 const 变量是编译期常量。（Const 变量是隐式 final 的。）一个 final 的顶级变量或者类变量在首次被使用时初始化。
 
-> 提示：实例变量只可以是 final 的，不可以是 const 的。
+> 提示：实例变量只可以是 **final** 的，不可以是 **const** 的。Final 实例变量必须在构造函数体开始前被初始化——在变量声明时、通过构造函数参数或者在构造函数的 [初始化列表](#初始化列表) 中。
 
 这里是创建并设置一个 final 变量的例子：
 
@@ -642,7 +646,7 @@ isNoble(atomicNumber) {
 bool isNoble(int atomicNumber) => _nobleGases[atomicNumber] != null;
 ```
 
-这里的 **=> *expre*** 语法是 **{ return *expr*; }** 的简写。符号 **=>** 有时被称为胖箭头语法。
+这里的 **=> *expre*** 语法是 **{ return *expr*; }** 的简写。符号 **=>** 有时被称为箭头语法。
 
 > 提示：只有单个表达式——而不是语句——可以出现在箭头 (=>) 和 分号 (;) 的中间。比如，你不可以放 [if 语句](#if-和-else)，但是可以使用 [条件表达式](#条件表达式)。
 
@@ -1633,7 +1637,7 @@ try {
 }
 ```
 
-阅读 [Exceptions](https://www.dartlang.org/guides/libraries/library-tour#exceptions) 章节来了解更多内容。
+阅读库教程中的 [Exceptions](https://www.dartlang.org/guides/libraries/library-tour#exceptions) 章节来了解更多内容。
 
 ## 类
 
@@ -1685,7 +1689,7 @@ var p2 = new Point.fromJson({'x': 1, 'y': 2});
 
 > 版本说明：关键词 **new** 在 Dart 2 中变成了可选的。
 
-一些类提供常量构造函数。要使用构造函数创建一个编译期常量，在构造函数名前面加上 **const** 关键词：
+一些类提供 [常量构造函数](#常量构造函数)。要使用构造函数创建一个编译期常量，在构造函数名前面加上 **const** 关键词：
 
 ```dart
 var p = const ImmutablePoint(2, 2);
@@ -1719,6 +1723,17 @@ const pointAndLine = {
   'line': [ImmutablePoint(1, 10), ImmutablePoint(-2, 11)],
 };
 ```
+
+如果一个常量构造函数在常量上下文之外并且没有使用 **const** 来调用，它会创建一个 **非常量对象**：
+
+```dart
+var a = const ImmutablePoint(1, 1); // 创建一个常量
+var b = ImmutablePoint(1, 1); // 不会创建一个常量
+
+assert(!identical(a, b)); // 不是同一个实例！
+```
+
+
 
 > 版本说明：常量上下文中的 **const** 关键词在 Dart 2 中变成了可选的。
 
@@ -1955,6 +1970,8 @@ class ImmutablePoint {
 }
 ```
 
+常量构造函数并不总是会创建常量。要了解详情，请看 [使用构造函数](#使用构造函数) 章节。
+
 #### 工厂构造函数
 
 当要实现一个不总是创建这个类新实例的构造函数时，使用 **factory** 关键词。比如，一个工厂构造函数可能从缓存中返回一个实例，或者可能返回子类的一个实例。
@@ -2070,8 +2087,6 @@ class EffectiveDoer extends Doer {
 }
 ```
 
-调用抽象方法会引发一个运行期错误。
-
 ### 抽象类
 
 使用 **abstract** 修饰符定义一个“抽象”类——一个不能被实例化的类。抽象类在定义接口时是有用的，通常附带一些实现。如果你想让你的抽象类变成可实例化的，定义一个 [工厂构造函数](#工厂构造函数)。
@@ -2175,6 +2190,8 @@ class SmartTelevision extends Television {
 | &lt;= | ~/   | &        | ~    |
 | &gt;= | *    | &lt;&lt; | ==   |
 | -     | %    | &gt;&gt; |      |
+
+> 说明：你可能注意到 **!=** 不是一个可重载的运算符。表达式 **e1 != e2** 仅仅是 **!(e1 == e2)** 的语法糖。
 
 下面是一个重载 **+** 和 **-** 运算符的例子：
 
@@ -2605,7 +2622,7 @@ Future greet() async {
 * 你不能使用延迟加载库中的类型。取而代之地，考虑将接口类型移到另一个库中，而这个库被延迟加载的库和导入的文件导入。
 * Dart 隐式地将 **loadLibrary()** 插入到你使用 **deferred as *namespace*** 定义的命名空间中。函数 **loadLibrary()** 返回一个 [Future](https://www.dartlang.org/guides/libraries/library-tour#future)。
 
-> Dart 虚拟机差异：由于 [issue #33118](https://github.com/dart-lang/sdk/issues/33118)，即使是在调用 **loadLibrary()** 之前，Dart 虚拟机仍允许访问懒加载库中的成员。我们预计这个 bug 会被很快修复，所以**不要依赖当前的虚拟机行为**。
+> Dart 虚拟机差异：Dart 虚拟机允许访问懒加载库中的成员，即使是在调用 **loadLibrary()** 之前。这个行为可能会改变，所以**不要依赖当前的虚拟机行为**。要了解详情，请参见 [issue #33118](https://github.com/dart-lang/sdk/issues/33118)。
 
 ## 实现库
 
@@ -2981,4 +2998,4 @@ class Llama {
 
 ## 译者总结
 
-该页面翻译了官方的”Dart 语言简明教程“，其中多次提到 [Dart 库教程](https://www.dartlang.org/guides/libraries/library-tour)、[Dart 语言规范](https://www.dartlang.org/guides/language/spec) 和 [高效的 Dart](https://www.dartlang.org/guides/language/effective-dart)，译者有意在之后翻译”Dart 库教程“ 和 ”高效的 Dart“。请关注该代码仓库。
+该页面翻译了官方的”Dart 语言简明教程“，其中多次提到 [Dart 库教程](https://www.dartlang.org/guides/libraries/library-tour)、[Dart 语言规范](https://www.dartlang.org/guides/language/spec) 和 [高效的 Dart](https://www.dartlang.org/guides/language/effective-dart)，译者有意在之后翻译”Dart 库教程“ 和 ”高效的 Dart“，其中 [Dart 库教程](library-tour.md) 已翻译完成。请关注该代码仓库。
