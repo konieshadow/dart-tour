@@ -8,7 +8,7 @@
 完成度：100%
 
 这篇文章展示如何使用 Dart 的各个主要特性，从变量、运算符到类和库，并且假定你已经会使用其他编程语言编写代码。
-要详细了解 Dart 核心库相关内容，请查阅官方 [Dart 库教程](https://www.dartlang.org/guides/libraries/library-tour)。当你想对一个语言特性深入了解时，无论何时都可以查阅 [Dart 语言规范](https://www.dartlang.org/guides/language/spec)。
+要详细了解 Dart 核心库相关内容，请查阅 [Dart 库教程](library-tour.md)。当你想对一个语言特性深入了解时，无论何时都可以查阅 [Dart 语言规范](https://www.dartlang.org/guides/language/spec)。
 
 > 小提示：在 DartPad 上，你可以尝试 Dart 的大部分语言特性（[了解更多](https://www.dartlang.org/tools/dartpad)）。
 >
@@ -448,7 +448,7 @@ const validConstString = '$aConstNum $aConstBool $aConstString';
 // const invalidConstString = '$aNum $aBool $aString $aConstList';
 ```
 
-要了解更多使用字符串的信息，请参阅 [字符串和正则表达式](https://www.dartlang.org/guides/libraries/library-tour#strings-and-regular-expressions)。
+要了解更多使用字符串的信息，请参阅 [字符串和正则表达式](library-tour.md#字符串和正则表达式)。
 
 ### 布尔
 
@@ -504,7 +504,7 @@ var constantList = const [1, 2, 3];
 // constantList[1] = 1; // 这一行会引发一个错误
 ```
 
-列表类型有许多方便的方法可以用来操作列表。要了解更多内容，请参阅 [泛型](#泛型) 和 [集合](https://www.dartlang.org/guides/libraries/library-tour#collections)。
+列表类型有许多方便的方法可以用来操作列表。要了解更多内容，请参阅 [泛型](#泛型) 和 [集合](library-tour.md#集合)。
 
 ### Maps
 
@@ -586,7 +586,7 @@ final constantMap = const {
 // constantMap[2] = 'Helium'; // 这一行会引发一个错误
 ```
 
-要了解更多关于映射的内容，请参阅 [泛型](#泛型) 和 [Map](https://www.dartlang.org/guides/libraries/library-tour#maps)。
+要了解更多关于映射的内容，请参阅 [泛型](#泛型) 和 [Map](library-tour.md#maps)。
 
 ### Runes
 
@@ -1359,7 +1359,7 @@ callbacks.forEach((c) => c());
 candidates.forEach((candidate) => candidate.interview());
 ```
 
-像列表和集合这样的 Iterable 也支持 **for-in** 形式的 [迭代](https://www.dartlang.org/guides/libraries/library-tour#iteration)。
+像列表和集合这样的 Iterable 也支持 **for-in** 形式的 [迭代](library-tour.md#迭代)。
 
 ```dart
 var collection = [0, 1, 2];
@@ -1645,7 +1645,7 @@ try {
 }
 ```
 
-阅读库教程中的 [Exceptions](https://www.dartlang.org/guides/libraries/library-tour#exceptions) 章节来了解更多内容。
+阅读库教程中的 [Exceptions](library-tour.md#异常) 章节来了解更多内容。
 
 ## 类
 
@@ -2225,7 +2225,7 @@ void main() {
 }
 ```
 
-如果你重载 **==**，你也需要重载对象的 **hashCode** getter。有关重载 **==** 和 **hasCode** 的例子，请参阅 [实现映射的键](https://www.dartlang.org/guides/libraries/library-tour#implementing-map-keys)。
+如果你重载 **==**，你也需要重载对象的 **hashCode** getter。有关重载 **==** 和 **hasCode** 的例子，请参阅 [实现映射的键](library-tour.md#实现-map-的键键)。
 
 要了解更多关于重载的内容，一般来说，可以参阅 [继承类](#继承类)。
 
@@ -2633,7 +2633,7 @@ Future greet() async {
 
 * 一个延迟加载库中的常量在导入的文件中的不是常量。记住，这些常量直到库被加载前都是不存在的。
 * 你不能使用延迟加载库中的类型。取而代之地，考虑将接口类型移到另一个库中，而这个库被延迟加载的库和导入的文件导入。
-* Dart 隐式地将 **loadLibrary()** 插入到你使用 **deferred as *namespace*** 定义的命名空间中。函数 **loadLibrary()** 返回一个 [Future](https://www.dartlang.org/guides/libraries/library-tour#future)。
+* Dart 隐式地将 **loadLibrary()** 插入到你使用 **deferred as *namespace*** 定义的命名空间中。函数 **loadLibrary()** 返回一个 [Future](library-tour.md#future)。
 
 > Dart 虚拟机差异：Dart 虚拟机允许访问懒加载库中的成员，即使是在调用 **loadLibrary()** 之前。这个行为可能会改变，所以**不要依赖当前的虚拟机行为**。要了解详情，请参见 [issue #33118](https://github.com/dart-lang/sdk/issues/33118)。
 
@@ -2657,7 +2657,7 @@ Dart 的库充满了返回 [Future](https://api.dartlang.org/stable/dart-async/F
 当你需要一个已完成的 Future 的结果时，你有两个选择：
 
 * 使用 **async** 和 **await**。
-* 使用 Future API，如 [Dart 库教程](https://www.dartlang.org/guides/libraries/library-tour#future) 中所述。
+* 使用 Future API，如 [Dart 库教程](library-tour.md#future) 中所述。
 
 使用 **async** 和 **await** 的代码是异步的，但看起来像同步代码。比如，下面的代码使用 **await** 来等待一个异步函数的返回：
 
@@ -2730,7 +2730,7 @@ Future<String> lookUpVersion() async => '1.0.0';
 当你需要从一个 Stream 中获取值是，你有两个选择：
 
 * 使用 **async** 和一个”异步 for 循环“ (**await for)**。
-* 使用 Stream API，如 [Dart 库教程](https://www.dartlang.org/guides/libraries/library-tour#stream) 中所述。
+* 使用 Stream API，如 [Dart 库教程](library-tour.md#stream) 中所述。
 
 > 说明：在使用 **await for** 前，请确保代码足够清晰并且你真的想要等待 stream 中所有的结果。比如，你通常**不**需要对 UI 事件监听器使用 **await for**，因为 UI 框架不停地发送事件的 stream。
 
@@ -2762,7 +2762,7 @@ Future main() async {
 }
 ```
 
-要了解更多关于异步编程的信息，通常地，参阅 [dart:async](https://www.dartlang.org/guides/libraries/library-tour#dartasync---asynchronous-programming) 部分的库文档。另见 [Dart 语言异步支持：阶段一](https://www.dartlang.org/articles/language/await-async)、[Dart 语言异步支持：阶段二](https://www.dartlang.org/articles/language/beyond-async) 和 [Dart 语言规范](https://www.dartlang.org/guides/language/spec)。
+要了解更多关于异步编程的信息，通常地，参阅 [dart:async](library-tour.md#dart:async---异步编程) 部分的库文档。另见 [Dart 语言异步支持：阶段一](https://www.dartlang.org/articles/language/await-async)、[Dart 语言异步支持：阶段二](https://www.dartlang.org/articles/language/beyond-async) 和 [Dart 语言规范](https://www.dartlang.org/guides/language/spec)。
 
 ## 生成器
 
@@ -3008,8 +3008,8 @@ class Llama {
 
 该页面汇总了 Dart 语言常用的特性。更多的特性正在被实现，但我们希望它们不会破坏已有的代码。要了解更多信息，请参阅 [Dart 语言规范](https://www.dartlang.org/guides/language/spec) 和 [高效的 Dart](https://www.dartlang.org/guides/language/effective-dart)。
 
-要了解更多关于 Dart 核心库的信息，请参阅 [Dart 库教程](https://www.dartlang.org/guides/libraries/library-tour)。
+要了解更多关于 Dart 核心库的信息，请参阅 [Dart 库教程](library-tour.md)。
 
 ## 译者总结
 
-该页面翻译了官方的”Dart 语言简明教程“，其中多次提到 [Dart 库教程](https://www.dartlang.org/guides/libraries/library-tour)、[Dart 语言规范](https://www.dartlang.org/guides/language/spec) 和 [高效的 Dart](https://www.dartlang.org/guides/language/effective-dart)，译者有意在之后翻译”Dart 库教程“ 和 ”高效的 Dart“，其中 [Dart 库教程](library-tour.md) 已翻译完成。请关注该代码仓库。
+该页面翻译了官方的”Dart 语言简明教程“，其中多次提到 [Dart 库教程](library-tour.md)、[Dart 语言规范](https://www.dartlang.org/guides/language/spec) 和 [高效的 Dart](https://www.dartlang.org/guides/language/effective-dart)，译者有意在之后翻译”Dart 库教程“ 和 ”高效的 Dart“，其中 [Dart 库教程](library-tour.md) 已翻译完成。请关注该代码仓库。
