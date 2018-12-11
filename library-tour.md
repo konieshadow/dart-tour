@@ -2,7 +2,7 @@
 
 翻译自 Dart 官网，[查看原文](https://www.dartlang.org/guides/libraries/library-tour)。
 
-当前版本：2.0.0 (stable)
+当前版本：2.1.0 (stable)
 
 完成度：100%
 
@@ -779,15 +779,17 @@ class FooException implements Exception {
 要了解更多信息，请参阅语言教程中的 [异常](README.md#异常) 和 [Exception API 索引](https://api.dartlang.org/stable/dart-core/Exception-class.html)。
 
 ## dart:async - 异步编程
-异步编程经常使用回调函数，但是 Dart 提供了其他的选项：[Future](https://api.dartlang.org/stable/dart-async/Future-class.html) 和 [Stream](https://api.dartlang.org/stable/dart-async/Stream-class.html) 对象。一个 Future 就像对将来某个时刻提供结果的承诺。Stream 是一种获取一系列值的方法，例如事件。Future、Stream 还有其他更多内容包含在 dart:async 库中 ([API 索引](https://api.dartlang.org/stable/dart-async/dart-async-library.html))。
+异步编程经常使用回调函数，但是 Dart 提供了其他的选项：[Future](https://api.dartlang.org/stable/dart-async/Future-class.html) 和 [Stream](https://api.dartlang.org/stable/dart-async/Stream-class.html) 对象。一个 Future 就像对将来某个时刻提供结果的承诺。Stream 是一种获取一系列值的方法，例如事件。Future、Stream 还有其他更多内容包含在 dart:async 库中 ([API 索引](https://api.dartlang.org/stable/dart-async/dart-async-library.html))。
 
-> 提示：你并不总是需要直接使用 Future 或 Stream API。Dart 语言支持使用诸如 **async** 和 **await** 这样的关键字进行异步编码。请参阅语言教程中的 [异步支持](README.md#异步支持) 了解详情。
+> 提示：你并不总是需要直接使用 Future 或 Stream API。Dart 语言支持使用诸如 **async** 和 **await** 这样的关键字进行异步编码。请参阅语言教程中的 [异步支持](README.md#异步支持) 了解详情。
 
-库 dart:async 在 web 应用和命令行应用中均可试用。要使用它，引入 dart:async：
+库 dart:async 在 web 应用和命令行应用中均可试用。要使用它，引入 dart:async：
 
 ```dart
 import 'dart:async'
 ```
+
+> 版本说明：在 Dart 2.1 中，你不需要引入 dart:async 来使用 Future 和 Stream API，因为 dart:core 导出了这些类。
 
 ### Future
 Future 对象经常以异步方法返回值的方式出现在 Dart 库中。当一个 future “完成”时，它的值随时可用。

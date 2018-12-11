@@ -3,7 +3,7 @@
 
 另见：[Dart 库教程](library-tour.md)。
 
-当前版本：2.0.0 (stable)
+当前版本：2.1.0 (stable)
 
 完成度：100%
 
@@ -321,9 +321,17 @@ int hex = 0xDEADBEEF;
 如果一个数字包含小数点，那么它是一个浮点数。下面是一些定义浮点数字面量的例子：
 
 ```dart
-double y = 1.1;
-double exponents = 1.42e5;
+var y = 1.1;
+var exponents = 1.42e5;
 ```
+
+在 Dart 2.1 中，数字字面量在必要时会自动转换为 double：
+
+```dart
+double z = 1; // 等效于 double z = 1.0
+```
+
+> 版本说明：在 Dart 2.1 之前，在 double 上下文中使用一个整数字面量会引发一个错误。
 
 下面是一些数值和字符串互相转换的例子：
 
@@ -2297,9 +2305,9 @@ switch (aColor) {
 
 ### 为类添加特性：混入
 
-混入是在类的多继承中复用类代码的一种方式。
+混入 (mixin) 是在类的多继承中复用类代码的一种方式。
 
-要使用混入，使用 **with** 关键词跟着一个或多个混入的名字。下面的例子展示了两个使用混入的类：
+要“使用”混入，使用 **with** 关键词跟着一个或多个混入的名字。下面的例子展示了两个使用混入的类：
 
 ```dart
 class Musician extends Performer with Musical {
@@ -2315,10 +2323,10 @@ class Maestro extends Person
 }
 ```
 
-要实现一个混入，创建一个类继承 Object，不声明构造函数，并且不调用 **super**。比如：
+要实现一个混入，创建一个类继承 Object，不声明构造函数。除非你希望 mixin 可用作常规类，否则请使用 mixin 关键字代替 class。比如：
 
 ```dart
-abstract class Musical {
+mixin Musical {
   bool canPlayPiano = false;
   bool canCompose = false;
   bool canConduct = false;
@@ -2335,9 +2343,14 @@ abstract class Musical {
 }
 ```
 
-> 说明：一些混入的限制将要被移除。详情请参阅 [提议的混入规范](https://github.com/dart-lang/sdk/blob/master/docs/language/informal/mixin-declaration.md)。
+要指定只有某些类型可以使用这个混入——比如，这样你的混入就可以调用它没有定义的方法——使用 on 来指定所需的父类：
 
-有关混入在 Dart 中演变的理论演示，请参阅 [Dart 混入简史](https://www.dartlang.org/articles/language/mixins)。
+```dart
+mixin MusicalPerformer on Musician {
+  // ···
+}
+```
+> 版本说明：对于 **mixin** 关键词的支持在 Dart 2.1 中被引入。之前版本的代码通常使用 **abstract class** 代替。要了解更多关于混入在 2.1 中的改变，请参阅 [Dart SDK 变更日志](https://github.com/dart-lang/sdk/blob/master/CHANGELOG.md) 和 [2.1 混入规范](https://github.com/dart-lang/language/blob/master/accepted/2.1/super-mixins/feature-specification.md#dart-2-mixin-declarations)。
 
 ### 类变量和方法
 
@@ -2631,6 +2644,7 @@ Future greet() async {
 * 如果组织库中的源代码。
 * 如果使用 **export** 指令。
 * 何时使用 **part** 指令。
+* 何时使用 **library** 指令。
 
 ## 异步支持
 
