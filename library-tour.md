@@ -2,7 +2,7 @@
 
 翻译自 Dart 官网，[查看原文](https://www.dartlang.org/guides/libraries/library-tour)。
 
-当前版本：2.1.0 (stable)
+当前版本：2.2.0 (stable)
 
 完成度：100%
 
@@ -24,7 +24,7 @@
 
 用于在不同的数据表示之间进行转换的编码器和解码器，包括 JSON 和 UTF-8。
 
-该篇文章只是一个概览；它只覆盖 dart:* 中的一小部分库而且不包含第三方库。平台相关的 dart:io 和 dart:html 库分别包含在 [dart:io 教程](https://www.dartlang.org/dart-vm/io-library-tour) 和 [dart:html 教程](https://webdev.dartlang.org/guides/html-library-tour) 中。
+该篇文章只是一个概览；它只覆盖 dart:* 中的一小部分库而且不包含第三方库。平台相关的 dart:io 和 dart:html 库分别包含在 [dart:io 教程](https://www.dartlang.org/server/io-library-tour) 和 [dart:html 教程](https://webdev.dartlang.org/guides/html-library-tour) 中。
 
 其他查找库信息的地方是 [pub.dartlang.org](https://pub.dartlang.org/) 和 [Dart web 开发者库指引](https://webdev.dartlang.org/guides/web-programming)。 你可以在 [Dart API 参考](https://api.dartlang.org/stable) 中找到所有的 dart:* 库；而如果你在使用 Flutter，则是 [Flutter API 参考](https://docs.flutter.io/)。
 
@@ -1167,6 +1167,8 @@ assert(jsonText ==
 只有类型为 int、double、String、bool、null、List 或 Map（只包含字符串的 key）是可以直接编码为 JSON 的。List 和 Map 对象被递归地编码。
 
 你有两个选项来编码那些不被直接支持的对象。第一个是调用包含第二个参数的 **encode()**：一个函数返回一个可被直接编码的对象。你的第二个选项是忽略第二个参数，这样编码器会调用对象的 **toJson()** 方法。
+
+要了解更多 JSON 相关的示例和链接，请参阅 [JSON 支持](https://www.dartlang.org/guides/json)。
 
 #### 解码和编码 UTF-8 字符
 

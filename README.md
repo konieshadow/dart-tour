@@ -3,7 +3,7 @@
 
 另见：[Dart 库教程](library-tour.md)。
 
-当前版本：2.1.0 (stable)
+当前版本：2.2.0 (stable)
 
 完成度：100%
 
@@ -26,6 +26,7 @@
   * [字符串](#字符串)
   * [布尔](#布尔)
   * [Lists](#lists)
+  * [Sets](#sets)
   * [Maps](#maps)
   * [Runes](#runes)
   * [Symbols](#symbols)
@@ -484,7 +485,7 @@ Dart 的列表字面量看起来就像 JavaScript 的数组字面量。下面是
 var list = [1, 2, 3];
 ```
 
-> 提示：分析器推断上面的 **list** 类型是 **List&lt;int&gt;**。如果你试图添加一个非整数值对象到这个列表中，分析器或者运行时会报告一个错误。要了解详细信息，请参阅 [类型推断](https://www.dartlang.org/guides/language/sound-dart#type-inference)。
+> 提示：Dart 推断上面的 **list** 类型是 **List&lt;int&gt;**。如果你试图添加一个非整数值对象到这个列表中，分析器或者运行时会报告一个错误。要了解详细信息，请参阅 [类型推断](https://www.dartlang.org/guides/language/sound-dart#type-inference)。
 
 列表使用基于0的索引，也就是说 0 是列表中第一个元素的索引，而 **list.length - 1** 是最后一个元素的索引。你可以像 JavaScript 一样获取 list 的长度和它的元素：
 
@@ -505,6 +506,57 @@ var constantList = const [1, 2, 3];
 ```
 
 列表类型有许多方便的方法可以用来操作列表。要了解更多内容，请参阅 [泛型](#泛型) 和 [集合](library-tour.md#集合)。
+
+### Sets
+
+Dart 中的 set 是无序且唯一的元素集合。Dart 通过 set 字面量和 [Set](https://api.dartlang.org/stable/dart-core/Set-class.html) 类型来支持 set。
+
+> 版本说明：尽管 Set 类型一直是 Dart 核心的一部分，set 字面量却是 Dart 2.2 中新引入的。
+
+下面是一个简单的 Dart set，使用字面量创建：
+
+```dart
+var halogens = {'fluorine', 'chlorine', 'bromine', 'iodine', 'astatine'};
+```
+
+> 说明：Dart 推断 **halogens** 的类型为 **Set&lt;String&gt;**。如果你试图添加错误的类型到这个 set 中，分析器或运行时会抛出一个错误。要了解更多信息，请参阅 [类型推断](https://www.dartlang.org/guides/language/sound-dart#type-inference)。
+
+要创建一个空的 set，使用 **{}** 并提供一个类型参数，或者使用 **{}** 指向带类型的 **Set**：
+
+```dart
+var names = <String>{};
+// Set<String> names = {}; // 这样也可以
+// var names = {}; // 创建一个 map，而不是 set
+```
+
+> **Set 还是 map？** Map 的字面量语法和 set 的字面量语法很相似。因为 map 字面量的优先级更高，**{}** 默认表示 **Map** 类型。如果你忘记了 **{}** 的类型注解或者它指向的变量，Dart 会创建一个类型为 **Map&lt;dynamic, dynamic&gt;** 的对象。
+
+使用 **add()** 或 **addAll()** 来向已存在的 set 中添加元素：
+
+```dart
+var elements = <String>{};
+elements.add('fluorine');
+elements.addAll(halogens);
+```
+
+使用 **.length** 来获取 set 中元素的数量：
+
+```dart
+var elements = <String>{};
+elements.add('fluorine');
+elements.addAll(halogens);
+assert(elements.length == 5);
+```
+
+要创建一个 set 作为编译期常量，在 set 字面量前使用 **const**。
+
+```dart
+final constantSet =
+    const {'fluorine', 'chlorine', 'bromine', 'iodine', 'astatine'};
+// constantSet.add('helium'); // 取消这一行的注释会引发一个错误
+```
+
+要了解更多关于 set 的信息，请参阅 [泛型](#泛型) 和 [Set](library-tour.md#sets)。
 
 ### Maps
 
@@ -527,7 +579,7 @@ var nobleGases = {
 };
 ```
 
-> 提示：分析器推断出 **gifts** 拥有类型 **Map&lt;String, String&gt;**，而 **nobleGases** 拥有类型 **Map&lt;int, String&gt;**。如果你试图添加错误的类型到上面的映射中，分析器或者运行时会报告一个错误。要了解更多信息，请参阅 [类型推断](https://www.dartlang.org/guides/language/sound-dart#type-inference)。
+> 提示：Dart 推断 **gifts** 拥有类型 **Map&lt;String, String&gt;**，而 **nobleGases** 拥有类型 **Map&lt;int, String&gt;**。如果你试图添加错误的类型到上面的映射中，分析器或者运行时会报告一个错误。要了解更多信息，请参阅 [类型推断](https://www.dartlang.org/guides/language/sound-dart#type-inference)。
 
 你可以通过 Map 的构造函数创建同样的对象：
 
@@ -1513,7 +1565,7 @@ assert(number < 100);
 assert(urlString.startsWith('https'));
 ```
 
-> 说明：断言语句在生产环境下没有任何作用；它们仅为了开发。Flutter 在 [debug 模式](https://flutter.io/debugging/#debug-mode-assertions) 下开启了断言。开发专用工具像是 [dartdevc](https://webdev.dartlang.org/tools/dartdevc) 通常默认支持断言。还有一些工具，像是 [dart](https://www.dartlang.org/dart-vm/tools/dart-vm) 和 [dart2js](https://webdev.dartlang.org/tools/dart2js)，通过命令行标志来支持断言：**--enable-asserts**。
+> 说明：断言语句在生产环境下没有任何作用；它们仅为了开发。Flutter 在 [debug 模式](https://flutter.io/debugging/#debug-mode-assertions) 下开启了断言。开发专用工具像是 [dartdevc](https://webdev.dartlang.org/tools/dartdevc) 通常默认支持断言。还有一些工具，像是 [dart](https://www.dartlang.org/server/tools/dart-vm) 和 [dart2js](https://webdev.dartlang.org/tools/dart2js)，通过命令行标志来支持断言：**--enable-asserts**。
 
 要添加信息到一个断言，使用一个字符串作为第二个参数。
 
@@ -2408,7 +2460,7 @@ void main() {
 
 ## 泛型
 
-如果你查看基本数组类型 [List](https://api.dartlang.org/dev/dart-core/List-class.html) 的 API 文档，你会发现它的类型其实是 **List&lt;E&gt;**。&lt;...&gt; 标记表示 List 是一个”泛型“（或带参数的）类——具有形式上的类型参数的类型。按照惯例，类型变量的名字是单个字母，比如 E，T，S，K，和 V。
+如果你查看基本数组类型 [List](https://api.dartlang.org/dev/dart-core/List-class.html) 的 API 文档，你会发现它的类型其实是 **List&lt;E&gt;**。&lt;...&gt; 标记表示 List 是一个”泛型“（或带参数的）类——具有形式上的类型参数的类型。[按照惯例](https://www.dartlang.org/guides/language/effective-dart/design#do-follow-existing-mnemonic-conventions-when-naming-type-parameters)，类型变量的名字是单个字母，比如 E，T，S，K，和 V。
 
 ### 为什么用泛型？
 
