@@ -3,11 +3,11 @@
 
 另见：[Dart 库教程](library-tour.md)。
 
-当前版本：2.2.0 (stable)
+当前版本：2.3.0 (stable)
 
 完成度：100%
 
-这篇文章展示如何使用 Dart 的各个主要特性，从变量、运算符到类和库，并且假定你已经会使用其他编程语言编写代码。
+这个页面展示如何使用 Dart 的各个主要特性，从变量、运算符到类和库，并且假定你已经会使用其他编程语言编写代码。
 要详细了解 Dart 核心库相关内容，请查阅 [Dart 库教程](library-tour.md)。当你想对一个语言特性深入了解时，无论何时都可以查阅 [Dart 语言规范](https://www.dartlang.org/guides/language/spec)。
 
 > 小提示：在 DartPad 上，你可以尝试 Dart 的大部分语言特性（[了解更多](https://www.dartlang.org/tools/dartpad)）。
@@ -75,7 +75,7 @@
   * [为类添加特性：混入](#为类添加特性：混入)
   * [类变量和方法](#类变量和方法)
 * [泛型](#泛型)
-  * [为什么用泛型？](#为什么用泛型？)
+  * [为什么用泛型？](#为什么用泛型)
   * [使用集合字面量](#使用集合字面量)
   * [在构造函数中使用参数类型](#在构造函数中使用参数类型)
   * [泛型集合和它们包含的类型](#泛型集合和它们包含的类型)
@@ -505,6 +505,52 @@ var constantList = const [1, 2, 3];
 // constantList[1] = 1; // 这一行会引发一个错误
 ```
 
+Dart 2.3 引入了 **扩展运算符 (...)** 和 **空感知的扩展运算符 (...?)**，它们提供了一个简洁的方法来向集合中插入多个元素。
+
+举例来说，你可以使用扩展运算符 (...) 来向一个列表中插入另一个列表的所有元素。
+
+```Dart
+var list = [1, 2, 3];
+var list2 = [0, ...list];
+assert(list2.length == 4);
+```
+
+如果扩展运算符右边的表达式可能为空，你可以使用空感知的扩展运算符来 (...?) 避免异常：
+
+```Dart
+var list;
+var list2 = [0, ...?list];
+assert(list2.length == 1);
+```
+
+要了解更多关于扩展运算符的详情和例子，请参阅 [扩展运算符提案](https://github.com/dart-lang/language/blob/master/accepted/2.3/spread-collections/feature-specification.md)。
+
+Dart 2.3 也引入了 **集合 if** 和 **集合 for**，它们提供了使用条件 (if) 和循环 (for) 构建结合的方法。
+
+下面是一个使用 **集合 if** 来创建一个包含3个或4个项目的列表的例子：
+
+```Dart
+var nav = [
+  'Home',
+  'Furniture',
+  'Plants',
+  if (promoActive) 'Outlet'
+];
+```
+
+下面是一个使用 **集合 for** 在把一个集合的元素插入到另一个集合前操纵它们的例子：
+
+```Dart
+var listOfInts = [1, 2, 3];
+var listOfStrings = [
+  '#0',
+  for (var i in listOfInts) '#$i'
+];
+assert(listOfStrings[1] == '#1');
+```
+
+要了解更多关于集合 if 和 for 的详情和例子，请参阅 [控制流集合提案](https://github.com/dart-lang/language/blob/master/accepted/2.3/control-flow-collections/feature-specification.md)。
+
 列表类型有许多方便的方法可以用来操作列表。要了解更多内容，请参阅 [泛型](#泛型) 和 [集合](library-tour.md#集合)。
 
 ### Sets
@@ -555,6 +601,8 @@ final constantSet =
     const {'fluorine', 'chlorine', 'bromine', 'iodine', 'astatine'};
 // constantSet.add('helium'); // 取消这一行的注释会引发一个错误
 ```
+
+对于 Dart 2.3，set 支持扩展运算符 （... 和 ...?） 还有集合 if 和集合 for，就像列表那样。要了解更多信息，请参阅 [列表](#lists) 中的相关讨论。
 
 要了解更多关于 set 的信息，请参阅 [泛型](#泛型) 和 [Set](library-tour.md#sets)。
 
@@ -637,6 +685,8 @@ final constantMap = const {
 
 // constantMap[2] = 'Helium'; // 这一行会引发一个错误
 ```
+
+对于 Dart 2.3，映射支持扩展运算符 （... 和 ...?） 还有集合 if 和集合 for，就像列表那样。要了解更多信息，请参阅 [列表](#lists) 中的相关讨论。
 
 要了解更多关于映射的内容，请参阅 [泛型](#泛型) 和 [Map](library-tour.md#maps)。
 
@@ -1565,7 +1615,7 @@ assert(number < 100);
 assert(urlString.startsWith('https'));
 ```
 
-> 说明：断言语句在生产环境下没有任何作用；它们仅为了开发。Flutter 在 [debug 模式](https://flutter.io/debugging/#debug-mode-assertions) 下开启了断言。开发专用工具像是 [dartdevc](https://webdev.dartlang.org/tools/dartdevc) 通常默认支持断言。还有一些工具，像是 [dart](https://www.dartlang.org/server/tools/dart-vm) 和 [dart2js](https://webdev.dartlang.org/tools/dart2js)，通过命令行标志来支持断言：**--enable-asserts**。
+> 说明：断言语句在生产环境下没有任何作用；它们仅为了开发。Flutter 在 [debug 模式](https://flutter.dev/docs/testing/debugging#debug-mode-assertions) 下开启了断言。开发专用工具像是 [dartdevc](https://dart.dev/tools/dartdevc) 通常默认支持断言。还有一些工具，像是 [dart](https://dart.dev/server/tools/dart-vm) 和 [dart2js](https://dart.dev/tools/dart2js)，通过命令行标志来支持断言：**--enable-asserts**。
 
 要添加信息到一个断言，使用一个字符串作为第二个参数。
 
@@ -2607,7 +2657,7 @@ T first<T>(List<T> ts) {
 
 指令 **import** 和 **library** 可以帮你创建一个模块化和可共享的代码库。库不仅提供 API，也是一个隐私单位：以下划线 (_) 开头的标识符只在库中可见。”每个 Dart 应用都是一个库“，即使它没有使用 **library** 指令。
 
-库可以通过包来发布。要了解更多关于 pub —— SDK内置的包管理器的信息，请参阅 [发布库和资源管理](https://www.dartlang.org/tools/pub)。
+库可以通过 [包](https://dart.dev/guides/packages) 来发布。
 
 ### 使用库
 
@@ -2814,7 +2864,7 @@ Future main() async {
 }
 ```
 
-要了解更多关于异步编程的信息，通常地，参阅 [dart:async](library-tour.md#dart:async---异步编程) 部分的库文档。另见 [Dart 语言异步支持：阶段一](https://www.dartlang.org/articles/language/await-async)、[Dart 语言异步支持：阶段二](https://www.dartlang.org/articles/language/beyond-async) 和 [Dart 语言规范](https://www.dartlang.org/guides/language/spec)。
+要了解更多关于异步编程的信息，通常地，参阅 [dart:async](library-tour.md#dart:async---异步编程) 部分的库文档。
 
 ## 生成器
 
@@ -2852,11 +2902,9 @@ Iterable<int> naturalsDownFrom(int n) sync* {
 }
 ```
 
-要了解更多关于生成器的信息，请参阅文章 [Dart 语言异步支持：阶段二](https://www.dartlang.org/articles/language/beyond-async)。
-
 ## 可被调用的类
 
-要使你的 Dart 类像函数一样可以被调用，实现 **call()** 方法。
+要使你的 Dart 类实例像函数一样可以被调用，实现 **call()** 方法。
 
 在下面的例子中，**WannabeFunction** 类定义了一个 call()  函数，它接受三个字符串参数并且连接它们，使用一个空格分隔每个字符串，最后附加一个感叹号。
 
@@ -2871,8 +2919,6 @@ main() {
   print('$out');
 }
 ```
-
-要了解更多关于将类当作函数的信息，请参阅 [Drat 中的模拟函数](https://www.dartlang.org/articles/language/emulating-functions)。
 
 ## Isolates
 
