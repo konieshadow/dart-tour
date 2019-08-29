@@ -1,18 +1,18 @@
 # Dart 语言中文教程
-翻译自 Dart 官网，[查看原文](https://www.dartlang.org/guides/language/language-tour)。欢迎提供修改意见。
+翻译自 Dart 官网，[查看原文](https://dart.dev/guides/language/language-tour)。欢迎提供修改意见。
 
 另见：[Dart 库教程](library-tour.md)。
 
-当前版本：2.3.0 (stable)
+当前版本：2.4.0 (stable)
 
 完成度：100%
 
 这个页面展示如何使用 Dart 的各个主要特性，从变量、运算符到类和库，并且假定你已经会使用其他编程语言编写代码。
 要详细了解 Dart 核心库相关内容，请查阅 [Dart 库教程](library-tour.md)。当你想对一个语言特性深入了解时，无论何时都可以查阅 [Dart 语言规范](https://www.dartlang.org/guides/language/spec)。
 
-> 小提示：在 DartPad 上，你可以尝试 Dart 的大部分语言特性（[了解更多](https://www.dartlang.org/tools/dartpad)）。
+> 小说明：在 DartPad 上，你可以尝试 Dart 的大部分语言特性（[了解更多](https://www.dartlang.org/tools/dartpad)）。
 >
-> 转到 [DartPatd](https://dartpad.dartlang.org/)。
+> 转到 [DartPatd](https://dartpad.dev/)。
 
 ## 目录
 * [一个基本的 Dart 程序](#一个基本的-dart-程序)
@@ -156,7 +156,7 @@ var
 ```
 一种声明变量但是不指定类型的方法。
 
-> 提示：本篇文章的代码遵从 [Dart 风格指南](https://www.dartlang.org/guides/language/effective-dart/style) 中的公约。
+> 说明：本篇文章的代码遵从 [Dart 风格指南](https://www.dartlang.org/guides/language/effective-dart/style) 中的公约。
 
 ## 重要概念
 当你学习 Dart 语言的时候，请记住以下事实和概念：
@@ -219,7 +219,7 @@ dynamic name = 'Bob';
 String name = 'Bob';
 ```
 
-> 提示：对于局部变量，本篇文章遵守 [代码风格推荐](https://www.dartlang.org/guides/language/effective-dart/design#types) 使用 var，而不是类型声明。
+> 说明：对于局部变量，本篇文章遵守 [代码风格推荐](https://www.dartlang.org/guides/language/effective-dart/design#types) 使用 var，而不是类型声明。
 
 ### 默认值
 
@@ -230,13 +230,13 @@ int lineCount;
 assert(lineCount == null);
 ```
 
-> 说明：代码中的 assert() 调用。在开发时，**assert(*condition*)** 会抛出一个异常，除非 *condition* 的结果是 true。详情请参阅 [断言](#断言)。
+> 说明：生产环境的代码会忽略 assert() 调用。在开发时，如果 *condition* 的结果是 false，**assert(*condition*)** 会抛出一个异常。详情请参阅 [断言](#断言)。
 
 ### Final 和 const
 
 如果你从不打算改变一个变量，请使用 **final** 和 **const**，而不是 **var** 或者一个类型名。Final 变量只可以被设置一次；而 const 变量是编译期常量。（Const 变量是隐式 final 的。）一个 final 的顶级变量或者类变量在首次被使用时初始化。
 
-> 提示：实例变量只可以是 **final** 的，不可以是 **const** 的。Final 实例变量必须在构造函数体开始前被初始化——在变量声明时、通过构造函数参数或者在构造函数的 [初始化列表](#初始化列表) 中。
+> 说明：实例变量只可以是 **final** 的，不可以是 **const** 的。Final 实例变量必须在构造函数体开始前被初始化——在变量声明时、通过构造函数参数或者在构造函数的 [初始化列表](#初始化列表) 中。
 
 这里是创建并设置一个 final 变量的例子：
 
@@ -395,7 +395,7 @@ assert('That deserves all caps. ' +
         'STRING INTERPOLATION is very handy!');
 ```
 
-> 提示：== 运算符测试两个对象是否相等。两个字符串相等的条件是它们包含同样的编码单位序列。
+> 说明：== 运算符测试两个对象是否相等。两个字符串相等的条件是它们包含同样的编码单位序列。
 
 你可以通过并排字符串字面量或者使用 **+** 运算符来串联字符串：
 
@@ -485,7 +485,7 @@ Dart 的列表字面量看起来就像 JavaScript 的数组字面量。下面是
 var list = [1, 2, 3];
 ```
 
-> 提示：Dart 推断上面的 **list** 类型是 **List&lt;int&gt;**。如果你试图添加一个非整数值对象到这个列表中，分析器或者运行时会报告一个错误。要了解详细信息，请参阅 [类型推断](https://www.dartlang.org/guides/language/sound-dart#type-inference)。
+> 说明：Dart 推断上面的 **list** 类型是 **List&lt;int&gt;**。如果你试图添加一个非整数值对象到这个列表中，分析器或者运行时会报告一个错误。要了解详细信息，请参阅 [类型推断](https://www.dartlang.org/guides/language/sound-dart#type-inference)。
 
 列表使用基于0的索引，也就是说 0 是列表中第一个元素的索引，而 **list.length - 1** 是最后一个元素的索引。你可以像 JavaScript 一样获取 list 的长度和它的元素：
 
@@ -627,7 +627,7 @@ var nobleGases = {
 };
 ```
 
-> 提示：Dart 推断 **gifts** 拥有类型 **Map&lt;String, String&gt;**，而 **nobleGases** 拥有类型 **Map&lt;int, String&gt;**。如果你试图添加错误的类型到上面的映射中，分析器或者运行时会报告一个错误。要了解更多信息，请参阅 [类型推断](https://www.dartlang.org/guides/language/sound-dart#type-inference)。
+> 说明：Dart 推断 **gifts** 拥有类型 **Map&lt;String, String&gt;**，而 **nobleGases** 拥有类型 **Map&lt;int, String&gt;**。如果你试图添加错误的类型到上面的映射中，分析器或者运行时会报告一个错误。要了解更多信息，请参阅 [类型推断](https://www.dartlang.org/guides/language/sound-dart#type-inference)。
 
 你可以通过 Map 的构造函数创建同样的对象：
 
@@ -643,7 +643,7 @@ nobleGases[10] = 'neon';
 nobleGases[18] = 'argon';
 ```
 
-> 提示：你可能对 **new Map()** 这样的形式会更熟悉。在 Dart 2 中，关键词 **new** 是可选的。详情请参阅 [使用构造函数](#使用构造函数)。
+> 说明：你可能对 **new Map()** 这样的形式会更熟悉。在 Dart 2 中，关键词 **new** 是可选的。详情请参阅 [使用构造函数](#使用构造函数)。
 
 添加一个新的键值对到已存在的映射，方法和 JavaScript 一样：
 
@@ -715,7 +715,7 @@ main() {
 }
 ```
 
-> 提示：请谨慎使用列表操作来处理 runes。这些方法可能很容易失效，而且依赖特定的语言、字符集和具体的操作。要了解更多信息，请参阅 Stack Overflow 上的 [How do I reverse a String in Dart?](http://stackoverflow.com/questions/21521729/how-do-i-reverse-a-string-in-dart) 
+> 说明：请谨慎使用列表操作来处理 runes。这些方法可能很容易失效，而且依赖特定的语言、字符集和具体的操作。要了解更多信息，请参阅 Stack Overflow 上的 [How do I reverse a String in Dart?](http://stackoverflow.com/questions/21521729/how-do-i-reverse-a-string-in-dart) 
 
 ### Symbols
 
@@ -758,15 +758,17 @@ bool isNoble(int atomicNumber) => _nobleGases[atomicNumber] != null;
 
 这里的 **=> *expre*** 语法是 **{ return *expr*; }** 的简写。符号 **=>** 有时被称为箭头语法。
 
-> 提示：只有单个表达式——而不是语句——可以出现在箭头 (=>) 和 分号 (;) 的中间。比如，你不可以放 [if 语句](#if-和-else)，但是可以使用 [条件表达式](#条件表达式)。
+> 说明：只有单个表达式——而不是语句——可以出现在箭头 (=>) 和 分号 (;) 的中间。比如，你不可以放 [if 语句](#if-和-else)，但是可以使用 [条件表达式](#条件表达式)。
 
-函数有两种类型的参数：必须参数和可选参数。必须参数在参数列表的前面，可选参数跟在后面。
+函数有两种类型的参数：*必须参数*和*可选参数*。必须参数在参数列表的前面，可选参数跟在后面。可选参数可以是*命名参数*或*位置参数*。
+
+> 说明：一些 API——特别是 [Flutter](https://flutter.dev/) 控件——只使用命名参数，即使这些参数是强制的。阅读下节以了解详情。
 
 ### 可选参数
 
 可选参数可以是位置参数或者命名参数，但不可以两者兼是。
 
-#### 可选命名参数
+#### 命名参数
 
 当调用一个函数时，你可以通过 *参数名: 参数值* 的格式指定命名参数。比如：
 
@@ -783,19 +785,19 @@ void enableFlags({bool bold, bool hidden}) {
 }
 ```
 
-[Flutter](https://flutter.io/) 实例创建表达式可以很复杂，所以控件构造函数只使用命名参数。这让实例创建表达式更易读。
-
-你可以在 Dart 代码（而不仅是 Flutter）中使用 [@required](https://pub.dartlang.org/documentation/meta/latest/meta/required-constant.html) 来声明一个命名参数是“必须”的。比如：
+尽管命名参数是一种可选参数，你可以使用 [@required](https://pub.dev/documentation/meta/latest/meta/required-constant.html) 注解来声明这个参数是强制的——即用户必须为这个参数提供一个值。比如：
 
 ```dart
 const Scrollbar({Key key, @required Widget child})
 ```
 
-当一个 **Scrollbar** 被构建时，如果缺少 **child** 参数分析器会报告一个问题。
+当某人试图创建 **Scrollbar** 而不指定 **child** 参数时，分析器会报告一个问题。
+
+要使用 [@required](https://pub.dev/documentation/meta/latest/meta/required-constant.html) 注解，依赖 [meta](https://pub.dev/packages/meta) 包并且引入 **包：meta/meta.dart**。
 
 [Required](https://pub.dartlang.org/documentation/meta/latest/meta/required-constant.html) 被定义在 [meta](https://pub.dartlang.org/packages/meta) 包中。可以直接导入 **package:meta/meta.dart**，也可以导入其他导出了 **meta** 的包，比如 Flutter 的 **package:flutter/material.dart**。
 
-#### 可选位置参数
+#### 位置参数
 
 包裹函数的参数集到 **[]** 中来表明它们是可选参数：
 
@@ -838,7 +840,7 @@ void enableFlags({bool bold = false, bool hidden = false}) {
 enableFlags(bold: true);
 ```
 
-> 弃用提示：以前的代码可能会使用冒号 (:) 而不是 = 来设置命名参数的默认值。原因是之前只有 : 可以用来给命名参数设置默认值。而现在对 : 的支持可能会被废弃，所以我们推荐你 [使用 = 来指定默认值](https://www.dartlang.org/tools/pub/pubspec#sdk-constraints)。
+> 弃用说明：以前的代码可能会使用冒号 (:) 而不是 = 来设置命名参数的默认值。原因是之前只有 : 可以用来给命名参数设置默认值。而现在对 : 的支持可能会被废弃，所以我们推荐你 [使用 = 来指定默认值](https://dart.dev/guides/language/effective-dart/usage#do-use--to-separate-a-named-parameter-from-its-default-value)。
 
 下一个例子展示如何为位置参数设置默认值：
 
@@ -888,7 +890,7 @@ void main() {
 }
 ```
 
-> 提示：上面代码中的 .. 语法被称作 [级联](#级联符号)。使用级联，你可以对单个对象的成员们进行多次操作。
+> 说明：上面代码中的 .. 语法被称作 [级联](#级联符号)。使用级联，你可以对单个对象的成员们进行多次操作。
 
 下面的例子是命令行程序中的 **main()** 函数，它接受命令行参数：
 
@@ -1602,7 +1604,7 @@ switch (command) {
 
 ### 断言
 
-如果一个布尔值为 false，使用 **断言** 语句来中止正常的执行。你可以在本教程中找到断言语句的例子。下面就是一些：
+在开发时，如果一个布尔值为 false，使用 **断言** 语句——**assert(*condition*, *optionalMessage*)**——来中止正常的执行。你可以在本教程中找到断言语句的例子。下面就是一些：
 
 ```dart
 // 确保变量是非空的值
@@ -1615,9 +1617,7 @@ assert(number < 100);
 assert(urlString.startsWith('https'));
 ```
 
-> 说明：断言语句在生产环境下没有任何作用；它们仅为了开发。Flutter 在 [debug 模式](https://flutter.dev/docs/testing/debugging#debug-mode-assertions) 下开启了断言。开发专用工具像是 [dartdevc](https://dart.dev/tools/dartdevc) 通常默认支持断言。还有一些工具，像是 [dart](https://dart.dev/server/tools/dart-vm) 和 [dart2js](https://dart.dev/tools/dart2js)，通过命令行标志来支持断言：**--enable-asserts**。
-
-要添加信息到一个断言，使用一个字符串作为第二个参数。
+要添加信息到一个断言，使用一个字符串作为 **assert** 的第二个参数。
 
 ```dart
 assert(urlString.startsWith('https'),
@@ -1626,9 +1626,17 @@ assert(urlString.startsWith('https'),
 
 传递给 **assert** 的第一个参数只能是可解析为布尔值的表达式。如果这个表达式的值是 true，断言成功并且继续执行。如果它是 false，断言失败并且抛出一个异常（一个 [AssertionError](https://api.dartlang.org/dev/dart-core/AssertionError-class.html)）。
 
+断言到底何时起作用？这取决于你所使用的工具和框架：
+
+* Flutter 在[调试模式](https://flutter.dev/docs/testing/debugging#debug-mode-assertions)下启动断言。
+* 开发专用工具像是 [dartdevc](https://dart.dev/tools/dartdevc) 通常默认支持断言。
+* 还有一些工具，像是 [dart](https://dart.dev/server/tools/dart-vm) 和 [dart2js](https://dart.dev/tools/dart2js)，通过命令行标志来支持断言：**--enable-asserts**。
+
+在生产环境的代码中，断言会被忽略，而且 **assert** 的参数也不会被求值。
+
 ## 异常
 
-你的 Dart 代码可以抛出和捕获异常。异常是指发生了未意料的错误。如果异常没被捕获，抛出异常的 isolate 会被挂起，一般情况下这会导致 isolate 和 应用程序终止。
+你的 Dart 代码可以抛出和捕获异常。异常是指发生了未意料的错误。如果异常没被捕获，抛出异常的 [isolate](#isolates) 会被挂起，一般情况下这会导致 isolate 和 应用程序终止。
 
 与 Java 相反，Dart 中所有的异常都是未检查异常。方法不声明它们可能会抛出的异常，而且你没有被要求捕获任何异常。
 
@@ -2098,13 +2106,8 @@ class Logger {
       <String, Logger>{};
 
   factory Logger(String name) {
-    if (_cache.containsKey(name)) {
-      return _cache[name];
-    } else {
-      final logger = Logger._internal(name);
-      _cache[name] = logger;
-      return logger;
-    }
+    return _cache.putIfAbsent(
+        name, () => Logger._internal(name));
   }
 
   Logger._internal(this.name);
@@ -2706,11 +2709,13 @@ import 'package:lib2/lib2.dart' hide foo;
 
 #### 懒加载一个库
 
-”延迟加载“（也称为”懒加载“）允许一个应用按需加载一个库，仅当它被需要时。下面是一些你可能会使用延迟加载的情况：
+”延迟加载“（也称为”懒加载“）允许一个 web 应用按需加载一个库，仅当这个库被需要时。下面是一些你可能会使用延迟加载的情况：
 
-* 为了减少应用的初始启动时间。
+* 为了减少 web 应用的初始启动时间。
 * 为了执行 A/B 测试——尝试一个算法的替代实现。
 * 为了加载很少使用的功能，比如可选的页面和对话框。
+
+> 说明：仅 dart2js 支持懒加载。Fultter 和 Dart VM，还有 dartdevc 不支持懒加载。要了解更多信息，请参阅 [issue #33118](https://github.com/dart-lang/sdk/issues/33118) 和 [issue #27776](https://github.com/dart-lang/sdk/issues/27776)。
 
 要懒加载一个库，你必须先使用 **deferred as** 导入它：
 
@@ -2736,8 +2741,6 @@ Future greet() async {
 * 一个延迟加载库中的常量在导入的文件中的不是常量。记住，这些常量直到库被加载前都是不存在的。
 * 你不能使用延迟加载库中的类型。取而代之地，考虑将接口类型移到另一个库中，而这个库被延迟加载的库和导入的文件导入。
 * Dart 隐式地将 **loadLibrary()** 插入到你使用 **deferred as *namespace*** 定义的命名空间中。函数 **loadLibrary()** 返回一个 [Future](library-tour.md#future)。
-
-> Dart 虚拟机差异：Dart 虚拟机允许访问懒加载库中的成员，即使是在调用 **loadLibrary()** 之前。这个行为可能会改变，所以**不要依赖当前的虚拟机行为**。要了解详情，请参见 [issue #33118](https://github.com/dart-lang/sdk/issues/33118)。
 
 ## 实现库
 
@@ -2823,9 +2826,9 @@ String lookUpVersion() => '1.0.0';
 Future<String> lookUpVersion() async => '1.0.0';
 ```
 
-注意函数体并不一定要使用 Future API。Dart 会在必要的时候自动创建 Future。
+注意函数体并不一定要使用 Future API。Dart 会在必要的时候自动创建 Future。如果你的函数不返回有用的值，使它返回 **Future&lt;void&gt;**。
 
-如果你的函数不返回有用的值，使它返回 **Future&lt;void&gt;**。
+有关使用 future、async 和 await 的互动介绍，请参阅[异步编程实验室](https://dart.dev/codelabs/async-await)。
 
 ### 处理 Streams
 
@@ -2926,7 +2929,11 @@ main() {
 
 Dart 的代码在 *isolates* 中执行，而不是线程。每个 isolate 都有它自己的内存栈，保证了没有其他的 isolate 可以访问。
 
-要了解更多信息，请参阅 [dart:isolate 库文档](https://api.dartlang.org/stable/dart-isolate)。
+要了解更多信息，请参阅以下内容：
+
+* [Dart 异步编程：Isolates 和事件循环](https://medium.com/dartlang/dart-asynchronous-programming-isolates-and-event-loops-bffc3e296a6a)
+* [dart:isolate API索引](https://api.dart.dev/stable/dart-isolate)，包括 [Isolate.spawn()](https://api.dart.dev/stable/dart-isolate/Isolate/spawn.html) 和 [TransferableTypedData](https://api.dart.dev/stable/dart-isolate/TransferableTypedData-class.html)
+* Flutter 网站上的[后台解析](https://flutter.dev/docs/cookbook/networking/background-parsing)教程
 
 ## Typedefs
 
